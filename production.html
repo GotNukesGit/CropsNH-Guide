@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CropsNH Production Calculator</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230d2a1c'/><text x='16' y='24' font-size='20' text-anchor='middle'>🌾</text></svg>">
+<link rel="stylesheet" href="css/shared.css">
+<link rel="stylesheet" href="css/production.css">
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-icon">📊</div>
+  <div>
+    <div class="hdr-title">CropsNH Production Calculator</div>
+    <div class="hdr-sub">Items per hour · per crop · per farm — GTNH 2.9</div>
+  </div>
+  <div class="badge">v2.0.85 · daily build 598</div>
+  <div class="hdr-nav">
+    <a href="index.html">⌂ Home</a>
+    <a href="calculator.html">🧬 Mutations</a>
+    <a href="guide.html">📖 Guide</a>
+    <a href="changelog.html">📋 Changelog</a>
+  </div>
+</div>
+<div class="main">
+<div class="side">
+
+  <div>
+    <div class="slabel">Biome</div>
+    <div class="sw" style="margin-bottom:6px">
+      <span class="sw-ic">🗺</span>
+      <input type="text" id="biomeSearch" placeholder="Search biome…" oninput="filterBiomes()">
+    </div>
+    <select id="biomeSelect" size="5" style="border-radius:7px;padding:4px" onchange="onBiomeChange()">
+    </select>
+    <div class="biome-tags" id="biomeTags"></div>
+    <div id="biomeNote" class="biome-note" style="display:none"></div>
+  </div>
+
+  <div>
+    <div class="slabel">Sky Access</div>
+    <div class="sky-toggle">
+      <button class="sky-btn act" id="skyYes" onclick="setSky(true)">☀️ Yes (+2 nutrients)</button>
+      <button class="sky-btn" id="skyNo" onclick="setSky(false)">🏚 No</button>
+    </div>
+  </div>
+
+  <div>
+    <div class="slabel">Water & Fertilizer</div>
+    <div class="wfbtn" style="margin-bottom:6px">
+      <button class="act" id="waterFull" onclick="setWater(true)">💦 Water full</button>
+      <button id="waterLow" onclick="setWater(false)">💦 Water low</button>
+    </div>
+    <div class="wfbtn">
+      <button class="act" id="fertFull" onclick="setFert(true)">🧪 Fert full</button>
+      <button id="fertNone" onclick="setFert(false)">🧪 No fert</button>
+    </div>
+    <div style="font-size:10px;color:var(--tx3);margin-top:6px;line-height:1.5">
+      Biome humidity bonus is calculated automatically from your selected biome's rainfall value and shown in results.
+    </div>
+  </div>
+
+  <div>
+    <div class="slabel">Seed Stats (Gain affects yield)</div>
+    <div class="srow"><label>Gain</label><input type="range" min="1" max="31" value="31" id="statGain" oninput="upd()"><span class="sval" id="statGainV">31</span></div>
+    <div class="srow"><label>Growth</label><input type="range" min="1" max="31" value="31" id="statGrowth" oninput="upd()"><span class="sval" id="statGrowthV">31</span></div>
+    <div style="font-size:10px;color:var(--tx3);line-height:1.4">Gain affects drop quantity. Growth affects time to mature. Both at 31 = max production.</div>
+  </div>
+
+  <div>
+    <div class="slabel">Crop</div>
+    <div class="sw" style="margin-bottom:6px">
+      <span class="sw-ic">🔍</span>
+      <input type="text" id="cropSearch" placeholder="Filter crops…" oninput="filterCrops()">
+    </div>
+    <div class="crop-pick" id="cropList"></div>
+  </div>
+
+  <div>
+    <div class="slabel">Number of Crops</div>
+    <div style="margin-bottom:8px">
+      <div class="qty-presets" id="presets">
+        <button class="preset-btn" onclick="setQty(1)">1</button>
+        <button class="preset-btn" onclick="setQty(4)">4</button>
+        <button class="preset-btn" onclick="setQty(9)">9</button>
+        <button class="preset-btn" onclick="setQty(16)">16</button>
+        <button class="preset-btn" onclick="setQty(25)">25</button>
+        <button class="preset-btn" onclick="setQty(36)">36</button>
+        <button class="preset-btn" onclick="setQty(64)">64</button>
+      </div>
+    </div>
+    <div class="qty-row">
+      <label>Custom</label>
+      <button class="qty-btn" onclick="adjQty(-1)">−</button>
+      <input type="text" class="qty-input" id="cropQty" value="9" oninput="upd()">
+      <button class="qty-btn" onclick="adjQty(1)">+</button>
+    </div>
+  </div>
+
+</div>
+<div class="content" id="content">
+  <div class="hint">
+    <div class="hint-icon">📊</div>
+    <div class="hint-title">Select a biome and crop to calculate production</div>
+    <div style="font-size:12px;color:var(--tx3);max-width:340px;margin-top:4px">
+      Choose your in-game biome and the crop you're farming. The calculator works out nutrients, growth rate, time to mature, and expected items per hour based on your Gain stat and crop count.
+    </div>
+  </div>
+</div>
+</div>
+
+<script src="js/production.js"></script>
+</body>
+</html>

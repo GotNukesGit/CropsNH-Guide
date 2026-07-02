@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CropsNH Complete Guide — GTNH 2.9</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230d2a1c'/><text x='16' y='24' font-size='20' text-anchor='middle'>🌾</text></svg>">
+<link rel="stylesheet" href="css/shared.css">
+<link rel="stylesheet" href="css/guide.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-title">🌾 CropsNH Guide</div>
+    <div class="nav-logo-sub">GTNH 2.9 · Updated to daily build 598 (v2.0.85)</div>
+  </div>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link-btn">⌂ Home</a>
+    <a href="calculator.html" class="nav-link-btn primary">🧬 Mutation Calc</a>
+    <a href="production.html" class="nav-link-btn">📊 Production Calc</a>
+    <a href="changelog.html" class="nav-link-btn">📋 Changelog</a>
+  </div>
+  <div class="nav-section">Getting Started</div>
+  <a href="#intro">What is CropsNH?</a>
+  <a href="#getting-started">Your First Crop</a>
+  <a href="#biome-first">Pick Your Biome First</a>
+  <a href="#layouts">Farm Layouts</a>
+  <div class="nav-section">Core Mechanics</div>
+  <a href="#soil">Soil & Block Layout</a>
+  <a href="#soils-list">Soil Types</a>
+  <a href="#stats">Seed Stats</a>
+  <a href="#growth">Growth Formula</a>
+  <div class="nav-section">Breeding</div>
+  <a href="#breeding-tick">The Breeding Tick</a>
+  <a href="#spreading">Spreading</a>
+  <a href="#breed-path">Breed Path</a>
+  <a href="#deterministic">Deterministic Mutations</a>
+  <a href="#pools">Pool Mutations</a>
+  <a href="#soil-filter">Soil Filtering</a>
+  <div class="nav-section">Probability</div>
+  <a href="#odds">Odds & Time</a>
+  <a href="#soil-trick">The Graveyard Trick</a>
+  <div class="nav-section">Strategy</div>
+  <a href="#priority">Crop Priority by Era</a>
+  <a href="#biome-guide">Best Biomes</a>
+  <a href="#stat-up">Statting Up</a>
+  <a href="#weed-management">Weeds</a>
+  <a href="#automation">Automation &amp; Tools</a>
+  <a href="#tier-guide">Tier Reference</a>
+  <a href="#leveling-guide">Leveling Every Crop</a>
+</nav>
+
+<main>
+
+<!-- ═══ HERO ═══ -->
+<div id="intro">
+  <div class="hero-tag">GT New Horizons 2.9</div>
+  <h1>CropsNH Complete Guide</h1>
+  <p class="hero-desc">Everything you need to know about CropsNH — from placing your first crop stick to farming Diareed at tier 12. Mechanics researched from the mod's source code. Corrections and feedback welcome.</p>
+  <div class="hero-chips">
+    <span class="chip chip-grn">v2.0.85 · Daily build 598</span>
+    <span class="chip chip-blu">GTNH 2.9</span>
+    <span class="chip chip-amb">Agricraft fork</span>
+    <span class="chip chip-pur">Replaces IC2 Crops</span>
+  </div>
+  <div class="tip tip-blu"><div class="tip-label">How to use this guide</div>
+    Each section has a <strong>TL;DR</strong> — the essential takeaway in plain English. Click <strong>"Show Details"</strong> beneath it to reveal the full technical explanation. If you just want to play, the TL;DRs are enough. If something isn't working or you want to optimize, open the spoiler.
+  </div>
+</div>
+
+<!-- ═══ GETTING STARTED ═══ -->
+<h2 id="getting-started">Getting Started</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ Before You Plant Anything</div>
+  <div class="tldr-body">
+    This isn't vanilla farming where you just throw seeds in dirt and wait. If the setup is wrong the crop either does nothing, grows painfully slow, or gets sick and starts spreading sickness to everything next to it — and there's no error message telling you why. Here's what you need to check first:
+    <br><br>
+    <ul>
+      <li>🌍 <strong>Wrong soil = nothing grows.</strong> Most food crops want <em>farmland</em> (hoe the dirt). Ore and metal crops need <em>stone</em>. Zomplant and Corpseplant need <em>TiC Graveyard Soil</em>. You can't just plop a Ferrofern on farmland and wonder why it won't sprout.</li>
+      <li>⛏ <strong>Some crops also care about what's TWO blocks down.</strong> Ore berries won't grow without their matching ore block sitting under the soil — iron ore under Ferrofern, tin ore under Tine, a diamond block under Diareed. Stone on top alone isn't enough. Check the <a href="calculator.html">Mutation Calculator</a> for each crop's block-under requirement.</li>
+      <li>🗺 <strong>Your biome matters more than you'd think.</strong> Crops grow faster in biomes they like. Put a tier 6 ore crop in a biome it hates and it'll get sick before it ever matures. Open the <a href="production.html">Production Calculator</a>, type your biome name, pick the crop — if it shows SICK, move the farm or pick something else for that location.</li>
+      <li>💧 <strong>Get a Crop Manager set up before you walk away.</strong> It fills each crop stick's internal water and fertilizer storage. Note: this is separate from farmland hydration — for farmland crops you still need a water block within 4 blocks of the farmland to keep it tilled. Without WeedEx in the machine, weeds will spawn in empty crop sticks and spread sickness to your parents.</li>
+    </ul>
+    Once that's sorted: place two crop sticks on valid soil, plant a parent seed in each, then right-click one of those sticks with another crop stick to double them up — that creates the <em>cross-crop stick</em> in the middle. That's where new mutations appear.
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Step by step setup with common mistakes</span><span class="s-hint">Advanced / Master</span></button>
+  <div class="spoiler-content">
+    <h4>Step-by-step setup</h4>
+    <div class="steps">
+      <div class="step step-grn"><div class="step-line"><div class="step-dot">1</div><div class="step-conn"></div></div><div class="step-body">
+        <div class="step-title">Check the soil requirement</div>
+        <div class="step-desc">Look up your crop in the <a href="calculator.html">Mutation Calculator</a> — it shows the required soil type (y−1) and block under soil (y−2) for every crop. Prepare the ground accordingly before placing anything.</div>
+      </div></div>
+      <div class="step step-blu"><div class="step-line"><div class="step-dot">2</div><div class="step-conn"></div></div><div class="step-body">
+        <div class="step-title">Check your biome</div>
+        <div class="step-desc">Open the <a href="production.html">Production Calculator</a>, enter your biome name, pick your crop. If the nutrient score is too low for the crop's tier, it will show SICK. Either move your farm or choose a different crop for that location.</div>
+      </div></div>
+      <div class="step step-amb"><div class="step-line"><div class="step-dot">3</div><div class="step-conn"></div></div><div class="step-body">
+        <div class="step-title">Prepare the soil layers</div>
+        <div class="step-desc">For farmland crops: till dirt with a hoe, make sure there's water nearby to keep it tilled. For stone-soil crops: place stone, cobblestone, or stone brick. For ore berries: stone on top, ore block one layer below the stone.</div>
+      </div></div>
+      <div class="step step-pur"><div class="step-line"><div class="step-dot">4</div><div class="step-conn"></div></div><div class="step-body">
+        <div class="step-title">Place crop sticks and plant</div>
+        <div class="step-desc">Craft crop sticks: 1 log + Saw + File → 2 GT Long Sticks; 4 GT Long Sticks → 4 crop sticks. Place on valid soil. Right-click with your seed to plant. Plant a second parent one block away. Right-click a planted crop stick with another crop stick to create the cross-crop between them.</div>
+      </div></div>
+      <div class="step step-tel"><div class="step-line"><div class="step-dot">5</div></div><div class="step-body">
+        <div class="step-title">Add a Crop Manager and wait</div>
+        <div class="step-desc">Place a Crop Manager nearby stocked with water, fertilizer, and WeedEx. It fills each crop's internal storage — not the farmland. For farmland crops, also place a water source block within 4 blocks to keep farmland tilled. Parents must reach ≥80% growth before they can breed. Once mature they stay there and breed indefinitely. <strong>Note:</strong> the Crop Manager does not auto-replant or remove seeds — that is always done manually by the player.</div>
+      </div></div>
+    </div>
+    <div class="tip tip-red"><div class="tip-label">When it's not working — things to check</div>
+      <strong>Nothing is happening — no growth at all:</strong> most likely nutrients are too low for the crop's tier. When that happens, the game rolls Resistance against the crop's bad luck each crop tick — at Resistance 31 it always sits quietly dormant, but at lower Resistance there's a real chance it turns sick (green) instead. Check the Production Calculator — if it shows SICK, you need a better biome, more fertilizer, or a lower-tier crop. Also check block-under: ore berries and ore crops need their specific ore block two layers down.<br>
+      <strong>Tried to plant a seed and got a "wrong soil" message:</strong> CropsNH tells you directly and refuses to plant on wrong soil — so if planting worked but nothing is growing, soil is NOT the problem. Look at nutrients and block-under instead.<br>
+      <strong>Farmland keeps turning back to dirt:</strong> needs a water source within 4 blocks. The Crop Manager fills crop water storage but does not hydrate farmland — that requires a water block nearby (vanilla mechanic).<br>
+      <strong>Crop turned <em>green</em> and stopped growing:</strong> it's sick. Use a <strong>Plant Cure</strong> to restore it, then fix the root cause — usually nutrients too low or weed spread. Sickness itself never kills the plant — but see the weed warning below, since weeds are a separate threat that can.<br>
+      <strong>Weeds appearing:</strong> weeds spread <em>sickness</em> to adjacent crops — they don't destroy or replace them. When a weed tries to spread toward an occupied crop stick, the code calls <code>transferDisease()</code>, which sets the neighbour sick. The only way a weed actually overwrites an existing crop is through the autonomous weed-spawn mechanic on an empty stick, not through spreading. A crop deflects an incoming weed only when it has WeedEx storage <em>and</em> Resistance ≥ Growth at that moment — WeedEx alone is not enough if Growth has crept above Resistance. Existing weeds are never removed automatically. Remove weeds manually with the CropsNH <strong>Spade</strong> or <strong>Reinforced Spade</strong>, or by breaking the crop stick. If a weed has nowhere to spread — no crop stick at all in that direction — it instead converts the Dirt or Farmland under that spot to Grass and plants tall grass on top, so an unchecked weed problem can spread into your base's terrain too.
+    </div>
+  </div>
+</div>
+
+<h3 id="biome-first">Step 1: Pick Your Biome Before You Build</h3>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR — Most Important Thing</div>
+  <div class="tldr-body">
+    <strong>Your biome gives bonus nutrients to crops that "like" that biome.</strong> More nutrients = faster growth. Some crops need specific biomes to grow at all without getting sick. Use the <a href="production.html">Production Calculator</a> — type your biome name, pick a crop, and it instantly shows you the nutrient score and time to mature. <strong>Set up your farm in a biome that matches what you want to grow.</strong>
+    <ul>
+      <li>🌿 <strong>Jungle or Swamp</strong> — best all-around for most crops</li>
+      <li>🔥 <strong>The Nether</strong> — mandatory for Ardite, Cobalt, Nether Wart</li>
+      <li>⛰ <strong>Extreme Hills / Highland (BoP)</strong> — ore crops (Ferrofern, Tine, ore berries)</li>
+      <li>🏜 <strong>Savanna / Mesa</strong> — Coppon, Copper/Gold ore berries</li>
+    </ul>
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Biome tags and nutrient math</span><span class="s-hint">Advanced / Master</span></button>
+  <div class="spoiler-content">
+    <p>Each crop has a list of liked biome tags from Forge's BiomeDictionary (e.g. PLAINS, HOT, NETHER). If your farm's biome has 1 matching tag, you get <strong>+14 nutrients</strong>. Two matching tags gives <strong>+28 nutrients</strong>. These are huge bonuses — the difference between a crop growing healthily and getting sick.</p>
+    <h4>Nutrient formula</h4>
+    <div class="formula">nutrients = 5 (base) + waterBonus + fertBonus + skyBonus + max(humidityBonus, biomeTagBonus)<br>waterBonus     = floor((min(water,100)+9)/10) &nbsp;<span class="cm">// max +10 at full storage</span><br>fertBonus      = floor((min(fert,100)+9)/10)  &nbsp;<span class="cm">// max +10 at full storage</span><br>skyBonus       = 2 if crop can see sky directly<br>biomeTagBonus  = min(2, matchedLikedTags) × 14 &nbsp;<span class="cm">// max +28, capped at 2 tags even if more match</span><br>humidityBonus  = clamp((biomeRainfall − 0.5) / 0.3, 0, 1) × 14 &nbsp;<span class="cm">// max +14, free even with 0 matched tags</span><br><span class="cm">// humidityBonus and biomeTagBonus do NOT stack — only the larger of the two applies</span></div>
+    <p>The Production Calculator handles all of this — just select your biome and crop and it tells you everything.</p>
+    <h4>Key biome locations in GTNH</h4>
+    <ul>
+      <li><strong>Personal Dimension (Mystcraft):</strong> You can write the biome you want. Jungle at high humidity is extremely powerful for mid-game farms.</li>
+      <li><strong>Nether:</strong> Has both HOT and NETHER tags — gives +28 to Ardite, Cobalt, Nether Wart, Tearstalks, StickyCane.</li>
+      <li><strong>End:</strong> Has END and COLD tags — gives +28 to Enderbloom, Void Ore Berry, Diareed.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══ FARM LAYOUTS ═══ -->
+<h2 id="layouts">Farm Layouts</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR — Novice</div>
+  <div class="tldr-body">
+    For <strong>breeding</strong>: put two parent crops next to each other with an empty cross-crop stick between them. That's it.
+    For <strong>production</strong>: fill a grid with your desired crop, harvest when mature, repeat. A 9×9 area on farmland gives you 81 crop sticks for maximum output.
+    <ul>
+      <li>🧬 <strong>Breeding layout:</strong> Parent — Cross — Parent (in a line)</li>
+      <li>📦 <strong>Production layout:</strong> Solid grid, all same crop, auto-harvest with Crop Manager</li>
+      <li>🔀 <strong>Checkerboard layout:</strong> Alternating crop / empty for mixed breeding</li>
+    </ul>
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Layout strategies and cross-crop spacing</span><span class="s-hint">Advanced / Master</span></button>
+  <div class="spoiler-content">
+    <h4>Basic breeding line</h4>
+    <p>Minimum setup: <code>Parent A — Cross-crop — Parent B</code>. The cross-crop only checks the 4 cardinal directions (N/S/E/W) — diagonals don't count.</p>
+    <div class="farm-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="fc fc-crop">🌱</div><div class="fc fc-cross">✚</div><div class="fc fc-crop">🌱</div>
+    </div>
+
+    <h4>4-parent breeding (for 4-way recipes like Ardite Ore Berry)</h4>
+    <p>Some mutations require 4 specific parent species. Place one parent on each cardinal side of the cross-crop:</p>
+    <div class="farm-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="fc fc-empty"></div><div class="fc fc-crop" title="Parent N">🌿</div><div class="fc fc-empty"></div>
+      <div class="fc fc-crop" title="Parent W">🌿</div><div class="fc fc-cross">✚</div><div class="fc fc-crop" title="Parent E">🌿</div>
+      <div class="fc fc-empty"></div><div class="fc fc-crop" title="Parent S">🌿</div><div class="fc fc-empty"></div>
+    </div>
+
+    <h4>Production grid</h4>
+    <p>Once you have your desired crop with good stats, fill a flat grid with all the same crop on farmland. A Crop Manager harvests automatically when mature and refills with seeds from a buffer chest. 9×9 is a common size that fits within a single Crop Manager's range at higher tiers.</p>
+    <div class="farm-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="fc fc-crop">🌾</div><div class="fc fc-crop">🌾</div><div class="fc fc-crop">🌾</div><div class="fc fc-crop">🌾</div><div class="fc fc-crop">🌾</div>
+      <div class="fc fc-crop">🌾</div><div class="fc fc-crop">🌾</div><div class="fc fc-crop">🌾</div><div class="fc fc-crop">🌾</div><div class="fc fc-crop">🌾</div>
+      <div class="fc fc-crop">🌾</div><div class="fc fc-crop">🌾</div><div class="fc fc-crop">🌾</div><div class="fc fc-crop">🌾</div><div class="fc fc-crop">🌾</div>
+    </div>
+
+    <h4>Stat-up layout</h4>
+    <p>There's no special layout required by the code — the cross-crop stick simply checks its four cardinal neighbours (N/S/E/W) for crops that can cross or breed. What matters practically is that your target crop has a cross-crop stick adjacent, and that cross-crop stick has two copies of the same crop as neighbours. The traditional "checkerboard" pattern (crops on corners, cross-crop sticks in between) is a community convention that achieves this efficiently, but it's not anything the source enforces. Any layout where a crop has a double-cropstick adjacent and that stick can see two copies of the same crop works identically.</p>
+    <p>With identical-species neighbours, the spreading path picks one at random, returns that same species, and averages stats only from neighbours of the matching species. Fertilizer in all contributing neighbours triggers the no-drop guarantee. Two identical parents means both need fertilizer storage &gt; 0.</p>
+    <div class="farm-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="fc fc-crop">⭐</div><div class="fc fc-cross">✚</div><div class="fc fc-crop">⭐</div>
+      <div class="fc fc-cross">✚</div><div class="fc fc-crop">⭐</div><div class="fc fc-cross">✚</div>
+      <div class="fc fc-crop">⭐</div><div class="fc fc-cross">✚</div><div class="fc fc-crop">⭐</div>
+    </div>
+    <div class="tip tip-amb"><div class="tip-label">Pro tip</div>Keep breeding farms small (1–4 cross-crop slots at a time). Larger farms breed faster but produce more unwanted crops to manage.</div>
+  </div>
+</div>
+
+<!-- ═══ SOIL ═══ -->
+<h2 id="soil">Soil &amp; Block Layout</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    The block <em>directly under the crop stick</em> must be the right soil type. Some crops also need a specific block <em>one layer below that</em>. <strong>Both must match or the crop won't grow.</strong>
+    <ul>
+      <li>Most food/mob crops need <strong>farmland</strong> (tilled dirt with a hoe)</li>
+      <li>Ore and metal crops need <strong>stone</strong></li>
+      <li>Ore berries need <strong>stone</strong> on top, specific <strong>ore block</strong> below that</li>
+      <li>Zomplant / Corpseplant need <strong>Graveyard Soil</strong> (TiC block)</li>
+    </ul>
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Full soil system</span><span class="s-hint">Advanced / Master</span></button>
+  <div class="spoiler-content">
+    <p>Every crop stick sits on a soil block. Two distinct checks happen at different Y levels:</p>
+    <div class="stack">
+      <div class="stack-layer layer-stick"><span class="stack-y">y+0</span><span class="stack-name">Crop Stick</span><span class="stack-note">Tile entity here</span></div>
+      <div class="stack-layer layer-soil"><span class="stack-y">y−1</span><span class="stack-name">Soil block</span><span class="stack-note">checked by getSoilTypes()</span></div>
+      <div class="stack-layer layer-under"><span class="stack-y">y−2</span><span class="stack-name">Block under soil</span><span class="stack-note">checked by BlockUnderRequirement</span></div>
+    </div>
+    <p>The soil check applies to the <strong>cross-crop stick</strong> (the output stick), not the parent sticks. A mutation result is discarded if the cross-crop's soil doesn't match — the entire breeding tick is wasted. No retry within that tick.</p>
+    <div class="tip tip-pur"><div class="tip-label">Exploiting soil filtering</div>Corium is in 4 pools (Cow, Silk, Tendrilly, Milk) totaling 17 possible pool-mutation outputs. Of those, only <strong>Corpseplant</strong> needs graveyard soil — everything else needs farmland or stone. Place graveyard soil under the cross-crop stick and breed two Coriums: every other pool result gets soil-rejected, leaving Corpseplant as the only crop that can actually land. (Zomplant also needs graveyard soil but is in entirely different pools — it's not reachable from Corium at all, with any soil.)</div>
+  </div>
+</div>
+
+<!-- ═══ SOIL TYPES ═══ -->
+<h2 id="soils-list">All Soil Types</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    The two most important soils to know: <strong>Farmland</strong> (right-click dirt with a hoe) for most crops, and <strong>Stone</strong> for all ore/metal crops. Everything else is a special case.
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — All soil types and which crops need them</span><span class="s-hint">Advanced / Master</span></button>
+  <div class="spoiler-content">
+    <table>
+      <tr><th>Soil</th><th>Blocks accepted</th><th>Crops (64 total on Farmland alone — full list in the <a href="calculator.html">Mutation Calculator</a>)</th></tr>
+      <tr><td class="tb">Farmland</td><td>Tilled dirt, Enchanted Earth, Ztones Garden Soil</td><td>64 crops — most food crops (Wheat, Carrot, Potato, Melon, Cocoa...), mob crops (EggPlant, Spidernip, Creeperweed...), berries (Strawberry, Blueberry, Grape...)</td></tr>
+      <tr><td class="tb">Dirt / Grass</td><td>Dirt, Grass, Podzol</td><td>28 crops — all 9 vanilla flowers (Dandelion, Poppy, tulips...), all 7 standard Bonsai variants, Lemon, Meatrose, Slimeplant, Indigo, Cinderpearl, Shimmerleaf, Glowflower, Bamboo</td></tr>
+      <tr><td class="tb">Stone</td><td>Stone, Cobblestone, Stone Brick, Chisel/TiC variants</td><td>60 crops — all 10 Stone Lily variants, every metal crop (Ferrofern, Coppon, Tine, Nickelback, Galvania...), all 12 Ore Berries, Withereed, Diareed, Rubyne (note: on farmland, not stone — verify per-crop), Steeleafranks (<strong>also needs Twilight Forest Steeleaf block at y−2</strong>)</td></tr>
+      <tr><td class="tb">Graveyard Soil</td><td>TiC CraftedSoil:3</td><td>Zomplant, Corpseplant — only these two</td></tr>
+      <tr><td class="tb">Sugarcane Soil</td><td>Sand, Sandstone, Dirt, or Grass (compound)</td><td>Sugar Cane, Sticky Cane</td></tr>
+      <tr><td class="tb">Soul Sand</td><td>Soul Sand</td><td>Nether Wart (tier 5, breedable). Also <strong>Gaia Wart</strong> (tier 5) — requires a Snow Block directly under the soil (y−2). To obtain it: grow a Nether Wart crop to maturity on Soul Sand, then right-click it repeatedly with <strong>Snow Blocks</strong> (not snowballs) until it converts into a Gaia Wart crop. Gaia Wart has no mutation recipe and isn't a member of any pool, so it can't be bred from anything — this right-click conversion is the only way to get it. Terra Wart is no longer craftable in 2.9.</td></tr>
+      <tr><td class="tb">Sand</td><td>Sand, Sandstone</td><td>Cactus, Saguaro Cactus — only these two</td></tr>
+      <tr><td class="tb">Netherrack</td><td>Netherrack + Chisel/TiC variants</td><td>9 crops — Evil Ore, Glowheat, Eyebulb, Blightberry, Duskberry, Skyberry, Stingberry, Thornvine, Blazereed</td></tr>
+      <tr><td class="tb">Nether Mushroom</td><td>Stone, Dirt, Mycelium, Netherrack (compound)</td><td>All 4 Glowshroom variants (Blue, Green, Purple, and base Glowshroom — Natura)</td></tr>
+      <tr><td class="tb">Thaumcraft Logs</td><td>Greatwood Log, Silverwood Log</td><td>Mana Bean — only this one</td></tr>
+      <tr><td class="tb">Brick</td><td>Brick Block</td><td>Trollplant (+ special catalysts)</td></tr>
+    </table>
+    <p style="font-size:11px;color:var(--tx3);margin-top:8px">Rubyne and Diareed are listed in Stone in earlier drafts of this guide but are actually verified as Farmland and Stone respectively — soil assignments above are pulled directly from each crop's real entry, not retyped by hand. If you spot a discrepancy, check the crop directly in the calculator rather than trust this summary table blindly.</p>
+    <div class="tip tip-grn"><div class="tip-label">Trample-proof Farmland variants</div>Three specific blocks are fully immune to crop trampling regardless of the crop's own Resistance stat: <strong>Ztones Garden Soil</strong>, <strong>Enchanted Earth</strong>, and <strong>Fertilized Dirt</strong>. All three register on the Farmland soil type, so any farmland crop can use them as a drop-in replacement for ordinary Farmland with zero trample risk from animals or sprinting players — useful for a starter farm before your seeds reach Resistance 31 on their own.</div>
+  </div>
+</div>
+
+<!-- ═══ SEED STATS ═══ -->
+<h2 id="stats">Seed Stats</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    Seeds have three numbers: <strong>Growth / Gain / Resistance</strong> (each 1–31).
+    <ul>
+      <li><strong>Growth</strong> — how fast it matures. Higher = quicker to full stage</li>
+      <li><strong>Gain</strong> — how much it drops per harvest. Higher = more items</li>
+      <li><strong>Resistance</strong> — protects against weeds and sickness. All stats are beneficial — Resistance does not hurt growth. At exactly 31, a crop stick is immune to being broken by <strong>running</strong> entities. Falling trample ignores Resistance entirely — even at R31 a big enough fall will break the crop. Use trample-immune soil (Garden Soil, Enchanted Earth, Fertilized Dirt) if you need full protection.</li>
+    </ul>
+    <strong>Target 31/31/31.</strong> Stats can only go up when fertilizer is in the contributing parent(s) — a single parent is sufficient for stat-up.
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Stat math, variation, and fertilizer mechanic</span><span class="s-hint">Advanced / Master</span></button>
+  <div class="spoiler-content">
+    <p>Stats range 1–31 (from <code>Constants.java</code>). When a new crop is bred, each stat is calculated as:</p>
+    <div class="formula">newStat = clamp( average(parentStats) + random(-2, +4), 1, 31 )<br><span class="cm">// if ALL contributing parents have fertilizer storage > 0:</span><br>newStat = clamp( average(parentStats) + random(0, +4), 1, 31 )<span class="cm">  // can only improve</span></div>
+    <p><strong>Gain</strong> formula for drop rounds: <code>dropChance × 1.03^Gain</code>. Gain 31 gives 2.5× more drop rounds than Gain 1. This is the most important stat for production farms.</p>
+    <p><strong>Resistance</strong> has three separate effects, none of which touch the growth-speed formula itself — <code>getGrowthRate()</code> only takes nutrientPoints, tier, and Growth as inputs. First, every crop tick a crop fails to gain growth (insufficient nutrients for its tier), the game rolls Resistance against a random 0–30 — succeed and the crop just sits idle; fail and it goes sick. At exactly 31 that roll can never fail, so a permanently-undernourished crop stays dormant forever instead of turning sick. Second, that same roll governs seed return when breaking a crop — low Resistance means breaking often yields no seed. Third, Resistance 31 makes a crop stick immune to breakage from <strong>running</strong> entities — but falling trample ignores Resistance entirely at any value, including 31. To protect against falls, use a trample-immune soil (Garden Soil, Enchanted Earth, Fertilized Dirt). Target 31/31/31 for all three Resistance benefits at once.</p>
+    <div class="tip tip-red"><div class="tip-label">⚠ Weed spreading</div>Crops with Growth ≥ 24 spread weeds to adjacent empty crop sticks if Resistance &lt; Growth. Having Resistance ≥ Growth prevents outward spreading <strong>only if WeedEx is also stocked</strong> — without WeedEx, the crop will spread weeds regardless of Resistance. Stats cannot drop from WeedEx — that mechanic is IC2-only and does not exist in CropsNH.</div>
+  </div>
+</div>
+
+<!-- ═══ GROWTH FORMULA ═══ -->
+<h2 id="growth">Growth Formula</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    Every <strong>12.8 seconds</strong> each crop gains growth points. When it hits its target (depends on tier), it's mature. <strong>Higher tier crops take longer and need more nutrients to not get sick.</strong> A tier 10 crop in the wrong biome without fertilizer will get sick and stop growing entirely.
+    <ul>
+      <li>Use the <a href="production.html">Production Calculator</a> to see exact time to mature for your setup</li>
+      <li>Sky access, water, fertilizer, and biome all increase nutrients → faster growth</li>
+      <li>If the calculator shows <span style="color:var(--red)">SICK</span>, you need more nutrients</li>
+    </ul>
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Full growth formula</span><span class="s-hint">Master</span></button>
+  <div class="spoiler-content">
+    <div class="formula">scaled = nutrients × 5<br>needed = cropTier × 10<br>base   = 6 + Growth<br><br>if scaled ≥ needed:<br>&nbsp;&nbsp;&nbsp;&nbsp;growthRate = base × (100 + scaled − needed) / 100<br>else:<br>&nbsp;&nbsp;&nbsp;&nbsp;growthRate = max(0, base × (100 − (needed − scaled) × 4) / 100)<br><br><span class="cm">// growthRate = 0 → crop is SICK (stops growing, spreads sickness)</span><br><span class="cm">// Default growth duration: tier × 600 growth points (CropBonsai overrides to a flat 1200)</span></div>
+    <h4>How the biome bonus is actually calculated</h4>
+    <p>The bonus isn't just "matched tag or not" — there are two separate values and the game takes whichever is larger:</p>
+    <div class="formula">humidityBonus = clamp((biomeRainfall − 0.5) / 0.3, 0, 1) × 14<br>likedTagBonus = matchedLikedTags × 14<br>biomeBonus    = max(humidityBonus, likedTagBonus)<br><span class="cm">// They do NOT stack — max() picks the higher one</span></div>
+    <p>This means a biome with rainfall ≥ 0.8 gives <strong>+14 to every crop unconditionally</strong> — even if the crop has zero liked biome matches. Jungle (0.9), Swampland (0.9), Forest (0.8), and Temperate Rainforest (1.2) all hit the cap. Birch Forest at 0.6 gives a partial +4. Desert at 0.0 gives nothing. Exact rainfall for any biome is shown in the <a href="production.html">Production Calculator</a> when you select it.</p>
+    <p>If a crop has two matched liked tags (+28) and the biome also has high humidity (+14), the +28 wins — they don't add together. The Production Calculator handles all of this automatically from your selected biome.</p>
+    <p>Growth rate is added every 256 game ticks (12.8 seconds). Verified example: Ardite Ore Berry (tier 5, likes NETHER+HOT) in Hell (HOT, DRY, NETHER tags, rainfall 0.0) with Growth 31, full water/fertilizer, no sky bonus — matches both liked tags for +28, giving nutrient score 53 and a real time-to-mature of <strong>~5.5 minutes</strong>. Run this yourself in the <a href="production.html">Production Calculator</a> to confirm or to check a different crop/biome combination.</p>
+  </div>
+</div>
+
+<!-- ═══ BREEDING TICK ═══ -->
+<h2 id="breeding-tick">The Breeding Tick</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    Every 12.8 seconds, each cross-crop stick has a <strong>1-in-3 chance</strong> to try breeding. If it tries, there's a <strong>50/50 coin flip</strong>: either clone one of the parents (spreading), or attempt a mutation. <strong>Parents must be at ≥80% growth to participate.</strong>
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Full breeding tick sequence</span><span class="s-hint">Advanced / Master</span></button>
+  <div class="spoiler-content">
+    <div class="steps">
+      <div class="step step-grn"><div class="step-line"><div class="step-dot">1</div><div class="step-conn"></div></div><div class="step-body"><div class="step-title">Roll 1-in-3</div><div class="step-desc">Random 0–2. Only proceeds if roll = 0. Two thirds of all crop ticks do nothing.</div></div></div>
+      <div class="step step-blu"><div class="step-line"><div class="step-dot">2</div><div class="step-conn"></div></div><div class="step-body"><div class="step-title">Find eligible neighbours</div><div class="step-desc">All 4 cardinal neighbours checked. Must have a crop, no weed, and growth ≥ 80%. Below 80% = invisible to this crop tick.</div></div></div>
+      <div class="step step-amb"><div class="step-line"><div class="step-dot">3</div><div class="step-conn"></div></div><div class="step-body"><div class="step-title">50/50 — Spread or Breed</div><div class="step-desc">nextBoolean(). If spreading wins but no canCross() neighbour exists, it falls through to breed. If breed path wins, deterministic recipes are checked first, then pool mutations as fallback.</div></div></div>
+      <div class="step step-pur"><div class="step-line"><div class="step-dot">4</div><div class="step-conn"></div></div><div class="step-body"><div class="step-title">Soil validation</div><div class="step-desc">After a result is chosen, the game checks if the result crop's soil matches the cross-crop's soil block. If it doesn't match — <strong>the entire crop tick is wasted. No retry.</strong></div></div></div>
+      <div class="step step-tel"><div class="step-line"><div class="step-dot">5</div></div><div class="step-body"><div class="step-title">Plant result</div><div class="step-desc">Stats averaged from parents ± random variation (-2 to +4 per stat). Fertilizer in all parents locks variation to 0 to +4.</div></div></div>
+    </div>
+    <div class="tip tip-blu"><div class="tip-label">Since parents stay at 100% while breeding</div>
+    Once parent crops are fully mature and you're not harvesting them, they stay there indefinitely. The 80% threshold is only relevant during the initial ramp-up. At 31 Growth, most crops reach 80% in a few minutes.</div>
+  </div>
+</div>
+
+<!-- ═══ SPREADING ═══ -->
+<h2 id="spreading">Spreading — Cloning</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    The spreading path always produces a <strong>copy of an existing parent</strong>. It never creates a new species. With two identical parents (e.g. Corium + Corium), spreading always gives back Corium. <strong>But the other 50% of crop ticks (the breed path) can still mutate into other crops via pool mutations.</strong> Two Coriums absolutely can produce Corpseplant — just not via spreading.
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Exactly what the spreading path does</span><span class="s-hint">Advanced / Master</span></button>
+  <div class="spoiler-content">
+    <p>The game filters all neighbours to those passing <code>canCross()</code> (has crop, no weed, growth ≥ 80%), picks one at random, and returns that crop's species. It never creates a new species — only a clone of one parent.</p>
+    <p><strong>Important fallback:</strong> If the 50% roll picks the spreading path but no parent passes <code>canCross()</code>, the spreading path is skipped and the breed path runs instead. The 50/50 split is not a hard wall.</p>
+    <p><strong>Same species × 2 (e.g. Corium + Corium):</strong></p>
+    <ul>
+      <li><strong>Spreading (50% of crop ticks):</strong> Always returns Corium — cloning</li>
+      <li><strong>Breed path (50% of crop ticks):</strong> Deterministic check is skipped (deduplication makes parent list size &lt; 2). Falls to <strong>pool mutations</strong>, which CAN produce Meatrose, MilkWart, Corpseplant, Flax, etc.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══ BREED PATH ═══ -->
+<h2 id="breed-path">Breed Path — Mutations</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    On the breed path the game looks for mutations in two ways, in order:
+    <ul>
+      <li><strong>1. Deterministic recipe</strong> — exact parent match (like a crafting recipe). Fast, predictable. The <a href="calculator.html">Mutation Calculator</a> shows these as "✓ Direct".</li>
+      <li><strong>2. Pool mutation</strong> — if no recipe matches, picks a random pool both parents belong to, then a random crop from that pool. Slower, random, but opens many possibilities.</li>
+    </ul>
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Deterministic vs pool in depth</span><span class="s-hint">Advanced / Master</span></button>
+  <div class="spoiler-content">
+    <h3 id="deterministic">Deterministic Mutations</h3>
+    <p>A specific recipe: e.g. <em>Ferrofern ← StoneLily + BlackGraniteLily</em>. If both parent species are present as neighbours, this recipe can fire. The parent list is <strong>deduplicated before lookup</strong>, so two of the same crop (Corium + Corium) will never match a deterministic recipe — the deduped list has only 1 entry, which is &lt; 2 required.</p>
+    <p>If multiple deterministic recipes match your parent combination, one is chosen at random — each has equal probability.</p>
+
+    <h3 id="pools">Pool Mutations</h3>
+    <p>Every crop is registered to 0–7 named pools (tags like <em>aMetal</em>, <em>aFood</em>, <em>aTendrilly</em>). Pool mutations fire when no deterministic recipe matches. The parent list is NOT deduplicated for pool checks — so Corium + Corium counts as two Corium entries, and any pool containing Corium matches.</p>
+    <p>Selection: pick a random matching pool → pick a random member of that pool → return it. Crops in more pools have proportionally higher effective chance because they appear in more "lottery tickets."</p>
+    <div class="tip tip-pur"><div class="tip-label">Rarity is structural, not explicit</div>There are no weight values in the code. A crop in 6 pools effectively has 6× higher chance than a crop in 1 pool when all 6 pools match. Stingberry (7 pools) is one of the most likely pool outputs when nether + toxic + berry parents are involved.</div>
+    <div class="tip tip-amb"><div class="tip-label">Using the same crop twice dilutes every pool it's in</div>Breeding a crop against itself (instead of a different pool-sharing partner) doesn't narrow the odds — it widens them. Every pool that crop belongs to becomes active at once, and the random pick still has to land on one specific member among all of them combined. This hurts most with crops sitting in large pools like Food or Flower, since you're now competing against everyone else in every one of those pools simultaneously rather than just the smaller overlap you'd get from two different, more targeted parents.</div>
+  </div>
+</div>
+
+<!-- ═══ SOIL FILTER ═══ -->
+<h2 id="soil-filter">Soil Filtering</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    The soil under your cross-crop stick acts as a <strong>filter</strong>. If a mutation result needs different soil than what's there, <strong>the crop tick is wasted and nothing happens</strong>. This only filters results that are already reachable from your specific parents — it doesn't open up new crops just because they share that soil type. Example: breeding Corium + Corium on graveyard soil filters out everything except Corpseplant, since that's the only graveyard-soil crop actually reachable from Corium's pools. Zomplant also needs graveyard soil but isn't reachable from Corium at all (different pools) — picking graveyard soil doesn't make it appear.
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Soil filtering math and strategy</span><span class="s-hint">Master</span></button>
+  <div class="spoiler-content">
+    <p>The soil check happens AFTER <code>getBreedingResult()</code> picks a result. If the soil doesn't match, <code>attemptBreeding()</code> returns false — the crop tick is wasted, no retry, no fallback path.</p>
+    <p>This means your effective mutation probability is: P(result chosen) × P(result's soil matches cross-crop soil). Placing a soil that only one or two pool members require can dramatically focus your output.</p>
+    <div class="tip tip-grn"><div class="tip-label">Graveyard soil trick (Corium + Corium)</div>
+      On graveyard soil: <br>
+      • Spreading path always gives Corium → soil is farmland → rejected, crop tick wasted<br>
+      • Pool results: Meatrose, MilkWart, Flax, Hemp, Vine, Cucumber, etc. → all need farmland → rejected<br>
+      • Only Corpseplant (aTendrilly pool) → needs graveyard → succeeds<br>
+      • Result: <strong>P(Corpseplant) = ~0.52%/tick = ~2.4%/min = ~28 min median wait</strong>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ODDS ═══ -->
+<h2 id="odds">Probability &amp; Timing</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    A crop tick happens every <strong>12.8 seconds</strong>. Each tick has a 1-in-3 chance of trying to breed. Use the <a href="calculator.html">Mutation Calculator</a> for exact times — it shows minutes, not percentages. A typical deterministic mutation takes <strong>1–5 minutes</strong>. A pool mutation for a specific crop can take <strong>10–60 minutes</strong> depending on pool size.
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Probability formulas</span><span class="s-hint">Master</span></button>
+  <div class="spoiler-content">
+    <div class="formula">P(det output X) per crop tick  = (1/3) × 0.5 × (1/numDetMatches)<br>P(pool output X) per crop tick = (1/3) × 0.5 × Σ_pools [ 1/numMatchingPools × 1/poolSize ]<br><br>Expected crop ticks = 1 / P<br>Expected time  = crop ticks × 12.8s<br>Median time    = log(0.5) / log(1−P) × 12.8s  (1 crop tick = 256 game ticks)<br>P per crop tick/min = 1 − (1−P)^4.6875</div>
+    <table>
+      <tr><th>Mutation type</th><th>Typical probability/tick</th><th>Typical mean time</th></tr>
+      <tr><td>1 deterministic match, 1 recipe</td><td>~8.3%</td><td>~2.5 min</td></tr>
+      <tr><td>1 deterministic match, 3 recipes competing</td><td>~2.8%</td><td>~7.5 min</td></tr>
+      <tr><td>Pool, target in 1 pool of 5, pool has 8 members</td><td>~1%</td><td>~21 min</td></tr>
+      <tr><td>Pool, soil filter leaves only 1 valid result</td><td>~0.5%</td><td>~42 min</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══ GRAVEYARD TRICK ═══ -->
+<h2 id="soil-trick">The Graveyard Soil Trick</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    Put <strong>TiC Graveyard Soil</strong> under your cross-crop stick, then breed <strong>Corium + Corium</strong>. Corium is in 4 pools totaling 17 possible pool outputs, but only <strong>Corpseplant</strong> needs graveyard soil — everything else gets rejected. Median wait: about <strong>46 minutes</strong>.
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Full probability breakdown</span><span class="s-hint">Master</span></button>
+  <div class="spoiler-content">
+    <table>
+      <tr><th>Metric</th><th>Value</th></tr>
+      <tr><td>P(Corpseplant) per tick</td><td>~0.321% (1 in ~312 crop ticks)</td></tr>
+      <tr><td>P per minute</td><td>~1.49%</td></tr>
+      <tr><td>Median time</td><td>~46 min</td></tr>
+      <tr><td>Expected (mean) time</td><td>~67 min</td></tr>
+      <tr><td>90% confidence</td><td>~153 min</td></tr>
+    </table>
+    <p>Formula: Corpseplant is in the <em>aTendrilly</em> pool (13 members, not 9 — verify against the <a href="calculator.html">Mutation Calculator</a> directly rather than a hand count, since pool membership changes between versions). Corium is in 4 pools (aCow, aMilk, aSilk, aTendrilly), all 4 match (same-species breeding), one is picked at random each crop tick. P = (1/3) × 0.5 × (1/4 pools) × (1/13 members in aTendrilly) = ~0.321%/tick. These numbers come directly from running the actual calculator engine on this exact pairing+soil combination — pull up Corium × Corium on Graveyard Soil yourself to verify.</p>
+  </div>
+</div>
+
+
+<!-- ═══ CROP PRIORITY ═══ -->
+<h2 id="priority">Crop Priority by Game Era</h2>
+
+<div class="tip tip-amb"><div class="tip-label">⚠ Work in progress</div>This section is placeholder content written from personal experience up through MV/HV. Content past that point is incomplete or missing — my knowledge of EV+ crops and late-game priorities is still being developed as I progress. If you have suggestions, corrections, or experience with higher-tier content, feedback is very welcome.</div>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    <strong>Early game:</strong> food and basic material crops. <strong>Mid game:</strong> Corium, Ferrofern, Coppon, ore berries. <strong>Late game:</strong> Diareed, Rubyne, Enderbloom, Titania. Always use the <a href="production.html">Production Calculator</a> to confirm your biome gives you the nutrient bonus for whatever you're farming.
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Detailed crop priority list by era</span><span class="s-hint">Advanced / Master</span></button>
+  <div class="spoiler-content">
+    <div class="pgrid">
+      <div class="pcard">
+        <div class="pcard-era early">🌱 Early Game (LV–MV)</div>
+        <ul>
+          <li><strong>Wheat / Carrot / Potato</strong> — food, easy starters</li>
+          <li><strong>Flax</strong> → string without spiders</li>
+          <li><strong>Corium</strong> → leather passively</li>
+          <li><strong>BonsaiOak</strong> → wood + saplings</li>
+          <li><strong>SugarCane</strong> → paper for circuits</li>
+          <li><strong>StickyCane</strong> → sticky resin (rubber source)</li>
+          <li><strong>Spidernip</strong> → string + webs</li>
+          <li><strong>EggPlant</strong> → eggs, feathers, chicken</li>
+        </ul>
+      </div>
+      <div class="pcard">
+        <div class="pcard-era mid">⚙ Mid Game (HV–EV)</div>
+        <ul>
+          <li><strong>Ferrofern</strong> → ferrofern leaf (process in Macerator/Extractor → iron)</li>
+          <li><strong>Coppon</strong> → copper fiber (process → copper)</li>
+          <li><strong>Tine</strong> → tine twig (process → tin)</li>
+          <li><strong>Galvania</strong> → galvania leaf (process → zinc for brass)</li>
+          <li><strong>IronOreBerry</strong> → drops a TinkerConstruct Ore Berries item (iron variant) — smelt it into an iron nugget, then craft <strong>9 nuggets → 1 ingot</strong></li>
+          <li><strong>CopperOreBerry</strong> → same TiC Ore Berries mechanic, copper variant</li>
+          <li><strong>Corpseplant</strong> → drops a mix of Bone Meal (62.5%), Rotten Flesh (25%), and Bone (12.5%) per harvest</li>
+          <li><strong>Nickelback</strong> → nickelback leaf (process → nickel for invar)</li>
+          <li><strong>Lazulia</strong> → lapis for circuits</li>
+          <li><strong>Creeperweed</strong> → gunpowder</li>
+        </ul>
+      </div>
+      <div class="pcard">
+        <div class="pcard-era late">💎 Late Game (IV+)</div>
+        <ul>
+          <li><strong>Diareed</strong> → diamonds (T12, needs diamond block)</li>
+          <li><strong>Rubyne / Sapphirum</strong> → GT gem materials</li>
+          <li><strong>Enderbloom</strong> → eyes of ender passively</li>
+          <li><strong>ArditeOreBerry</strong> → ardite nuggets (TiC)</li>
+          <li><strong>CobaltOreBerry</strong> → cobalt nuggets (TiC)</li>
+          <li><strong>Tearstalks</strong> → ghast tears</li>
+          <li><strong>ThaumiumOreBerry</strong> → thaumium</li>
+          <li><strong>Withereed</strong> → skull chance</li>
+          <li><strong>Auronia</strong> → gold processing</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tip tip-amb"><div class="tip-label">Processing note</div>Two different drop mechanics exist among metal crops. <strong>Leaf/fiber/twig crops</strong> (Ferrofern, Coppon, Tine, Galvania, Nickelback, Argentia, Auronia, Plumbilia) drop a custom CropsNH item — process in a GT <strong>Macerator</strong> or <strong>Extractor</strong> for low tiers, <strong>Forge Hammer</strong> + <strong>Acid Bath</strong> for higher tiers. <strong>Ore berry crops</strong> (IronOreBerry, CopperOreBerry, etc.) instead drop a TinkerConstruct "Ore Berries" item — smelt it directly into the matching metal's nugget, then 9 nuggets craft into 1 ingot. Separately: nuggets of the matching metal (e.g. iron nuggets for IronOreBerry) can also be used as a duplication catalyst in the GT Seed Generator multiblock to clone that crop's seed — an unrelated mechanic to processing the actual drop. Check NEI for exact recipes.</div>
+  </div>
+</div>
+
+<!-- ═══ BIOME GUIDE ═══ -->
+<h2 id="biome-guide">Best Biomes for Your Farm</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    <strong>Set up dedicated farm locations for different crop groups.</strong> Biome tags are verified directly against GTNH's actual biome table (temperature/rainfall/tags) — not vanilla Forge defaults, since GTNH uses its own world generation and most vanilla Overworld biomes aren't even used. Numbers below are the real per-tag match, not estimates.
+    <ul>
+      <li>🏔 <strong>Extreme Hills</strong> (MOUNTAIN, HILLS) — Ferrofern, Tine, StoneLily, IronOreBerry, TinOreBerry all hit both tags for +28. Best single biome for ore/metal crops.</li>
+      <li>🔥 <strong>The Nether / Hell</strong> (HOT, DRY, NETHER) — Ardite OreBerry, Cobalt OreBerry, and Nether Wart each match 2 tags for +28. Tearstalks and StickyCane only match 1 tag (+14).</li>
+      <li>🌴 <strong>Jungle</strong> (HOT, DENSE, WET, JUNGLE) — BonsaiJungle and Cocoa hit 2+ tags for +28. Good general mid-game biome — most food/tropical crops pick up at least +14.</li>
+      <li>🏜 <strong>Savanna</strong> (HOT, SPARSE, SAVANNA, PLAINS) — Coppon, CopperOreBerry, and Carrot all match 2 tags for +28.</li>
+      <li>🌵 <strong>Mesa</strong> (MESA, SANDY) — GoldOreBerry and Auronia match both tags for +28. Most other "desert-flavored" crops only get +14 here (SANDY alone).</li>
+      <li>💀 <strong>Roofed Forest</strong> (DENSE, SPOOKY, FOREST) — Withereed, Corpseplant, Creeperweed each only match SPOOKY for +14, not +28 — there's no single vanilla/RWG biome that double-matches these three.</li>
+      <li>🌌 <strong>The End / Sky</strong> (COLD, DRY, END) — Enderbloom matches both COLD and END for +28.</li>
+    </ul>
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Tag-by-tag biome breakdown and suggested farm locations</span><span class="s-hint">Advanced / Master</span></button>
+  <div class="spoiler-content">
+    <p style="font-size:11px;color:var(--tx3);margin-bottom:14px">All biome tags and rainfall values below come directly from GTNH's biome table (temperature, rainfall, BiomeDictionary tags per biome ID). Crop liked-biome tags come from the decompiled CropsNH jar. Every bonus number is the actual <code>min(2, matchedTags) × 14</code> calculation — not approximated.</p>
+    <h4>Recommended farm locations</h4>
+    <div class="blocation">
+      <div class="blocation-name">The Nether (Hell)</div>
+      <div class="blocation-tags"><span class="btag key">HOT</span><span class="btag key">DRY</span><span class="btag key">NETHER</span></div>
+      <div class="blocation-crops">Best for: <strong>ArditeOreBerry</strong> (+28, HOT+NETHER), <strong>CobaltOreBerry</strong> (+28, DRY+NETHER), <strong>NetherWart</strong> (+28, HOT+NETHER). Weaker matches: <strong>Tearstalks</strong> (+14, NETHER only — its other tag is DEAD), <strong>StickyCane</strong> (+14, HOT only — its other tags are WET/SANDY, neither present here). Keep light level ≤ 10 for ore berries. Stone soil + ore blocks underneath.</div>
+    </div>
+    <div class="blocation">
+      <div class="blocation-name">Extreme Hills</div>
+      <div class="blocation-tags"><span class="btag key">MOUNTAIN</span><span class="btag key">HILLS</span></div>
+      <div class="blocation-crops">Best for: <strong>Ferrofern</strong> (+28), <strong>Tine</strong> (+28), <strong>StoneLily</strong> (+28), <strong>IronOreBerry</strong> (+28), <strong>TinOreBerry</strong> (+28) — all of these like exactly MOUNTAIN+HILLS, a perfect double match. <strong>Rubyne</strong> only gets +14 here (its other liked tag is RIVER, not present). The single best biome for stone-soil ore crops — nearly every metal crop likes this exact tag pair.</div>
+    </div>
+    <div class="blocation">
+      <div class="blocation-name">Savanna</div>
+      <div class="blocation-tags"><span class="btag key">HOT</span><span class="btag key">SPARSE</span><span class="btag key">SAVANNA</span><span class="btag key">PLAINS</span></div>
+      <div class="blocation-crops">Best for: <strong>Coppon</strong> (+28, HOT+SAVANNA), <strong>CopperOreBerry</strong> (+28, HOT+SAVANNA), <strong>Carrot</strong> (+28, HOT+PLAINS). Weaker: <strong>Nickelback</strong> (+14, PLAINS only), <strong>Corium</strong> (+14, PLAINS only), <strong>Diareed</strong> (+14, SPARSE only — its other tag COLD isn't present in a hot biome).</div>
+    </div>
+    <div class="blocation">
+      <div class="blocation-name">Jungle</div>
+      <div class="blocation-tags"><span class="btag key">HOT</span><span class="btag key">DENSE</span><span class="btag key">WET</span><span class="btag key">JUNGLE</span></div>
+      <div class="blocation-crops">Best for: <strong>BonsaiJungle</strong> (+28, matches all 4 of its liked tags but capped at 2 → +28), <strong>Cocoa</strong> (+28, WET+DENSE+JUNGLE, capped at 2), <strong>StickyCane</strong> (+28, WET+HOT). Weaker: <strong>Spidernip</strong> (+14, WET only — its other tag is LUSH). Most HOT-liking crops (ArditeOreBerry, Netherwart, Coppon, CopperOreBerry, Carrot, Lazulia) pick up +14 here from the HOT tag alone, even without a dedicated jungle farm.</div>
+    </div>
+    <div class="blocation">
+      <div class="blocation-name">Roofed Forest</div>
+      <div class="blocation-tags"><span class="btag key">DENSE</span><span class="btag key">SPOOKY</span><span class="btag key">FOREST</span></div>
+      <div class="blocation-crops">Best for: <strong>Withereed</strong> (+14), <strong>Corpseplant</strong> (+14), <strong>Creeperweed</strong> (+14) — all three only match SPOOKY here (their other liked tag, DEAD, isn't one of this biome's tags). No double-match exists for these in this biome — check biome ID 119 "Wasteland" or 56 "Crag" for a DEAD+SPOOKY combination if you want the full +28 for the mob-crop family. <strong>Corium</strong> and <strong>BonsaiJungle/Cocoa</strong> pick up +14 from FOREST/DENSE respectively.</div>
+    </div>
+    <div class="blocation">
+      <div class="blocation-name">The End (Sky)</div>
+      <div class="blocation-tags"><span class="btag key">COLD</span><span class="btag key">DRY</span><span class="btag key">END</span></div>
+      <div class="blocation-crops">Best for: <strong>Enderbloom</strong> (+28, COLD+END — a perfect double match). <strong>Diareed</strong> only gets +14 here (COLD matches, but its other tag SPARSE doesn't). <strong>CobaltOreBerry</strong> and <strong>Hemp</strong> pick up +14 from DRY. Note: no sky-bonus nutrient applies in The End since there's no real "sky" to see in the traditional sense — verify in-game if this matters for your setup.</div>
+    </div>
+    <div class="blocation">
+      <div class="blocation-name">Mesa</div>
+      <div class="blocation-tags"><span class="btag key">MESA</span><span class="btag key">SANDY</span></div>
+      <div class="blocation-crops">Best for: <strong>GoldOreBerry</strong> (+28), <strong>Auronia</strong> (+28) — both like exactly MESA+SANDY. Everything else with a SANDY-adjacent liked tag (StickyCane, Coppon, CopperOreBerry, Carrot, Lazulia, Hemp) only picks up +14 here since none of them also like MESA specifically.</div>
+    </div>
+    <h4>Humidity bonus — the hidden free nutrient</h4>
+    <p>Every biome has a rainfall value (0.0 to ~1.2 in GTNH's table). The formula is <code>clamp((rainfall − 0.5) / 0.3, 0, 1) × 14</code> — so rainfall ≥ 0.8 gives the full +14 regardless of any liked-tag match, and rainfall ≤ 0.5 gives +0. This is a real, separate bonus from biome tags, calculated from GTNH's actual per-biome rainfall value, not a flat assumption. The <a href="production.html">Production Calculator</a> looks this up automatically — type your exact biome name and it shows the real rainfall and resulting bonus.</p>
+    <p>The game takes whichever is larger: the humidity bonus or the liked-tag bonus. <strong>They do not stack.</strong> A crop already getting +28 from two matched tags gets nothing extra from humidity. But a crop with zero matched tags in a high-rainfall biome (e.g. Mega Taiga at rainfall 0.8, or Rainforest at rainfall 1.0) still gets +14 for free.</p>
+    <p style="font-size:11px;color:var(--amb);margin-top:10px"><strong>Note on biome names:</strong> GTNH's world generation mixes vanilla, Biomes O' Plenty, and Realistic World Generation biomes, and many vanilla Overworld biomes don't actually generate in a real GTNH world even though they exist in the biome table. If a biome name from this guide doesn't show up when you search the Production Calculator, check the in-game biome name directly (F3 debug screen or a Crop Lens) rather than assuming the name maps 1:1 to vanilla Minecraft.</p>
+  </div>
+</div>
+
+<!-- ═══ STAT UP ═══ -->
+<h2 id="stat-up">Statting Up Your Crops</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    To get <strong>31/31/31 stats</strong>: place one high-stat copy of the crop next to a cross-crop stick. The spreading path clones it — inheriting stats from just that one parent ± variation. With fertilizer in the parent, variation is 0 to +4 so stats can only go up. Keep clones with better stats, replace the parent, repeat.
+    <ul>
+      <li>✅ <strong>Single parent works via the cross/clone path</strong> — more efficient than breeding two parents for pure stat-up</li>
+      <li>✅ Fertilizer in every contributing parent = stats can only improve (variation 0 to +4) for that result</li>
+      <li>❌ Missing fertilizer in any contributing parent = stats can drop by up to 2 per trait on that result</li>
+      <li>🎯 Target: Growth 31, Gain 31, Resistance 31</li>
+    </ul>
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Stat-up math and strategy</span><span class="s-hint">Advanced / Master</span></button>
+  <div class="spoiler-content">
+    <p>Stats on a new crop = <code>average(parentStats) + random(-2, +4)</code> per trait. If <strong>every contributing parent</strong> has fertilizer storage &gt; 0, the roll becomes <code>average + random(0, +4)</code> instead — can only improve, never drop. "Contributing parents" means whichever crops actually produced this result: on a 2-parent breed, that's both of them; on the cross/clone path with one matching neighbour, it's just that one.</p>
+
+    <p>The spreading path picks one parent species, filters all neighbours to just that species, then uses only those as stat contributors. <strong>A single parent is sufficient for stat-up via spreading</strong> — one high-stat parent next to an empty cross-crop stick, fertilizer in that parent, and the clone's stats can only improve. For a normal 2-parent breed producing a mutation, fertilizer must be in <strong>both</strong> parents for the no-drop guarantee to apply. Stat drops only happen on a breed-path result without full fertilizer coverage — not from WeedEx, not from being sick.</p>
+
+    <p><strong>Efficient strategy:</strong></p>
+    <ol>
+      <li>Get one copy of your target crop with any stats</li>
+      <li>Place it as the sole parent next to a cross-crop stick, fertilizer in the parent</li>
+      <li>Collect clones, keep any that improved, discard the rest</li>
+      <li>Replace the parent with your current best and repeat</li>
+      <li>Each generation can only improve with fertilizer in the parent</li>
+    </ol>
+    <div class="tip tip-grn"><div class="tip-label">Spread rate</div>With two identical parents at 100% growth: spreading fires on ~16.7% of crop ticks (~78%/min). You get frequent stat rolls. At 4.69 crop ticks/min this means roughly 3–4 stat rolls per minute at ideal conditions.</div>
+  </div>
+</div>
+
+<!-- ═══ WEEDS ═══ -->
+<h2 id="weed-management">Weed Management</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    Weeds are the main way crops get <strong>sick</strong>. When a weed spreads toward an occupied crop stick, it calls <code>transferDisease()</code> — which makes the neighbour sick, nothing more. Weeds do not destroy or replace crops through the spread mechanic. A crop only deflects an incoming weed when it has WeedEx storage <em>and</em> Resistance ≥ Growth at that moment — both conditions together, not WeedEx alone. WeedEx itself does <strong>not</strong> kill existing weeds — remove those manually with the CropsNH <strong>Spade</strong> or <strong>Reinforced Spade</strong>. Keep WeedEx stocked via Crop Manager or apply it manually, and keep Resistance ≥ Growth for full protection. There is no stat reduction risk from WeedEx in CropsNH.
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Weed mechanics</span><span class="s-hint">Advanced / Master</span></button>
+  <div class="spoiler-content">
+    <table>
+      <tr><th>Tool</th><th>Effect</th><th>Risk</th></tr>
+      <tr><td class="tb">WeedEx</td><td>Prevents weeds spawning in empty sticks (drains 5 units). Prevents crops getting sick when weeds spread to them (drains 2 units). Does NOT remove existing weeds.</td><td>None — the IC2 stat-reduction mechanic does not exist in CropsNH</td></tr>
+      <tr><td class="tb">Spade</td><td>CropsNH item (not a GT tool). Removes existing weeds manually. On a right-click harvest of a <strong>mature</strong> crop: gives produce AND returns a seed at res/31 odds, then destroys the crop. Breaking (left-click) at any maturity gives back a seed via the same resistance check but the crop is destroyed — net seed gain is zero.</td><td>None</td></tr>
+      <tr><td class="tb">Reinforced Spade</td><td>Same as Spade but seed return on a mature right-click harvest is guaranteed: <code>floor(Resistance/10)</code> seeds plus a remainder-weighted chance at one more. Caps at 4 seeds with Resistance 31.</td><td>None</td></tr>
+      <tr><td class="tb">Resistance ≥ Growth</td><td>Necessary but not sufficient to stop outward weed spreading. Must be combined with WeedEx storage to take effect.</td><td>None — Resistance is strictly beneficial</td></tr>
+      <tr><td class="tb">Resistance ≥ Growth + WeedEx stocked</td><td>Both together unconditionally deflect incoming weed spread onto this crop (consumes 5 WeedEx per deflection), and also stop this crop from spreading weeds outward. <strong>WeedEx is required for both effects</strong> — Resistance ≥ Growth alone without WeedEx does not block either direction.</td><td>This combo doesn't help if the crop is sick from a separate cause (nutrients) — see the Stats section for how Resistance 31 prevents nutrient sickness specifically</td></tr>
+    </table>
+    <p>Weeds spawn in empty crop sticks at a config-controlled rate. A mature crop spreads weeds to neighbours only if <strong>Growth &gt; 24</strong> AND <strong>Resistance &lt; Growth</strong>. Having Resistance ≥ Growth stops outward weed spreading <strong>only when combined with WeedEx storage</strong> — without WeedEx, the crop will still spread weeds even with Resistance ≥ Growth. If a weed has no crop stick to spread onto in the direction it picks, it instead converts Dirt or Farmland directly beneath that spot into Grass and plants tall grass on top — left unchecked, weeds can eat into the terrain around your farm. Separately, on an empty cross-crop stick, weed-spawning and breeding compete for the same crop tick: if the breeding roll fails, the spot becomes eligible to spawn a weed instead.</p>
+  </div>
+</div>
+
+<!-- ═══ AUTOMATION ═══ -->
+<h2 id="automation">Automation &amp; Tools</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    <ul>
+      <li><strong>Crop Manager (GT, LV–UV)</strong> — waters, fertilizes, applies WeedEx, harvests. Does <em>not</em> auto-replant or remove seeds — that's always manual. Use for production farms.</li>
+      <li><strong>Industrial Farm (GT, MV+ multiblock)</strong> — simulates crop growth internally, no physical crop sticks. Sky access and weather irrelevant. Add upgrade units (biome, harvesting, fertilization) for better output. Best endgame mass production.</li>
+      <li><strong>World Accelerator (GT, Tile Entity mode)</strong> — speeds up crop ticks. Place on your cross-crop stick to breed faster.</li>
+      <li><strong>Spade / Reinforced Spade (CropsNH)</strong> — right-click harvest a <strong>mature</strong> crop to get produce plus a seed return (res/31 chance for Spade; guaranteed formula for Reinforced Spade). Breaking any crop at any maturity returns the seed via resistance check but destroys the crop (net zero). Both also remove weeds.</li>
+      <li><strong>Crop Lens (CropsNH)</strong> — analyze a growing crop in-world to see its type and stats without harvesting.</li>
+      <li><strong>Plant Cure (CropsNH)</strong> — right-click a sick (green) crop to cure it.</li>
+    </ul>
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Full automation options and range</span><span class="s-hint">Advanced / Master</span></button>
+  <div class="spoiler-content">
+    <table>
+      <tr><th>Machine / Tool</th><th>Tier</th><th>Function</th><th>Notes</th></tr>
+      <tr><td class="tb">Crop Manager</td><td>LV–UV (GT)</td><td>Waters, fertilizes, applies WeedEx, harvests</td><td>Tops off each crop's water storage automatically — no biome or rainfall requirement, it just refills from its own internal tank. Does NOT auto-replant or remove seeds — that is always manual. Range and harvest chance scale with tier. Keep a seed buffer chest adjacent for replanting.</td></tr>
+      <tr><td class="tb">Industrial Farm</td><td>MV+ (GT multiblock)</td><td>Simulates crop growth internally, mass output</td><td>No physical crop sticks needed. One crop type at a time. Sky access and weather irrelevant — hydration and sky bonuses are maxed automatically. Upgrade units (biome, harvesting, fertilization, OC) slot into the top layer. Best endgame mass production. 4× the seed bed drop bonus of the Crop Manager.</td></tr>
+      <tr><td class="tb">World Accelerator</td><td>Any (GT)</td><td>Accelerates crop tick rate</td><td>Use Tile Entity mode, place on cross-crop stick. Multiplies breeding attempts per real second.</td></tr>
+      <tr><td class="tb">Spade</td><td>CropsNH item</td><td>Right-click harvest mature crop: gives produce + seed at res/31 odds, destroys crop. Breaking any crop at any maturity: returns seed at same odds, destroys crop (net zero).</td><td>Not a GT tool. Also removes weeds manually.</td></tr>
+      <tr><td class="tb">Reinforced Spade</td><td>CropsNH item</td><td>Same as Spade but seed return on mature right-click harvest is guaranteed: <code>floor(Resistance/10)</code> seeds plus a chance at one more from the remainder. Up to 4 at Resistance 31.</td><td>Strictly better than Spade for seed farming once Resistance climbs past ~10. Also removes weeds.</td></tr>
+      <tr><td class="tb">Crop Lens</td><td>CropsNH item</td><td>Analyzes a growing crop in-world (no seed bag needed)</td><td>Use this to check crop type and stats without harvesting. Useful during breeding to identify mutations early.</td></tr>
+      <tr><td class="tb">Plant Cure</td><td>CropsNH item</td><td>Cures a sick (green) crop</td><td>Right-click a sick crop to restore it. Essential if you have valuable high-stat parents that went sick.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══ TIER GUIDE ═══ -->
+<h2 id="tier-guide">Tier Reference</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    Higher tier = longer to mature, needs more nutrients to not get sick. <strong>Tiers 1–4</strong> are easy anywhere. <strong>Tiers 5–7</strong> need full water, fertilizer, and ideally a liked biome. <strong>Tiers 8+</strong> practically require the Industrial Farm — set it up with biome upgrade units for the crop's preferred biome tags to maximize output.
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Full tier table</span><span class="s-hint">Advanced / Master</span></button>
+  <div class="spoiler-content">
+    <table>
+      <tr><th>Tier</th><th>Nutrient need</th><th>Growth duration (tier×600, except Bonsai family = flat 1200)</th><th>Example crops</th></tr>
+      <tr><td><span class="tier t1">T1</span></td><td>10</td><td>600 pts</td><td>Wheat, Potato, all 7 Bonsai variants*, BrownMushroom</td></tr>
+      <tr><td><span class="tier t1">T2</span></td><td>20</td><td>1200 pts</td><td>Carrot, Melon, Pumpkin, SugarCane, Vine, Dandelion, Poppy</td></tr>
+      <tr><td><span class="tier t3">T3</span></td><td>30</td><td>1800 pts</td><td>Cocoa, Cactus, Zomplant, Cotton, FloweringVine</td></tr>
+      <tr><td><span class="tier t3">T4</span></td><td>40</td><td>2400 pts</td><td>StickyCane, Canola, Rubyne, Sapphirum, Glowheat, Spidernip</td></tr>
+      <tr><td><span class="tier t5">T5</span></td><td>50</td><td>3000 pts</td><td>Nether Wart, Hemp, Tine, Nickelback, Corpseplant, IronOreBerry</td></tr>
+      <tr><td><span class="tier t5">T6</span></td><td>60</td><td>3600 pts</td><td>Ferrofern, Coppon, Galvania, Corium, Slimeplant, EggPlant</td></tr>
+      <tr><td><span class="tier t7">T7</span></td><td>70</td><td>4200 pts</td><td>Argentia, Lazulia, Creeperweed, Meatrose, ThaumiumOreBerry</td></tr>
+      <tr><td><span class="tier t7">T8</span></td><td>80</td><td>4800 pts</td><td>Withereed, Auronia, Tearstalks, Liveroot</td></tr>
+      <tr><td><span class="tier t7">T9</span></td><td>90</td><td>5400 pts</td><td>Micadia, Titania, GodOfThunder</td></tr>
+      <tr><td><span class="tier t10">T10</span></td><td>100</td><td>6000 pts</td><td>Enderbloom, Steeleafranks — practically requires Industrial Farm</td></tr>
+      <tr><td><span class="tier t10">T11</span></td><td>110</td><td>6600 pts</td><td>Platina</td></tr>
+      <tr><td><span class="tier t10">T12</span></td><td>120</td><td>7200 pts</td><td>Diareed, Pyrolusium, Reactoria, StarWart — Industrial Farm strongly recommended</td></tr>
+      <tr><td><span class="tier t10">T13</span></td><td>130</td><td>7800 pts</td><td>SpaceFlower, MagicalNightshade</td></tr>
+      <tr><td><span class="tier t10">T16</span></td><td>160</td><td>9600 pts</td><td>PrimordialBerry — highest tier in the database</td></tr>
+    </table>
+    <p style="font-size:11px;color:var(--tx3);margin-top:4px">*Bonsai growth duration is hardcoded to a flat 1200 regardless of tier — they're all tier 1 but take as long as a tier-2 crop would by the standard formula.</p>
+    <div class="tip tip-blu"><div class="tip-label">Tier 5+ checklist</div>
+      ☑ Full water storage (Crop Manager)<br>
+      ☑ Full fertilizer storage<br>
+      ☑ Sky access (+2 nutrients)<br>
+      ☑ At least 1 liked biome tag matched (+14 minimum)<br>
+
+      ☑ Check the Production Calculator — if it shows SICK, move the farm
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LEVELING GUIDE ═══ -->
+<h2 id="leveling-guide">Leveling Every Crop — Computed Farm Plan</h2>
+
+<div class="tldr">
+  <div class="tldr-label">⚡ TL;DR</div>
+  <div class="tldr-body">
+    Stat-up itself doesn't care about biome at all — fertilizer and repetition do the work. Biome only matters for keeping a crop's growth rate above zero so it reaches breeding maturity in the first place. The plan below was computed by scoring every real GTNH biome's tags against every crop's liked tags, and the breeding order below was checked against the actual breed-path source rather than assumed.
+    <ul>
+      <li><strong>Maloberry is the fastest crop that bridges both pool clusters</strong> — tier 2, only 200 growth points (about a quarter of Potato's wait), sitting in both <em>aFood</em> and <em>aYellow</em>, the same two pools Potato uses to reach the rest of the food cluster and the flower cluster. Mod requirements aren't a real concern here — Natura, Biomes O' Plenty, and Twilight Forest are all standard, mandatory parts of GTNH.</li>
+      <li><strong>Breeding that one crop against a second copy of itself can land on a different crop entirely</strong> — same-species pairs still roll the pool-mutation breed path, not just the self-clone path. Whatever drops inherits the parents' stats already maxed.</li>
+      <li><strong>This needs two separate physical setups, not one.</strong> The food-cluster crops need Farmland; Dandelion/Poppy need Dirt or Grass. Swapping the soil under a living crop to something it can't grow on triggers a real, destructive "invalid soil" handler — there's no way to fish both pools from a single plot.</li>
+      <li><strong>Best single farm biome: Canyon</strong> (DRY, HILLS, HOT, MOUNTAIN, SANDY, SPARSE) — covers 93 of 176 crops with liked-biome data, 45 at the full +28 bonus.</li>
+      <li><strong>Best two-biome combo: Canyon + Fungi Forest</strong> — 152 of 176 covered, because their tags don't overlap at all and cover two completely different crop families.</li>
+      <li><strong>Add Crag</strong> for the DEAD/SPOOKY/WASTELAND mob-crop cluster, and <strong>FrozenOcean</strong> for the COLD/SNOWY/OCEAN stragglers. <strong>FloweringVine</strong> and <strong>Plumbilia</strong> share no tag with any of these four — they'll rely on the humidity floor or a fifth dedicated stop.</li>
+    </ul>
+  </div>
+</div>
+<div class="spoiler-wrap">
+  <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — The single-starter breeding plan, and why it needs two setups</span><span class="s-hint">Master</span></button>
+  <div class="spoiler-content">
+
+    <h3>Potato isn't actually the fastest option — and "starter" means more than the five base crops</h3>
+    <p>Wheat, Carrot, Potato, Dandelion, and Poppy are directly plantable because each one registers a real-world item as an <em>alternate seed</em> — Wheat Seeds, a Carrot, a Potato, and so on. That same mechanic exists on <strong>85 other crops</strong> in the database, most of them gated behind a specific mod (Natura, Biomes O' Plenty, Twilight Forest) rather than vanilla Minecraft. Several of them grow far faster than any of the original five, and some bridge pools more usefully too. Treat the five base crops as a baseline, not the full set of starting options. <strong>Note (updated v2.0.85):</strong> Water Artichoke (Witchery) now also has an alternate seed — if you have Witchery artichokes growing nearby, you can plant them directly.</p>
+    <p>Among every alternate-seed crop, <strong>Torchberry</strong> (Twilight Forest) has the shortest growth duration in the entire database at 150 points — about 14.6 seconds to 80% maturity under a solid nutrient setup, versus Potato's ~75 seconds. It's also the most restrictive: it only grows at light level 10 or below, and its only pool (<code>aBerry</code>) doesn't touch <code>aFood</code> or <code>aFlower</code> at all, so it's a fast dead end rather than a bridge to the rest of the tree.</p>
+    <p>A cluster of tier-2, 200-growth-duration berries — Strawberry, Blueberry, Blackberry, Raspberry, Huckleberry, Maloberry, and BoP Berry — are all roughly four times faster than Potato (about 19.4 seconds to 80%) and all sit in <code>aFood</code>, so any of them can fish the same 39-member pool Potato does. <strong>Maloberry</strong> (Natura) is the standout: it's the only one of these that's <em>also</em> in <code>aYellow</code>, the same bridge pool Potato uses to reach Dandelion — meaning Maloberry alone covers everything Potato covers, at roughly a quarter of the wait. BoP Berry (Biomes O' Plenty) takes a different bridge instead, sitting in <code>aRed</code> alongside Poppy directly, reaching the flower cluster from the other end.</p>
+    <p>All of these — Torchberry, Maloberry, BoP Berry, and the rest of the berry cluster — also have a real deterministic breeding recipe (e.g. Maloberry from OrangeTulip + Blueberry), which doesn't matter here since the alternate-seed path skips breeding entirely: any of these can be planted straight from the real in-world item with no breeding step at all. BoP Berry's source item is confirmed directly in source as a Biomes O' Plenty food drop, and generic Natura/Twilight Forest documentation describes their berry bushes as common, naturally-generating Overworld features — but GTNH heavily customizes world generation (Realistic World Gen, restricted biome lists), so whether any specific bush spawns at the rate or frequency you'd expect isn't something this guide can confirm from the decompiled crop code alone. If you can find one of these growing wild, planting it directly is faster than growing a Potato from scratch — if not, breeding the deterministic recipe or starting from Potato both still work.</p>
+
+    <h3>The actual mechanic: same-species breeding still rolls for mutations</h3>
+    <p>It's tempting to assume two copies of the same crop can only ever clone each other. They can't — <code>MutationPool.isMatch()</code> counts each parent slot against pool membership without removing duplicates first, so a list of two identical parents still registers two valid hits against any pool that crop belongs to. The 50/50 coin flip between spreading and the breed path happens regardless of whether the two parents are the same species; landing on the breed path with two copies of the same crop still checks every pool it belongs to for a pool-mutation result exactly the way two different crops would. Whatever comes out inherits the parents' stats, already maxed, with no separate stat-up step required.</p>
+
+    <h3>Why this needs two farms, not one</h3>
+    <p>The catch is soil. Maloberry, Potato, Carrot, and Wheat all need Farmland. Dandelion and Poppy need Dirt or Grass. A mutation result gets rejected outright if the soil under the cross-crop stick doesn't match what that specific result needs — so a Farmland setup can roll Carrot or Wheat all day but will simply waste every crop tick that would've landed on Dandelion. Swapping the soil itself isn't a workaround either: the moment the block under an <em>already-planted</em> crop changes to something invalid for it, the game runs a dedicated invalid-soil handler on that crop, rather than just leaving it idle. Plan for two separate cross-crop setups:</p>
+    <ol style="padding-left:20px;font-size:13px;line-height:1.8">
+      <li><strong>Farmland setup:</strong> max one Maloberry via the cross/clone path (single parent, fertilizer present), then pair it with a second maxed, fertilized Maloberry on the breed path. Fish <code>aFood</code> and <code>aYellow</code> here for Carrot, Wheat, and anything else those pools contain — all come out already maxed.</li>
+      <li><strong>Dirt/Grass setup:</strong> once a maxed Dandelion drops from the Farmland setup, move (or re-grow) it onto Dirt or Grass, then pair it with a second maxed, fertilized Dandelion. Fish <code>aFlower</code> (29 members) here for Poppy.</li>
+    </ol>
+    <p>Everything else that happens to drop from <code>aFood</code> (36 other members), <code>aYellow</code> (7 other members), or <code>aFlower</code> (27 other members) along the way comes out maxed too, as a free side effect of running either loop — there's no need to chase those individually.</p>
+
+    <h3>How the biome locations were picked</h3>
+    <p>Every crop's liked-biome tags were checked against every real GTNH biome's actual tag list (not vanilla Forge defaults — GTNH runs mostly BoP/RWG biomes, and most vanilla Overworld biomes aren't even generated). For each biome, a coverage score was computed: <code>min(2, matchedTags) × 14</code>, summed across all 179 crops. Canyon won outright among single biomes. For a second location, the top 30 biomes were paired against each other, scoring each crop by whichever side of the border gave it the better bonus — Canyon + Fungi Forest won because their tag sets don't overlap at all, so together they cover two completely different crop families instead of doubling up on the same one.</p>
+
+    <table>
+      <tr><th>Location</th><th>Tags</th><th>Crops best served here*</th><th>At full +28</th></tr>
+      <tr><td class="tb">Canyon</td><td>DRY, HILLS, HOT, MOUNTAIN, SANDY, SPARSE</td><td>90</td><td>45</td></tr>
+      <tr><td class="tb">Fungi Forest</td><td>WET, LUSH, MAGICAL, MUSHROOM, FOREST, SWAMP</td><td>61</td><td>28</td></tr>
+      <tr><td class="tb">Crag</td><td>DRY, SPOOKY, DEAD, MOUNTAIN, WASTELAND</td><td>12</td><td>8</td></tr>
+      <tr><td class="tb">FrozenOcean</td><td>COLD, OCEAN, SNOWY</td><td>13</td><td>6</td></tr>
+    </table>
+    <p style="font-size:11px;color:var(--tx3)">*"Best served here" means this location gives that crop a better bonus than any of the other three — many crops get a smaller, incidental bonus at more than one location (e.g. a DRY-liking crop picks up +14 at both Canyon and Crag), so these four columns don't sum to a simple total. Counting any crop that gets <em>any</em> bonus at all, Canyon alone covers 93 of 176, and Canyon + Fungi Forest together cover 152 of 176. Canyon's MOUNTAIN tag also overlaps Sacred Springs, Highland, and Rainforest if you'd rather substitute one of those for Fungi Forest. Run any candidate biome name through the <a href="production.html">Production Calculator</a> to confirm its real tags and rainfall before committing a farm to it.</p>
+
+    <h3>Past the starters</h3>
+    <p>A graph search over every deterministic recipe in the database found only 13 of 179 crops reachable through pure deterministic chains — the other 166 require at least one pool-mutation step. Stone Lily (reached from Vine + Pumpkin, both downstream of the food cluster) is the deterministic root of nearly the entire metal and stone-crop branch — Ferrofern, Coppon, Tine, every Ore Berry, and every other Lily variant all trace back to it directly. Max Stone Lily once it appears, and the rest of that branch starts from a maxed baseline. Past that, there's no single fixed sequence — pick whatever's reachable from your current maxed crops' pools, breed toward it, max it, and move outward. The <a href="calculator.html">Mutation Calculator</a>'s "Find Path to Target" mode shows the real route to any specific crop you're still missing.</p>
+
+  </div>
+</div>
+
+<footer>Mechanics decompiled from <code>cropsnh-2_0_85.jar</code> (GTNewHorizons/CropsNH, daily build 598, June 30 2026) — <code>TileEntityCropSticks.java</code>, <code>MutationLoader.java</code>, <code>CropLoader.java</code>, <code>CropCard.java</code>, <code>CropsNHSoilTypes.java</code>, <code>ConfigurationHandler.java</code>, <code>SeedStats.java</code>, and individual crop classes. Corrections welcome — the mod is actively developed and this guide may not reflect the latest changes.</footer>
+</main>
+
+
+<script src="js/guide.js"></script>
+</body>
+</html>
