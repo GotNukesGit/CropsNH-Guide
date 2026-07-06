@@ -13,7 +13,7 @@
 <nav>
   <div class="nav-logo">
     <div class="nav-logo-title">🌾 CropsNH Guide</div>
-    <div class="nav-logo-sub">GTNH 2.9 · Updated to daily build 598 (v2.0.85)</div>
+    <div class="nav-logo-sub">GTNH 2.9 · Updated to daily build 609 (v2.0.91)</div>
   </div>
   <div class="nav-links">
     <a href="index.html" class="nav-link-btn">⌂ Home</a>
@@ -59,7 +59,7 @@
   <h1>CropsNH Complete Guide</h1>
   <p class="hero-desc">Everything you need to know about CropsNH — from placing your first crop stick to farming Diareed at tier 12. Mechanics researched from the mod's source code. Corrections and feedback welcome.</p>
   <div class="hero-chips">
-    <span class="chip chip-grn">v2.0.85 · Daily build 598</span>
+    <span class="chip chip-grn">v2.0.91 · Daily build 609</span>
     <span class="chip chip-blu">GTNH 2.9</span>
     <span class="chip chip-amb">Agricraft fork</span>
     <span class="chip chip-pur">Replaces IC2 Crops</span>
@@ -384,7 +384,7 @@
     <p>If multiple deterministic recipes match your parent combination, one is chosen at random — each has equal probability.</p>
 
     <h3 id="pools">Pool Mutations</h3>
-    <p>Every crop is registered to 0–7 named pools (tags like <em>aMetal</em>, <em>aFood</em>, <em>aTendrilly</em>). Pool mutations fire when no deterministic recipe matches. The parent list is NOT deduplicated for pool checks — so Corium + Corium counts as two Corium entries, and any pool containing Corium matches.</p>
+    <p>Every crop is registered to 0–7 named pools (tags like <em>METALLIC</em>, <em>EDIBLE</em>, <em>TENDRILLY</em>). Pool mutations fire when no deterministic recipe matches. The parent list is NOT deduplicated for pool checks — so Corium + Corium counts as two Corium entries, and any pool containing Corium matches.</p>
     <p>Selection: pick a random matching pool → pick a random member of that pool → return it. Crops in more pools have proportionally higher effective chance because they appear in more "lottery tickets."</p>
     <div class="tip tip-pur"><div class="tip-label">Rarity is structural, not explicit</div>There are no weight values in the code. A crop in 6 pools effectively has 6× higher chance than a crop in 1 pool when all 6 pools match. Stingberry (7 pools) is one of the most likely pool outputs when nether + toxic + berry parents are involved.</div>
     <div class="tip tip-amb"><div class="tip-label">Using the same crop twice dilutes every pool it's in</div>Breeding a crop against itself (instead of a different pool-sharing partner) doesn't narrow the odds — it widens them. Every pool that crop belongs to becomes active at once, and the random pick still has to land on one specific member among all of them combined. This hurts most with crops sitting in large pools like Food or Flower, since you're now competing against everyone else in every one of those pools simultaneously rather than just the smaller overlap you'd get from two different, more targeted parents.</div>
@@ -409,7 +409,7 @@
       On graveyard soil: <br>
       • Spreading path always gives Corium → soil is farmland → rejected, crop tick wasted<br>
       • Pool results: Meatrose, MilkWart, Flax, Hemp, Vine, Cucumber, etc. → all need farmland → rejected<br>
-      • Only Corpseplant (aTendrilly pool) → needs graveyard → succeeds<br>
+      • Only Corpseplant (TENDRILLY pool) → needs graveyard → succeeds<br>
       • Result: <strong>P(Corpseplant) = ~0.52%/tick = ~2.4%/min = ~28 min median wait</strong>
     </div>
   </div>
@@ -458,7 +458,7 @@
       <tr><td>Expected (mean) time</td><td>~67 min</td></tr>
       <tr><td>90% confidence</td><td>~153 min</td></tr>
     </table>
-    <p>Formula: Corpseplant is in the <em>aTendrilly</em> pool (13 members, not 9 — verify against the <a href="calculator.html">Mutation Calculator</a> directly rather than a hand count, since pool membership changes between versions). Corium is in 4 pools (aCow, aMilk, aSilk, aTendrilly), all 4 match (same-species breeding), one is picked at random each crop tick. P = (1/3) × 0.5 × (1/4 pools) × (1/13 members in aTendrilly) = ~0.321%/tick. These numbers come directly from running the actual calculator engine on this exact pairing+soil combination — pull up Corium × Corium on Graveyard Soil yourself to verify.</p>
+    <p>Formula: Corpseplant is in the <em>TENDRILLY</em> pool (13 members, not 9 — verify against the <a href="calculator.html">Mutation Calculator</a> directly rather than a hand count, since pool membership changes between versions). Corium is in 4 pools (COW, SILK, TENDRILLY), all 4 match (same-species breeding), one is picked at random each crop tick. P = (1/3) × 0.5 × (1/3 pools) × (1/13 members in TENDRILLY) = ~0.321%/tick. These numbers come directly from running the actual calculator engine on this exact pairing+soil combination — pull up Corium × Corium on Graveyard Soil yourself to verify.</p>
   </div>
 </div>
 
@@ -511,7 +511,7 @@
         <ul>
           <li><strong>Diareed</strong> → diamonds (T12, needs diamond block)</li>
           <li><strong>Rubyne / Sapphirum</strong> → GT gem materials</li>
-          <li><strong>Enderbloom</strong> → eyes of ender passively</li>
+          <li><strong>Enderbloom</strong> → ender pearl dust (process for ender pearl)</li>
           <li><strong>ArditeOreBerry</strong> → ardite nuggets (TiC)</li>
           <li><strong>CobaltOreBerry</strong> → cobalt nuggets (TiC)</li>
           <li><strong>Tearstalks</strong> → ghast tears</li>
@@ -729,7 +729,7 @@
   <div class="tldr-body">
     Stat-up itself doesn't care about biome at all — fertilizer and repetition do the work. Biome only matters for keeping a crop's growth rate above zero so it reaches breeding maturity in the first place. The plan below was computed by scoring every real GTNH biome's tags against every crop's liked tags, and the breeding order below was checked against the actual breed-path source rather than assumed.
     <ul>
-      <li><strong>Maloberry is the fastest crop that bridges both pool clusters</strong> — tier 2, only 200 growth points (about a quarter of Potato's wait), sitting in both <em>aFood</em> and <em>aYellow</em>, the same two pools Potato uses to reach the rest of the food cluster and the flower cluster. Mod requirements aren't a real concern here — Natura, Biomes O' Plenty, and Twilight Forest are all standard, mandatory parts of GTNH.</li>
+      <li><strong>Maloberry is the fastest crop that bridges both pool clusters</strong> — tier 2, only 200 growth points (about a quarter of Potato's wait), sitting in both <em>EDIBLE</em> and <em>YELLOW</em>, the same two pools Potato uses to reach the rest of the food cluster and the flower cluster. Mod requirements aren't a real concern here — Natura, Biomes O' Plenty, and Twilight Forest are all standard, mandatory parts of GTNH.</li>
       <li><strong>Breeding that one crop against a second copy of itself can land on a different crop entirely</strong> — same-species pairs still roll the pool-mutation breed path, not just the self-clone path. Whatever drops inherits the parents' stats already maxed.</li>
       <li><strong>This needs two separate physical setups, not one.</strong> The food-cluster crops need Farmland; Dandelion/Poppy need Dirt or Grass. Swapping the soil under a living crop to something it can't grow on triggers a real, destructive "invalid soil" handler — there's no way to fish both pools from a single plot.</li>
       <li><strong>Best single farm biome: Canyon</strong> (DRY, HILLS, HOT, MOUNTAIN, SANDY, SPARSE) — covers 93 of 176 crops with liked-biome data, 45 at the full +28 bonus.</li>
@@ -743,9 +743,9 @@
   <div class="spoiler-content">
 
     <h3>Potato isn't actually the fastest option — and "starter" means more than the five base crops</h3>
-    <p>Wheat, Carrot, Potato, Dandelion, and Poppy are directly plantable because each one registers a real-world item as an <em>alternate seed</em> — Wheat Seeds, a Carrot, a Potato, and so on. That same mechanic exists on <strong>85 other crops</strong> in the database, most of them gated behind a specific mod (Natura, Biomes O' Plenty, Twilight Forest) rather than vanilla Minecraft. Several of them grow far faster than any of the original five, and some bridge pools more usefully too. Treat the five base crops as a baseline, not the full set of starting options. <strong>Note (updated v2.0.85):</strong> Water Artichoke (Witchery) now also has an alternate seed — if you have Witchery artichokes growing nearby, you can plant them directly.</p>
-    <p>Among every alternate-seed crop, <strong>Torchberry</strong> (Twilight Forest) has the shortest growth duration in the entire database at 150 points — about 14.6 seconds to 80% maturity under a solid nutrient setup, versus Potato's ~75 seconds. It's also the most restrictive: it only grows at light level 10 or below, and its only pool (<code>aBerry</code>) doesn't touch <code>aFood</code> or <code>aFlower</code> at all, so it's a fast dead end rather than a bridge to the rest of the tree.</p>
-    <p>A cluster of tier-2, 200-growth-duration berries — Strawberry, Blueberry, Blackberry, Raspberry, Huckleberry, Maloberry, and BoP Berry — are all roughly four times faster than Potato (about 19.4 seconds to 80%) and all sit in <code>aFood</code>, so any of them can fish the same 39-member pool Potato does. <strong>Maloberry</strong> (Natura) is the standout: it's the only one of these that's <em>also</em> in <code>aYellow</code>, the same bridge pool Potato uses to reach Dandelion — meaning Maloberry alone covers everything Potato covers, at roughly a quarter of the wait. BoP Berry (Biomes O' Plenty) takes a different bridge instead, sitting in <code>aRed</code> alongside Poppy directly, reaching the flower cluster from the other end.</p>
+    <p>Wheat, Carrot, Potato, Dandelion, and Poppy are directly plantable because each one registers a real-world item as an <em>alternate seed</em> — Wheat Seeds, a Carrot, a Potato, and so on. That same mechanic exists on <strong>85 other crops</strong> in the database, most of them gated behind a specific mod (Natura, Biomes O' Plenty, Twilight Forest) rather than vanilla Minecraft. Several of them grow far faster than any of the original five, and some bridge pools more usefully too. Treat the five base crops as a baseline, not the full set of starting options. <strong>Note (updated v2.0.91):</strong> Water Artichoke (Witchery) now also has an alternate seed — if you have Witchery artichokes growing nearby, you can plant them directly.</p>
+    <p>Among every alternate-seed crop, <strong>Torchberry</strong> (Twilight Forest) has the shortest growth duration in the entire database at 150 points — about 14.6 seconds to 80% maturity under a solid nutrient setup, versus Potato's ~75 seconds. It's also the most restrictive: it only grows at light level 10 or below, and its only pool (<code>BERRY</code>) doesn't touch <code>EDIBLE</code> or <code>FLOWER</code> at all, so it's a fast dead end rather than a bridge to the rest of the tree.</p>
+    <p>A cluster of tier-2, 200-growth-duration berries — Strawberry, Blueberry, Blackberry, Raspberry, Huckleberry, Maloberry, and BoP Berry — are all roughly four times faster than Potato (about 19.4 seconds to 80%) and all sit in <code>EDIBLE</code>, so any of them can fish the same 39-member pool Potato does. <strong>Maloberry</strong> (Natura) is the standout: it's the only one of these that's <em>also</em> in <code>YELLOW</code>, the same bridge pool Potato uses to reach Dandelion — meaning Maloberry alone covers everything Potato covers, at roughly a quarter of the wait. BoP Berry (Biomes O' Plenty) takes a different bridge instead, sitting in <code>RED</code> alongside Poppy directly, reaching the flower cluster from the other end.</p>
     <p>All of these — Torchberry, Maloberry, BoP Berry, and the rest of the berry cluster — also have a real deterministic breeding recipe (e.g. Maloberry from OrangeTulip + Blueberry), which doesn't matter here since the alternate-seed path skips breeding entirely: any of these can be planted straight from the real in-world item with no breeding step at all. BoP Berry's source item is confirmed directly in source as a Biomes O' Plenty food drop, and generic Natura/Twilight Forest documentation describes their berry bushes as common, naturally-generating Overworld features — but GTNH heavily customizes world generation (Realistic World Gen, restricted biome lists), so whether any specific bush spawns at the rate or frequency you'd expect isn't something this guide can confirm from the decompiled crop code alone. If you can find one of these growing wild, planting it directly is faster than growing a Potato from scratch — if not, breeding the deterministic recipe or starting from Potato both still work.</p>
 
     <h3>The actual mechanic: same-species breeding still rolls for mutations</h3>
@@ -754,10 +754,10 @@
     <h3>Why this needs two farms, not one</h3>
     <p>The catch is soil. Maloberry, Potato, Carrot, and Wheat all need Farmland. Dandelion and Poppy need Dirt or Grass. A mutation result gets rejected outright if the soil under the cross-crop stick doesn't match what that specific result needs — so a Farmland setup can roll Carrot or Wheat all day but will simply waste every crop tick that would've landed on Dandelion. Swapping the soil itself isn't a workaround either: the moment the block under an <em>already-planted</em> crop changes to something invalid for it, the game runs a dedicated invalid-soil handler on that crop, rather than just leaving it idle. Plan for two separate cross-crop setups:</p>
     <ol style="padding-left:20px;font-size:13px;line-height:1.8">
-      <li><strong>Farmland setup:</strong> max one Maloberry via the cross/clone path (single parent, fertilizer present), then pair it with a second maxed, fertilized Maloberry on the breed path. Fish <code>aFood</code> and <code>aYellow</code> here for Carrot, Wheat, and anything else those pools contain — all come out already maxed.</li>
-      <li><strong>Dirt/Grass setup:</strong> once a maxed Dandelion drops from the Farmland setup, move (or re-grow) it onto Dirt or Grass, then pair it with a second maxed, fertilized Dandelion. Fish <code>aFlower</code> (29 members) here for Poppy.</li>
+      <li><strong>Farmland setup:</strong> max one Maloberry via the cross/clone path (single parent, fertilizer present), then pair it with a second maxed, fertilized Maloberry on the breed path. Fish <code>EDIBLE</code> and <code>YELLOW</code> here for Carrot, Wheat, and anything else those pools contain — all come out already maxed.</li>
+      <li><strong>Dirt/Grass setup:</strong> once a maxed Dandelion drops from the Farmland setup, move (or re-grow) it onto Dirt or Grass, then pair it with a second maxed, fertilized Dandelion. Fish <code>FLOWER</code> (29 members) here for Poppy.</li>
     </ol>
-    <p>Everything else that happens to drop from <code>aFood</code> (36 other members), <code>aYellow</code> (7 other members), or <code>aFlower</code> (27 other members) along the way comes out maxed too, as a free side effect of running either loop — there's no need to chase those individually.</p>
+    <p>Everything else that happens to drop from <code>EDIBLE</code> (36 other members), <code>YELLOW</code> (7 other members), or <code>FLOWER</code> (27 other members) along the way comes out maxed too, as a free side effect of running either loop — there's no need to chase those individually.</p>
 
     <h3>How the biome locations were picked</h3>
     <p>Every crop's liked-biome tags were checked against every real GTNH biome's actual tag list (not vanilla Forge defaults — GTNH runs mostly BoP/RWG biomes, and most vanilla Overworld biomes aren't even generated). For each biome, a coverage score was computed: <code>min(2, matchedTags) × 14</code>, summed across all 179 crops. Canyon won outright among single biomes. For a second location, the top 30 biomes were paired against each other, scoring each crop by whichever side of the border gave it the better bonus — Canyon + Fungi Forest won because their tag sets don't overlap at all, so together they cover two completely different crop families instead of doubling up on the same one.</p>
@@ -777,7 +777,7 @@
   </div>
 </div>
 
-<footer>Mechanics decompiled from <code>cropsnh-2_0_85.jar</code> (GTNewHorizons/CropsNH, daily build 598, June 30 2026) — <code>TileEntityCropSticks.java</code>, <code>MutationLoader.java</code>, <code>CropLoader.java</code>, <code>CropCard.java</code>, <code>CropsNHSoilTypes.java</code>, <code>ConfigurationHandler.java</code>, <code>SeedStats.java</code>, and individual crop classes. Corrections welcome — the mod is actively developed and this guide may not reflect the latest changes.</footer>
+<footer>Mechanics decompiled from <code>cropsnh-2_0_91.jar</code> (GTNewHorizons/CropsNH, daily build 609, July 6 2026) — <code>TileEntityCropSticks.java</code>, <code>MutationLoader.java</code>, <code>CropLoader.java</code>, <code>CropCard.java</code>, <code>CropsNHSoilTypes.java</code>, <code>ConfigurationHandler.java</code>, <code>SeedStats.java</code>, and individual crop classes. Corrections welcome — the mod is actively developed and this guide may not reflect the latest changes.</footer>
 </main>
 
 

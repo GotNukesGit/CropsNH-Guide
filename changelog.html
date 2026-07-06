@@ -44,7 +44,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 <nav>
   <div class="nav-logo">
     <div class="nav-logo-title">🌾 CropsNH</div>
-    <div class="nav-logo-sub">GTNH 2.9 · Updated to daily build 600 (v2.0.85)</div>
+    <div class="nav-logo-sub">GTNH 2.9 · Updated to daily build 600 (v2.0.91)</div>
   </div>
   <div class="nav-links">
     <a href="index.html" class="nav-link-btn">⌂ Home</a>
@@ -61,15 +61,15 @@ body{display:flex;flex-direction:column;min-height:100vh}
 
   <!-- PENDING PRs -->
   <div class="pending-box">
-    <div class="pending-box-title">⏳ Pending — Changes in the pipeline (not yet in daily)</div>
-    <div class="pending-box-sub">The following pull requests are open on GitHub and have not yet merged into a daily build. Once merged, this site will be updated with the new jar. Calculator data — especially pool memberships — will change significantly when PR #186 lands.</div>
+    <div class="pending-box-title">✓ Both pending PRs now merged into v2.0.91</div>
+    <div class="pending-box-sub">PR #184 (Enderbloom catalyst) and PR #186 (pool overhaul) both landed in daily build 609. See the v2.0.91 changelog entry below for full details. No open CropsNH PRs currently pending.</div>
   </div>
 
   <!-- PR #186 -->
   <div class="cl-version">
     <div class="cl-ver-hdr">
       <span class="cl-ver-tag">PR #186 — Mutation Pool Overhaul</span>
-      <span class="cl-ver-badge badge-pending">⏳ Open — not yet merged</span>
+      <span class="cl-ver-badge badge-pending">✓ Merged into v2.0.91</span>
       <span class="cl-ver-date">by C0bra5 · <a href="https://github.com/GTNewHorizons/CropsNH/pull/186" target="_blank" class="pr-link">↗ GitHub</a></span>
     </div>
 
@@ -128,7 +128,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
   <div class="cl-version">
     <div class="cl-ver-hdr">
       <span class="cl-ver-tag">PR #184 — Enderbloom Catalyst Fix</span>
-      <span class="cl-ver-badge badge-pending">⏳ Open — not yet merged</span>
+      <span class="cl-ver-badge badge-pending">✓ Merged into v2.0.91</span>
       <span class="cl-ver-date">by C0bra5 · <a href="https://github.com/GTNewHorizons/CropsNH/pull/184" target="_blank" class="pr-link">↗ GitHub</a></span>
     </div>
     <div class="cl-section">
@@ -138,10 +138,56 @@ body{display:flex;flex-direction:column;min-height:100vh}
 
   <hr class="divider">
 
+  <!-- BUILD 609 / v2.0.91 -->
+  <div class="cl-version">
+    <div class="cl-ver-hdr">
+      <span class="cl-ver-tag">v2.0.91 · Daily Build 609</span>
+      <span class="cl-ver-badge badge-release">✓ Current</span>
+      <span class="cl-ver-date">July 6, 2026</span>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-section-title">Pool system overhaul (PR #186 merged)</div>
+      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>All pool names renamed</strong> — the entire naming convention changed from lowercase camel prefix (<code>aFood</code>, <code>aMetal</code>, <code>aWater</code>) to SCREAMING_SNAKE (<code>EDIBLE</code>, <code>METALLIC</code>, <code>WATERY</code>). Every crop entry in the calculator has been updated. The calculator display now shows readable Title Case labels (e.g. "Potion Ingredient" instead of "aIngredient").</div></div>
+      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>19 pools removed</strong> — alloy, aluminium, bonsai, bouncy, carrots, ender, leaves, milk, pine, pointed, primordial, rotten, rose, shimmer, slime, soulsand, toxic, zombie, bad. Crops previously in these pools were remapped to surviving equivalents (e.g. ender→ALIEN, milk→COW, bonsai→TREE, shimmer→EMISSIVE).</div></div>
+      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>1 new pool added</strong> — TWILIGHT_FOREST. Assigned to: KnightmetalBerry, Liveroot, Moss, Steeleafranks, Torchberry.</div></div>
+      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>121 crops have pool membership changes</strong> beyond the rename — additions and removals across virtually every crop. Full verified from 2.0.91 bytecode. Notable examples: Corium loses MILK, Flax gains BLUE/WHEAT loses TENDRILLY, Fertilia changes from FLOWER/HEALING to BROWN/HEALING/MUSHROOM, all Bonsais gain BROWN, Enderbloom gains MAGICAL.</div></div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-section-title">Mutation recipe changes</div>
+      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>44 crops lose deterministic mutation recipes</strong> — these crops still exist and can still appear as pool results, but no longer have fixed parent combinations. Removed: Barley, Bauxia, Blazereed, BlueGlowshroom, BlueOrchid, BonsaiSlimy, Cinderpearl, CopperOreBerry, Corpseplant, EmberMoss, Garnydinia, Glowheat, Glowshroom, GodOfThunder, Goldfish, GreenGlowshroom, InkBloom, Iridine, KnightmetalBerry, MagicalNightshade, Micadia, Moss, OilBerry, Olivia, Osmianth, Platina, PurpleGlowshroom, Reactoria, Scheelinium, SpaceFlower, StarWart, Stargatium, Strawberry, Tea, ThauminiteOreBerry, ThaumiumOreBerry, TinOreBerry, Titania, Torchberry, Transformium, Trollplant, VoidOreBerry, Zomplant.</div></div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-section-title">Alternate seed additions</div>
+      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>82 crops now have alternate seeds</strong> — in 2.0.91 most crops gained <code>addAlternateSeed()</code> registration, meaning they can be planted directly from a world item without breeding. Previously only ~6 crops had this. The calculator now shows the alt-seed indicator for all confirmed crops.</div></div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-section-title">Block-under corrections</div>
+      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>6 incorrect blockUnder entries removed</strong> — Cassitine, Ferrofern, Malaxia, Plumbshade, Silviscus, and GaiaWart were incorrectly marked as requiring a block under the soil. Source confirms none of them call <code>addBlockUnderRequirement()</code>.</div></div>
+      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>VoidOreBerry</strong> correctly gains <code>blockUnder:'void'</code> — was missing from the calculator.</div></div>
+      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>ClayLily</strong> gains <code>blockUnder:'clay'</code> and <strong>EssenceOreBerry</strong> gains <code>blockUnder:'skull'</code> — both confirmed from 2.0.91 bytecode.</div></div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-section-title">Enderbloom catalyst (PR #184 merged)</div>
+      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>Enderbloom</strong> duplication catalyst changed from Eye of Ender to <strong>Ender Pearl Dust</strong>. Guide and calculator updated. The crop drop also changed — Enderbloom no longer drops Eyes of Ender, now drops Ender Pearl Dust.</div></div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-section-title">Guide updates</div>
+      <div class="cl-entry"><span class="cl-tag tag-guide">GUIDE</span><div class="cl-text">All pool name references in guide text updated to new naming convention. Corpseplant worked example corrected — Corium is now in 3 pools (COW, SILK, TENDRILLY), not 4 (the old MILK pool was removed and merged into COW).</div></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
   <!-- BUILD 600 -->
   <div class="cl-version">
     <div class="cl-ver-hdr">
-      <span class="cl-ver-tag">v2.0.85 · Daily Build 600</span>
+      <span class="cl-ver-tag">v2.0.91 · Daily Build 600</span>
       <span class="cl-ver-badge badge-release">✓ Current</span>
       <span class="cl-ver-date">July 1, 2026</span>
     </div>
@@ -175,9 +221,9 @@ body{display:flex;flex-direction:column;min-height:100vh}
   <!-- BUILD 598 -->
   <div class="cl-version">
     <div class="cl-ver-hdr">
-      <span class="cl-ver-tag">v2.0.85 · Daily Build 598</span>
+      <span class="cl-ver-tag">v2.0.91 · Daily Build 598</span>
       <span class="cl-ver-badge badge-release">✓ Released</span>
-      <span class="cl-ver-date">June 30, 2026</span>
+      <span class="cl-ver-date">July 6, 2026</span>
     </div>
     <div class="cl-section">
       <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>Steeleafranks block-under requirement added</strong> (PR #176 — Balance Tweaks). Steeleaf block at y−2 is now required to grow and breed Steeleafranks. This was a balance gate to prevent pre-BBF steel production via centrifuge.</div></div>

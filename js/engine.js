@@ -1,4 +1,5 @@
 
+function formatPool(p){return p.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());}
 // ─── CONSTANTS ───────────────────────────────────────────────────────────────
 const BC=6,BN=5,MWBA=100,MFBA=100,SKY=2,LBB=14,HHB=14,NPS=5,NPT=10,BCHANCE=3,BLOW=-2,BHIGH=4;
 const TICK_RATE=256; // game ticks per crop tick (from source)
@@ -63,7 +64,7 @@ const mutsByOutput = id => MUTS.filter(m=>m.out===id);
 // BUT: a crop in more pools gets more "lottery tickets" when multiple pools match.
 // Compute matching pools for a parent list
 // Returns array of {pool, members[]} for pools where >=2 parents are members
-// Note: createPoolQueue does NOT deduplicate, so Wheat+Wheat counts as 2 members in aFood
+// Note: createPoolQueue does NOT deduplicate, so Wheat+Wheat counts as 2 members in EDIBLE
 function getMatchingPools(parentIds) {
   const matching = [];
   for (const [pool, members] of Object.entries(POOL_MAP)) {
@@ -329,7 +330,7 @@ function render(){
     : 0;
   const totalMatchPct = detTotalPct + poolTotalPct;
   const probCls=totalMatchPct>=20?'c-grn':totalMatchPct>=5?'c-amb':totalMatchPct>0?'c-red':'c-gry';
-  const poolStr=matchingPools.map(({pool})=>pool.replace('a','')).join(', ');
+  const poolStr=matchingPools.map(({pool})=>formatPool(pool)).join(', ');
   const soilInfo=soilById(soilSel);
 
   content.innerHTML=`
@@ -372,7 +373,7 @@ ${matchingPools.length ? `
   </div>
   <div style="display:flex;flex-direction:column;gap:8px">
   ${matchingPools.map(({pool,members})=>{
-    const label=pool.replace('a','');
+    const label=formatPool(pool);
     const memberHtml=members.map(m=>{
       const c=cropById(m);
       const probTick=(1/BCHANCE)*0.5*(1/matchingPools.length)*(1/members.length);
@@ -454,7 +455,7 @@ ${filtered.map(m=>{
   const machineLabel=m.machine?'🔩 Machine':m.mtype==='deterministic'?'✓ Direct':'~ Pool';
   const cardCls=m.mtype==='deterministic'?'match':m.mtype==='pool'?'pool-m':'nomatch';
   const pNames=m.par.length ? m.par.map(p=>{const c=cropById(p);return c?c.name:p;}).join(' + ') : '<em style="color:var(--tx3)">no fixed recipe — pool result only</em>';
-  const tagHtml=(m.pools||[]).slice(0,4).map(p=>`<span class="mc-tag">${p.replace('a','')}</span>`).join('');
+  const tagHtml=(m.pools||[]).slice(0,4).map(p=>`<span class="mc-tag">${formatPool(p)}</span>`).join('');
   return `<div class="mcard ${cardCls}">
     <div class="mc-top">
       ${tier?`<span class="ct ${tcls}">T${tier}</span>`:''}
@@ -463,7 +464,7 @@ ${filtered.map(m=>{
     </div>
     <div class="mc-par">Needs: <span>${pNames}</span></div>
     <div class="mc-prob ${cls}" title="${fmtTime(rawProb).pct} per crop tick · median ${fmtTime(rawProb).median}">${str}</div>
-    ${m.mtype==='pool'?`<div style="font-size:9px;color:var(--tx3);margin-top:2px">In pools: ${(CROP_POOLS[m.out]||[]).filter(p=>matchingPools.some(mp=>mp.pool===p)).map(p=>`<span style="color:var(--amb)">${p.replace('a','')}</span>`).join(', ')}</div>`:''}
+    ${m.mtype==='pool'?`<div style="font-size:9px;color:var(--tx3);margin-top:2px">In pools: ${(CROP_POOLS[m.out]||[]).filter(p=>matchingPools.some(mp=>mp.pool===p)).map(p=>`<span style="color:var(--amb)">${formatPool(p)}</span>`).join(', ')}</div>`:''}
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:2px">
       ${soilDef?`<span class="mc-soil" style="${!soilMatches(m.out)?'opacity:.5;text-decoration:line-through':''}" title="y-1: soil block the crop stick sits on">🌱 ${soilDef.name}</span>`:''}
       ${blockUnder?`<span style="font-size:10px;color:var(--pur);background:#2a1040;border:1px solid #3a1060;border-radius:3px;padding:1px 6px" title="y-2: block under the soil">⛏ ${blockUnder}</span>`:''}
@@ -574,7 +575,7 @@ function renderTargetMode(content){
     even without the direct recipe parents. Use this when you have pool-member crops but not the exact deterministic parents.
   </div>
   ${Object.entries(poolGroups).map(([pool, rows]) => {
-    const label = pool.replace('a','');
+    const label = formatPool(pool);
     const poolMembers = POOL_MAP[pool] || [];
     return `<div style="background:var(--bg3);border:1px solid var(--bdr);border-radius:8px;padding:12px 14px;margin-bottom:10px">
       <div style="font-size:12px;font-weight:600;color:var(--amb);margin-bottom:8px">
