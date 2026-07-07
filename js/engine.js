@@ -495,7 +495,9 @@ function renderTargetMode(content){
   const isDirectlyPlantable = STARTERS.has(targetCrop) || !!DIRECT_POOL_REGISTRATIONS[targetCrop];
 
   if(!muts.length && !targetPoolsCheck.length){
-    content.innerHTML=`<div class="path-section"><h2>🌱 ${tc.name} is a starter crop</h2><p style="font-size:12px;color:var(--tx3)">This crop can be obtained directly (planted from seed or found in world) — no breeding required, and it has no mutation pool membership either, so it can't be produced as a breeding result at all.</p></div>`;
+    const noteHtml = tc.note ? `<p style="font-size:12px;color:var(--amb);margin-top:8px;padding:8px 10px;background:var(--bg2);border:1px solid var(--amb-b);border-radius:5px">📋 ${tc.note}</p>` : '';
+    const machineNote = tc.machine ? `<p style="font-size:12px;color:var(--tx3);margin-top:6px">This crop has no standard breeding path. Check the Crop Breeder or Crop Synthesizer machine recipes.</p>` : `<p style="font-size:12px;color:var(--tx3);margin-top:6px">This crop can be obtained directly — no breeding required. It has no mutation pool membership so it cannot appear as a breeding result.</p>`;
+    content.innerHTML=`<div class="path-section"><h2>🌱 ${tc.name}</h2>${machineNote}${noteHtml}</div>`;
     return;
   }
 
