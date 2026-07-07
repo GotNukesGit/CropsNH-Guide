@@ -160,6 +160,9 @@ function solveParents(mut, visited, depth){
   for(const parentId of needed){
     // If this parent is a starter (no recipe), it's free - skip
     if(isStarter(parentId)) continue;
+    // Self-referential: output crop appears as its own parent (2.0.91 pattern)
+    // Treat as a starter — you already have it
+    if(parentId === mut.out) continue;
     // Cycle detection
     if(visited.has(parentId)) return null;
     const newVisited = new Set(visited);
@@ -254,8 +257,10 @@ function renderPath(steps, idx){
 
 function matchMut(mut, parentIds, matchingPools){
   // Check deterministic: all parents present (after dedup)
+  // Exclude self-referential parents (output crop as its own parent, 2.0.91 pattern)
   const pset = new Set(parentIds);
-  if(mut.par.every(p=>pset.has(p))) return 'deterministic';
+  const externalPars = mut.par.filter(p => p !== mut.out);
+  if(externalPars.every(p=>pset.has(p))) return 'deterministic';
   // Check pool: is this crop a member of any matching pool?
   if(matchingPools.some(({pool,members})=>members.includes(mut.out))) return 'pool';
   return 'none';
