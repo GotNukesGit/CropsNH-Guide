@@ -231,7 +231,7 @@ function renderPath(steps, idx){
   // Sub-steps detail
   const subSteps=breedSteps.map(s=>{
     const c=cropById(s.crop);
-    const pNames=s.parents.map(p=>{const pc=cropById(p);return pc?pc.name:p;}).join(' + ');
+    const pNames=s.parents.filter(p=>p!==s.crop).map(p=>{const pc=cropById(p);return pc?pc.name:p;}).join(' + ');
     return `<span style="color:var(--tx2)">${c?c.name:s.crop}</span> ← ${pNames}${s.mut&&s.mut.req?` <span style="color:var(--amb)">[${s.mut.req}]</span>`:''}${s.mut&&s.mut.machine?` <span style="color:var(--pur)">[Machine only]</span>`:''}`;
   }).join('<br>');
 
@@ -459,7 +459,7 @@ ${filtered.map(m=>{
   const machineCls=m.machine?'mach':m.mtype==='deterministic'?'det':'pool';
   const machineLabel=m.machine?'🔩 Machine':m.mtype==='deterministic'?'✓ Direct':'~ Pool';
   const cardCls=m.mtype==='deterministic'?'match':m.mtype==='pool'?'pool-m':'nomatch';
-  const pNames=m.par.length ? m.par.map(p=>{const c=cropById(p);return c?c.name:p;}).join(' + ') : '<em style="color:var(--tx3)">no fixed recipe — pool result only</em>';
+  const pNames=m.par.length ? m.par.filter(p=>p!==m.out).map(p=>{const c=cropById(p);return c?c.name:p;}).join(' + ') : '<em style="color:var(--tx3)">no fixed recipe — pool result only</em>';
   const tagHtml=(m.pools||[]).slice(0,4).map(p=>`<span class="mc-tag">${formatPool(p)}</span>`).join('');
   return `<div class="mcard ${cardCls}">
     <div class="mc-top">
@@ -513,7 +513,7 @@ function renderTargetMode(content){
 
 
   const directRecipes = muts.length ? muts.map(m=>{
-    const pNames=m.par.map(p=>{const c=cropById(p);return c?c.name:p;}).join(' + ');
+    const pNames=m.par.filter(p=>p!==m.out).map(p=>{const c=cropById(p);return c?c.name:p;}).join(' + ');
     return `<div style="margin-bottom:6px;font-size:12px">
       <span style="color:var(--tx)">${pNames}</span>
       ${m.machine?'<span style="color:var(--pur);margin-left:6px;font-size:10px">[Machine only]</span>':''}
