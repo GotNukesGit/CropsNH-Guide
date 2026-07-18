@@ -323,6 +323,8 @@ const CROPS=[
   {id:'Titania',name:'Titania',tier:9,liked:['HOT','SAVANNA'],drops:[{item:'Titania Leaf',ch:10000,qty:1}],note:'Process for titanium · stone+titanium y-2 · EV machine req',blockUnder:'titanium'},
   {id:'Vine',name:'Vine',tier:2,liked:['LUSH','JUNGLE','WET'],drops:[{item:'Vine',ch:10000,qty:1}],note:'Distillery (alcohol)'},
   // Bonsais
+  {id:'BrownMushroom',name:'Brown Mushroom',tier:1,liked:['MUSHROOM','WET','SWAMP'],drops:[{item:'Brown Mushroom',ch:10000,qty:1}],note:'Mushroom stew · GT brewing'},
+  {id:'RedMushroom',name:'Red Mushroom',tier:1,liked:['MUSHROOM','WET','SWAMP'],drops:[{item:'Red Mushroom',ch:10000,qty:1}],note:'Mushroom stew · fermented spider eye'},
   {id:'BonsaiOak',name:'Bonsai Oak',tier:1,liked:['PLAINS','FOREST','HILLS'],drops:[{item:'Oak Sapling',ch:3000,qty:2},{item:'Oak Log',ch:6000,qty:10},{item:'Apple',ch:500,qty:2}],growth:1200},
   {id:'BonsaiBirch',name:'Bonsai Birch',tier:1,liked:['FOREST','HILLS'],drops:[{item:'Birch Sapling',ch:3000,qty:2},{item:'Birch Log',ch:6000,qty:10}],growth:1200},
   {id:'BonsaiSpruce',name:'Bonsai Spruce',tier:1,liked:['FOREST','CONIFEROUS','MOUNTAIN'],drops:[{item:'Spruce Sapling',ch:3000,qty:2},{item:'Spruce Log',ch:6000,qty:10}],growth:1200},
