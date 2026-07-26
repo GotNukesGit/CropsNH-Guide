@@ -1,0 +1,9 @@
+# Local mod jar used for data extraction (do not publish)
+*.jar
+cropsnh-*.jar
+
+# Decompile / extract tooling
+_tools/
+_decompiled/
+_jar_extract/
+_decompiled_tmp/
