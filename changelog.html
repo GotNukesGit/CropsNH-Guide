@@ -65,6 +65,25 @@ body{display:flex;flex-direction:column;min-height:100vh}
     <div class="pending-box-sub">PR #184 (Enderbloom catalyst) and PR #186 (pool overhaul) both landed in daily build 609. See the v2.0.91 changelog entry below for full details. No open CropsNH PRs currently pending.</div>
   </div>
 
+  <!-- SITE: Production full resync -->
+  <div class="cl-version">
+    <div class="cl-ver-hdr">
+      <span class="cl-ver-tag">Site · Production Calculator Full Resync</span>
+      <span class="cl-ver-badge badge-release">✓ Live</span>
+      <span class="cl-ver-date">July 26, 2026</span>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-section-title">Production calculator</div>
+      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>Full crop list rebuilt from <code>cropsnh-2.0.85.jar</code></strong> (CFR decompile only — no external crop guides). Production now has all <strong>179 crops</strong>, matching the mutation calculator set 1:1. Previously only ~95 crops were listed.</div></div>
+      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>Added ~84 missing crops</strong> including vanilla flowers, stone lilies, Witchery/BoP/Natura crops, material metals (e.g. Malaxia, Cassitine, Plumbshade), machine-only crops, glowshrooms, and more.</div></div>
+      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>Id typos:</strong> <code>Inkbloom</code> → <code>InkBloom</code>, <code>Redstraw</code> → <code>RedStraw</code>.</div></div>
+      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>Drop tables corrected from jar</strong> (item, chance weight out of 10000, stack qty). Example: Malaxia drops <strong>Copper Dust Tiny</strong>, not a fictional leaf item. Growth durations use <code>getGrowthDuration()</code> when not the default <code>tier × 600</code>.</div></div>
+      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>Yield math aligned with <code>TileEntityCropSticks.harvest()</code>:</strong> drop chance is <code>min(1, ch/10000)</code> (values ≥ 10000 are guaranteed, e.g. Waterlily), and Gain extra-item odds use <code>(gain+1)/100</code>.</div></div>
+      <div class="cl-entry"><span class="cl-tag tag-new">SITE</span><div class="cl-text">Local mod jars and extract tooling are gitignored so only verified site data is published.</div></div>
+    </div>
+  </div>
+
   <!-- PR #186 -->
   <div class="cl-version">
     <div class="cl-ver-hdr">

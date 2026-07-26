@@ -2,6 +2,17 @@
 
 Verified against `cropsnh-2_0_76.jar`, decompiled with CFR. Every claim below was checked against actual `.java` source, not inferred or assumed.
 
+## July 26, 2026 — Production calculator full resync (`cropsnh-2.0.85.jar`)
+
+Rebuilt `js/production.js` from a CFR decompile of **CropsNH 2.0.85 only** (no external crop guides / older IC2 crop docs).
+
+- **179 crops** in production — now 1:1 with the mutation calculator (`data.js`) crop set (was ~95).
+- **~84 crops added** that were missing from production (flowers, stone lilies, Witchery/BoP/Natura, metals, machine-only, glowshrooms, etc.).
+- **Id fixes:** `Inkbloom` → `InkBloom`, `Redstraw` → `RedStraw`.
+- **Drops / tiers / liked biomes / growth** taken from jar (`addDrop`, `getTier`, `addLikedBiomes`, `getGrowthDuration`).
+- **Yield math** matched to `TileEntityCropSticks.harvest()`: `min(1, ch/10000)` per drop line; Gain bonus `(gain+1)/100`.
+- Local jar + `_tools/` extract path gitignored (not published).
+
 ## Site structure (now hostable, not single-file)
 
 ```
