@@ -15,7 +15,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .cl-ver-badge{font-size:11px;padding:2px 10px;border-radius:20px;font-weight:600}
 .badge-release{background:var(--grn-d);border:1px solid var(--grn-b);color:var(--grn)}
 .badge-pending{background:var(--amb-d);border:1px solid var(--amb-b);color:var(--amb)}
-.badge-fix{background:var(--red-d);border:1px solid var(--red-b);color:var(--red)}
 .cl-section{margin-bottom:20px}
 .cl-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--tx3);margin-bottom:8px}
 .cl-entry{display:flex;gap:10px;padding:8px 12px;background:var(--bg2);border:1px solid var(--bdr);border-radius:6px;margin-bottom:6px;align-items:flex-start}
@@ -23,28 +22,18 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .tag-data{background:#0d2a1c;color:var(--grn);border:1px solid var(--grn-b)}
 .tag-guide{background:var(--blu-d);color:var(--blu);border:1px solid var(--blu-b)}
 .tag-fix{background:var(--red-d);color:var(--red);border:1px solid var(--red-b)}
-.tag-new{background:#2a1040;color:var(--pur);border:1px solid #4a2080}
-.tag-upcoming{background:var(--amb-d);color:var(--amb);border:1px solid var(--amb-b)}
 .cl-text{font-size:13px;color:var(--tx);line-height:1.55}
 .cl-text code{background:var(--bg3);padding:1px 5px;border-radius:3px;font-size:12px;color:var(--tel)}
-.cl-text a{color:var(--blu);text-decoration:none}
-.cl-text a:hover{text-decoration:underline}
-.cl-sub{font-size:12px;color:var(--tx2);margin-top:3px}
-.pr-link{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--tx3);text-decoration:none;padding:1px 7px;border:1px solid var(--bdr);border-radius:4px;background:var(--bg3);margin-left:6px;vertical-align:middle}
-.pr-link:hover{color:var(--tx);border-color:var(--bdr2)}
 .pending-box{background:var(--amb-d);border:1px solid var(--amb-b);border-radius:8px;padding:14px 16px;margin-bottom:32px}
 .pending-box-title{font-size:13px;font-weight:700;color:var(--amb);margin-bottom:6px}
 .pending-box-sub{font-size:12px;color:var(--tx2);line-height:1.5}
-.divider{border:none;border-top:1px solid var(--bdr);margin:32px 0}
-.crop-list{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
-.crop-pill{font-size:10px;background:var(--bg3);border:1px solid var(--bdr);border-radius:3px;padding:1px 6px;color:var(--tx2)}
 </style>
 </head>
 <body>
 <nav>
   <div class="nav-logo">
     <div class="nav-logo-title">🌾 CropsNH</div>
-    <div class="nav-logo-sub">GTNH 2.9 Beta 2 · v2.0.91</div>
+    <div class="nav-logo-sub">GTNH 2.9 · v2.0.114</div>
   </div>
   <div class="nav-links">
     <a href="index.html" class="nav-link-btn">⌂ Home</a>
@@ -54,213 +43,35 @@ body{display:flex;flex-direction:column;min-height:100vh}
     <a href="changelog.html" class="nav-link-btn primary">📋 Changelog</a>
   </div>
 </nav>
-
 <div class="cl-wrap">
   <h1 style="font-size:22px;font-weight:700;margin-bottom:6px">Site Changelog</h1>
-  <p style="font-size:13px;color:var(--tx2);margin-bottom:32px">Tracks updates to this guide and calculator as the mod is actively developed. Data is pulled from the CropsNH source jar with each daily build update.</p>
-
-  <!-- PENDING PRs -->
+  <p style="font-size:13px;color:var(--tx2);margin-bottom:32px">Tracks updates to this guide and calculator. Data is pulled from the CropsNH source jar.</p>
   <div class="pending-box">
-    <div class="pending-box-title">✓ Both pending PRs now merged into v2.0.91</div>
-    <div class="pending-box-sub">PR #184 (Enderbloom catalyst) and PR #186 (pool overhaul) both landed in daily build 609. See the v2.0.91 changelog entry below for full details. No open CropsNH PRs currently pending.</div>
+    <div class="pending-box-title">Verified against cropsnh-2.0.114.jar</div>
+    <div class="pending-box-sub">Site data and guide copy resynced from a CFR decompile of the 2.0.114 jar (first-party classes only). Deterministic recipes unchanged. Pool tags for 17 crops changed.</div>
   </div>
-
-  <!-- SITE: Production full resync -->
   <div class="cl-version">
     <div class="cl-ver-hdr">
-      <span class="cl-ver-tag">Site · Production Calculator Full Resync</span>
+      <span class="cl-ver-tag">Site · 2.0.114 jar scrub</span>
       <span class="cl-ver-badge badge-release">✓ Live</span>
-      <span class="cl-ver-date">July 26, 2026</span>
+      <span class="cl-ver-date">September 6, 2026</span>
     </div>
-
     <div class="cl-section">
-      <div class="cl-section-title">Production calculator</div>
-      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>Full crop list rebuilt from <code>cropsnh-2.0.85.jar</code></strong> (CFR decompile only — no external crop guides). Production now has all <strong>179 crops</strong>, matching the mutation calculator set 1:1. Previously only ~95 crops were listed.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>Added ~84 missing crops</strong> including vanilla flowers, stone lilies, Witchery/BoP/Natura crops, material metals (e.g. Malaxia, Cassitine, Plumbshade), machine-only crops, glowshrooms, and more.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>Id typos:</strong> <code>Inkbloom</code> → <code>InkBloom</code>, <code>Redstraw</code> → <code>RedStraw</code>.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>Drop tables corrected from jar</strong> (item, chance weight out of 10000, stack qty). Example: Malaxia drops <strong>Copper Dust Tiny</strong>, not a fictional leaf item. Growth durations use <code>getGrowthDuration()</code> when not the default <code>tier × 600</code>.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>Yield math aligned with <code>TileEntityCropSticks.harvest()</code>:</strong> drop chance is <code>min(1, ch/10000)</code> (values ≥ 10000 are guaranteed, e.g. Waterlily), and Gain extra-item odds use <code>(gain+1)/100</code>.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-new">SITE</span><div class="cl-text">Local mod jars and extract tooling are gitignored so only verified site data is published.</div></div>
+      <div class="cl-section-title">Source</div>
+      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text">Compared <code>cropsnh-2.0.91.jar</code> vs <code>cropsnh-2.0.114.jar</code> with CFR 0.152. Shadowed MCLib/cglib ignored. No IC2 crop docs used.</div></div>
+    </div>
+    <div class="cl-section">
+      <div class="cl-section-title">Calculator data</div>
+      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>17 pool-membership updates</strong> from <code>MutationLoader.java</code>. Notable: Plumbilia left <code>REED</code>; Corium is now <code>BROWN</code>/<code>COW</code>/<code>MUSHROOM</code>; Enderbloom gained <code>VOID</code> and dropped <code>SHINY</code>; Sapphirum dropped <code>METALLIC</code>.</div></div>
+      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text">Deterministic recipes (172), crop roster, tiers, soils, drops, liked biomes: unchanged vs prior verified extract except Thornvine collision damage.</div></div>
+    </div>
+    <div class="cl-section">
+      <div class="cl-section-title">Guide</div>
+      <div class="cl-entry"><span class="cl-tag tag-guide">GUIDE</span><div class="cl-text">y−2 requirement documented as <strong>sub-soil</strong> (<code>SubSoilRequirement</code>). Gaia Wart item is not <code>ItemFood</code>. Thornvine <code>getEntityDamage() = 1.0f</code>.</div></div>
+      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text">Graveyard-soil Corium trick rewritten: Zomplant is now in Corium's pool union, so the filter is two results, not one. Stale median-wait numbers removed.</div></div>
     </div>
   </div>
-
-  <!-- PR #186 -->
-  <div class="cl-version">
-    <div class="cl-ver-hdr">
-      <span class="cl-ver-tag">PR #186 — Mutation Pool Overhaul</span>
-      <span class="cl-ver-badge badge-pending">✓ Merged into v2.0.91</span>
-      <span class="cl-ver-date">by C0bra5 · <a href="https://github.com/GTNewHorizons/CropsNH/pull/186" target="_blank" class="pr-link">↗ GitHub</a></span>
-    </div>
-
-    <div class="cl-section">
-      <div class="cl-section-title">Pool renames (in-game names unchanged — code names only)</div>
-      <div class="cl-entry"><span class="cl-tag tag-upcoming">RENAME</span><div class="cl-text">Crystal → Crystalline · Danger → Dangerous · Light → Emissive · Metal → Metallic · Poison → Poisonous · Slime → Slimy · Void → Void Touched · Water → Watery · Wood → Wooden · Food → Edible · Ingredient → Potion Ingredient · Fire → Fiery</div></div>
-    </div>
-
-    <div class="cl-section">
-      <div class="cl-section-title">Pools removed entirely</div>
-      <div class="cl-entry"><span class="cl-tag tag-upcoming">REMOVED</span><div class="cl-text">Aluminium (single-member), Pine (no real purpose), Bad (split into context-appropriate pools), Rotten (merged into Poisonous), Zombie (split into Evil/Undead), Ender (merged into Alien), Leaves (merged into Leafy), Pointed (merged into Stem/Tendrilly), Milk (duplicate of Cow), Shimmer (merged into Emissive), Soulsand (merged into Nether), Toxic (split into Poisonous/Dangerous), Bonsai (merged into Tree), Carrot (merged into Root), Alloy (didn't apply to anything), Bouncy (became single-member), Slimy (became single-member after Slimy Bonsai change), Rose (no actual roses left)</div></div>
-    </div>
-
-    <div class="cl-section">
-      <div class="cl-section-title">New pool added</div>
-      <div class="cl-entry"><span class="cl-tag tag-upcoming">NEW</span><div class="cl-text"><strong>Twilight Forest</strong> — groups crops with Twilight Forest origin or requirement. Assigned to: Torchberry, Liveroot, Moss, Steeleafranks, KnightmetalBerry</div></div>
-    </div>
-
-    <div class="cl-section">
-      <div class="cl-section-title">Individual crop pool changes (selection of notable ones)</div>
-      <div class="cl-entry"><span class="cl-tag tag-upcoming">POOLS</span><div class="cl-text">
-        <strong>Steeleafranks:</strong> +Twilight Forest +Leafy<br>
-        <strong>KnightmetalBerry:</strong> -Green +Twilight Forest<br>
-        <strong>Torchberry:</strong> -Shimmer +Yellow +Twilight Forest<br>
-        <strong>Liveroot:</strong> +Root +Brown +Twilight Forest<br>
-        <strong>Moss:</strong> +Tendrilly +Twilight Forest<br>
-        <strong>Enderbloom:</strong> -Ender +Magic<br>
-        <strong>Flax:</strong> -Tendrilly +Blue +Wheat<br>
-        <strong>BobsYerUncleRanks:</strong> +Green +Berry<br>
-        <strong>Diareed:</strong> +Blue<br>
-        <strong>Fertilia:</strong> -Flower +Mushroom +Brown<br>
-        <strong>MilkWart:</strong> -Milk +Healing<br>
-        <strong>Corium:</strong> -Milk<br>
-        <strong>InkBloom:</strong> -Rose +Watery<br>
-        <strong>Melon/Pumpkin:</strong> +Edible (+Potion Ingredient for Melon)<br>
-        <strong>Carrot:</strong> -Carrot +Root +Potion Ingredient<br>
-        <strong>Cocoa:</strong> -Stem +Tree +Leafy +Bean +Addictive<br>
-        <strong>Shimmerleaf:</strong> -Shimmer +Emissive +Poisonous +Gray<br>
-        <strong>SoulSandLily:</strong> -Soulsand +Undead +Dangerous +Brown<br>
-        <div class="cl-sub">Many more — see PR #186 for full list of ~50 individual crop changes.</div>
-      </div></div>
-    </div>
-
-    <div class="cl-section">
-      <div class="cl-section-title">Slimy Bonsai rebalance</div>
-      <div class="cl-entry"><span class="cl-tag tag-upcoming">BALANCE</span><div class="cl-text">BonsaiSlimy now requires an LV Crop Breeder to produce. Previously breedable in standard crop sticks, which made Sticky Cane and Rubber Bonsai redundant for early rubber production.</div></div>
-    </div>
-
-    <div class="cl-section">
-      <div class="cl-section-title">Impact on this site</div>
-      <div class="cl-entry"><span class="cl-tag tag-data">DONE</span><div class="cl-text">All calculator pool data, biome browser rankings, and mutation probability math have been fully updated in v2.0.91. See the v2.0.91 changelog entry for complete details.</div></div>
-    </div>
-  </div>
-
-  <!-- PR #184 -->
-  <div class="cl-version">
-    <div class="cl-ver-hdr">
-      <span class="cl-ver-tag">PR #184 — Enderbloom Catalyst Fix</span>
-      <span class="cl-ver-badge badge-pending">✓ Merged into v2.0.91</span>
-      <span class="cl-ver-date">by C0bra5 · <a href="https://github.com/GTNewHorizons/CropsNH/pull/184" target="_blank" class="pr-link">↗ GitHub</a></span>
-    </div>
-    <div class="cl-section">
-      <div class="cl-entry"><span class="cl-tag tag-upcoming">FIX</span><div class="cl-text">Enderbloom's duplication catalyst will change from <strong>Eye of Ender</strong> to <strong>Ender Pearl</strong>. The Eye of Ender was removed from Enderbloom's drop table in a previous PR but the catalyst was never updated. Minor in-game impact — affects the GT Seed Generator recipe only.</div></div>
-    </div>
-  </div>
-
-  <hr class="divider">
-
-  <!-- BUILD 609 / v2.0.91 -->
-  <div class="cl-version">
-    <div class="cl-ver-hdr">
-      <span class="cl-ver-tag">v2.0.91 · Daily Build 609</span>
-      <span class="cl-ver-badge badge-release">✓ Current</span>
-      <span class="cl-ver-date">July 6, 2026</span>
-    </div>
-
-    <div class="cl-section">
-      <div class="cl-section-title">Pool system overhaul (PR #186 merged)</div>
-      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>All pool names renamed</strong> — the entire naming convention changed from lowercase camel prefix (<code>aFood</code>, <code>aMetal</code>, <code>aWater</code>) to SCREAMING_SNAKE (<code>EDIBLE</code>, <code>METALLIC</code>, <code>WATERY</code>). Every crop entry in the calculator has been updated. The calculator display now shows readable Title Case labels (e.g. "Potion Ingredient" instead of "aIngredient").</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>19 pools removed</strong> — alloy, aluminium, bonsai, bouncy, carrots, ender, leaves, milk, pine, pointed, primordial, rotten, rose, shimmer, slime, soulsand, toxic, zombie, bad. Crops previously in these pools were remapped to surviving equivalents (e.g. ender→ALIEN, milk→COW, bonsai→TREE, shimmer→EMISSIVE).</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>1 new pool added</strong> — TWILIGHT_FOREST. Assigned to: KnightmetalBerry, Liveroot, Moss, Steeleafranks, Torchberry.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>121 crops have pool membership changes</strong> beyond the rename — additions and removals across virtually every crop. Full verified from 2.0.91 bytecode. Notable examples: Corium loses MILK, Flax gains BLUE/WHEAT loses TENDRILLY, Fertilia changes from FLOWER/HEALING to BROWN/HEALING/MUSHROOM, all Bonsais gain BROWN, Enderbloom gains MAGICAL.</div></div>
-    </div>
-
-    <div class="cl-section">
-      <div class="cl-section-title">Mutation recipe changes</div>
-      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>Several mutation recipes changed in 2.0.91.</strong> Notable changes: Corpseplant now requires Zomplant + Eyebulb, Tea now requires Blueberry + BonsaiJungle, Strawberry requires Wheat + Raspberry, Torchberry requires Glowflower + BoPBerry, Blazereed requires SugarCane + Cinderpearl. A number of machine-only recipes were added for late-game crops including Bauxia, BlueOrchid, BonsaiBirch, BonsaiDarkOak, Coppon, Lazulia, and others — these require the Crop Breeder machine rather than standard crop sticks.</div></div>
-    </div>
-
-    <div class="cl-section">
-      <div class="cl-section-title">Alternate seed additions</div>
-      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>82 crops now have alternate seeds</strong> — in 2.0.91 most crops gained <code>addAlternateSeed()</code> registration, meaning they can be planted directly from a world item without breeding. Previously only ~6 crops had this. The calculator now shows the alt-seed indicator for all confirmed crops.</div></div>
-    </div>
-
-    <div class="cl-section">
-      <div class="cl-section-title">Block-under corrections</div>
-      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>3 new blockUnder entries confirmed</strong> — VoidOreBerry gains <code>blockUnder:'void'</code>, ClayLily gains <code>blockUnder:'clay'</code>, EssenceOreBerry gains <code>blockUnder:'skull'</code>. These were missing from the previous build.</div></div>
-    </div>
-
-    <div class="cl-section">
-      <div class="cl-section-title">Enderbloom catalyst (PR #184 merged)</div>
-      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>Enderbloom</strong> duplication catalyst changed from Eye of Ender to <strong>Ender Pearl Dust</strong>. Guide and calculator updated. The crop drop also changed — Enderbloom no longer drops Eyes of Ender, now drops Ender Pearl Dust.</div></div>
-    </div>
-
-    <div class="cl-section">
-      <div class="cl-section-title">Guide updates</div>
-      <div class="cl-entry"><span class="cl-tag tag-guide">GUIDE</span><div class="cl-text">All pool name references in guide text updated to new naming convention. Corpseplant worked example corrected — Corium is now in 3 pools (COW, SILK, TENDRILLY), not 4 (the old MILK pool was removed and merged into COW).</div></div>
-    </div>
-  </div>
-
-  <hr class="divider">
-
-  <!-- BUILD 600 -->
-  <div class="cl-version">
-    <div class="cl-ver-hdr">
-      <span class="cl-ver-tag">v2.0.91 · Daily Build 600</span>
-      <span class="cl-ver-badge badge-release">✓ Current</span>
-      <span class="cl-ver-date">July 1, 2026</span>
-    </div>
-
-    <div class="cl-section">
-      <div class="cl-section-title">Data corrections</div>
-      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>Steeleafranks</strong> now correctly requires a <strong>Twilight Forest Steeleaf block at y−2</strong>. Previously missing from the calculator. This was added in PR #176 (Balance Tweaks for 2.9) as a progression gate — Steeleafranks was allowing pre-BBF steel production. The calculator now shows the ⛏ steeleaf block-under requirement.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-data">DATA</span><div class="cl-text"><strong>Water Artichoke</strong> now has an <strong>alternate seed</strong> (PR #182). You can plant it directly from a Witchery artichoke ingredient without breeding. The calculator now shows the alt seed indicator, and the leveling guide notes it as a new direct-plant option.</div></div>
-    </div>
-
-    <div class="cl-section">
-      <div class="cl-section-title">Guide corrections</div>
-      <div class="cl-entry"><span class="cl-tag tag-guide">GUIDE</span><div class="cl-text"><strong>Trampling:</strong> Resistance 31 only blocks trampling from running entities. Falling trample ignores Resistance at all values — only fall distance matters. Use trample-immune soil (Garden Soil, Enchanted Earth, Fertilized Dirt) for full protection.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-guide">GUIDE</span><div class="cl-text"><strong>Weed spreading:</strong> Resistance ≥ Growth does NOT alone stop outward weed spreading. Both Resistance ≥ Growth AND WeedEx stocked are required. Without WeedEx, outward spreading occurs regardless of Resistance.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-guide">GUIDE</span><div class="cl-text"><strong>Spade mechanics clarified:</strong> Breaking any crop (left-click, any maturity) returns a seed via resistance check but destroys the crop — net zero. Right-click harvesting a mature crop with the Spade gives produce + res/31 seed chance — the net-positive action. Reinforced Spade uses guaranteed <code>floor(Resistance/10)</code> formula instead.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-guide">GUIDE</span><div class="cl-text"><strong>Weeds do not destroy crops.</strong> When a weed spreads toward an occupied crop stick it calls <code>transferDisease()</code> — making the neighbour sick, not replacing it. Crops are only replaced when a weed spawns on an <em>empty</em> stick.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-guide">GUIDE</span><div class="cl-text"><strong>Crop stick recipe:</strong> corrected to 1 log + Saw + File → 2 GT Long Sticks; 4 GT Long Sticks → 4 crop sticks. Previously listed as "2 regular sticks."</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-guide">GUIDE</span><div class="cl-text"><strong>"Cross Path" renamed to "Spreading"</strong> throughout guide and calculator to reduce confusion with IC2 terminology.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-guide">GUIDE</span><div class="cl-text"><strong>"Crop Tick" terminology</strong> — all references to "tick" that meant the 256-game-tick crop update cycle now say "crop tick" explicitly to distinguish from game ticks.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-guide">GUIDE</span><div class="cl-text"><strong>Gaia Wart:</strong> Correctly describes the conversion mechanic — grow Nether Wart to maturity, then right-click repeatedly with Snow Blocks (not snowballs) until it converts. Not breedable via any other method.</div></div>
-    </div>
-
-    <div class="cl-section">
-      <div class="cl-section-title">Site</div>
-      <div class="cl-entry"><span class="cl-tag tag-new">SITE</span><div class="cl-text">Removed overconfident "0 discrepancies vs. source" and "Source-verified" language. The mod is actively developed and corrections are ongoing. Feedback welcome.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-new">SITE</span><div class="cl-text">This changelog page added — accessible from the nav on every page.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-new">SITE</span><div class="cl-text">Crop Priority section marked as work-in-progress. Content covers through MV/HV from personal experience; EV+ coverage is incomplete.</div></div>
-    </div>
-  </div>
-
-  <!-- BUILD 598 -->
-  <div class="cl-version">
-    <div class="cl-ver-hdr">
-      <span class="cl-ver-tag">v2.0.91 · Daily Build 598</span>
-      <span class="cl-ver-badge badge-release">✓ Released</span>
-      <span class="cl-ver-date">July 6, 2026</span>
-    </div>
-    <div class="cl-section">
-      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>Steeleafranks block-under requirement added</strong> (PR #176 — Balance Tweaks). Steeleaf block at y−2 is now required to grow and breed Steeleafranks. This was a balance gate to prevent pre-BBF steel production via centrifuge.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>Water Artichoke alternate seed added</strong> (PR #182). Fixed internal crop ID from <code>cropArtichoke</code> to <code>cropWaterArtichoke</code> and added <code>seedWaterArtichoke</code> OreDict registration. Also fixed EFR stone lily drop bug and added null checks throughout crop loader.</div></div>
-      <div class="cl-entry"><span class="cl-tag tag-fix">FIX</span><div class="cl-text"><strong>Crop Breeder and Synthesizer tier checks</strong> (PR #181). Missing recipe tier validation added — machines below required tier now correctly reject recipes instead of processing or crashing.</div></div>
-    </div>
-  </div>
-
-  <!-- ORIGINAL BUILD -->
-  <div class="cl-version">
-    <div class="cl-ver-hdr">
-      <span class="cl-ver-tag">v2.0.76 · Initial Site Build</span>
-      <span class="cl-ver-badge badge-release">✓ Released</span>
-      <span class="cl-ver-date">June 2026</span>
-    </div>
-    <div class="cl-section">
-      <div class="cl-entry"><span class="cl-tag tag-new">NEW</span><div class="cl-text">Site launched. 179 crops, 172 mutations, 199 biomes. Decompiled from <code>cropsnh-2_0_76.jar</code>. Mutation calculator, production calculator, biome browser, and breeding guide all built from source.</div></div>
-    </div>
-  </div>
-
+  <p style="font-size:12px;color:var(--tx3)">Earlier site-audit entries (2.0.76–2.0.91) are in git history of <code>CHANGELOG.md</code> and the previous <code>changelog.html</code> commit.</p>
 </div>
 </body>
 </html>
