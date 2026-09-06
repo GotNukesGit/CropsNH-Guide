@@ -13,9 +13,9 @@
   <div class="hdr-icon">🌾</div>
   <div>
     <div class="hdr-title">CropsNH Mutation Calculator</div>
-    <div class="hdr-sub">GTNH 2.9 Beta 2 · v2.0.91 · Soil = block under the middle (cross-crop) stick</div>
+    <div class="hdr-sub">GTNH 2.9 · v2.0.114 · Soil = soil under the middle (cross-crop) stick; sub-soil is y−2</div>
   </div>
-  <div class="badge">v2.0.91 · daily build 609</div>
+  <div class="badge">v2.0.114</div>
   <div class="hdr-nav">
     <a href="index.html">⌂ Home</a>
     <a href="production.html">📊 Production</a>
@@ -63,7 +63,7 @@
       <strong style="color:var(--tel)">Layer layout (from top):</strong><br>
       <span style="color:var(--tx3)">y+0</span> Crop stick (TileEntity)<br>
       <span style="color:var(--amb)">y-1</span> <strong>Soil block</strong> — checked by getSoilTypes()<br>
-      <span style="color:var(--pur)">y-2</span> <strong>Block under soil</strong> — checked by BlockUnderRequirement<br>
+      <span style="color:var(--pur)">y-2</span> <strong>Sub-soil</strong> — checked by SubSoilRequirement<br>
       <span style="color:var(--tx3);font-size:9px">Both must be valid for crop to grow/breed</span>
     </div>
     <div class="soilgrid" id="soilSelect"></div>
