@@ -24,6 +24,10 @@
   CROPS.forEach(function (c) {
     if (pools[c.id]) c.pools = pools[c.id].slice();
   });
+  // CropRubyne.getSoilTypes() is CropsNHSoilTypes.stone in 2.0.114.
+  CROPS.forEach(function (c) {
+    if (c.id === 'Rubyne') c.soil = 'stone';
+  });
   const map = {};
   const byCrop = {};
   CROPS.forEach(function (c) {
