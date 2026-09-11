@@ -25,7 +25,6 @@
 </div>
 <div class="main">
 <div class="side">
-
   <div>
     <div class="slabel">Biome</div>
     <div class="sw" style="margin-bottom:6px">
@@ -37,7 +36,6 @@
     <div class="biome-tags" id="biomeTags"></div>
     <div id="biomeNote" class="biome-note" style="display:none"></div>
   </div>
-
   <div>
     <div class="slabel">Sky Access</div>
     <div class="sky-toggle">
@@ -45,7 +43,6 @@
       <button class="sky-btn" id="skyNo" onclick="setSky(false)">🏚 No</button>
     </div>
   </div>
-
   <div>
     <div class="slabel">Water & Fertilizer</div>
     <div class="wfbtn" style="margin-bottom:6px">
@@ -60,14 +57,12 @@
       Biome humidity bonus is calculated automatically from your selected biome's rainfall value and shown in results.
     </div>
   </div>
-
   <div>
     <div class="slabel">Seed Stats (Gain affects yield)</div>
     <div class="srow"><label>Gain</label><input type="range" min="1" max="31" value="31" id="statGain" oninput="upd()"><span class="sval" id="statGainV">31</span></div>
     <div class="srow"><label>Growth</label><input type="range" min="1" max="31" value="31" id="statGrowth" oninput="upd()"><span class="sval" id="statGrowthV">31</span></div>
     <div style="font-size:10px;color:var(--tx3);line-height:1.4">Gain affects drop quantity. Growth affects time to mature. Both at 31 = max production.</div>
   </div>
-
   <div>
     <div class="slabel">Crop</div>
     <div class="sw" style="margin-bottom:6px">
@@ -76,7 +71,6 @@
     </div>
     <div class="crop-pick" id="cropList"></div>
   </div>
-
   <div>
     <div class="slabel">Number of Crops</div>
     <div style="margin-bottom:8px">
@@ -97,7 +91,6 @@
       <button class="qty-btn" onclick="adjQty(1)">+</button>
     </div>
   </div>
-
 </div>
 <div class="content" id="content">
   <div class="hint">
@@ -109,7 +102,6 @@
   </div>
 </div>
 </div>
-
 <script src="js/production.js"></script>
 <script src="js/production-2.0.114.js"></script>
 </body>
