@@ -8,6 +8,7 @@
     return m.out + '|' + (m.par || []).slice().sort().join('+');
   }
 
+  // Remove recipes that are not in MutationLoader (inverted / stale).
   var drop = {
     'Poppy|BlueOrchid+Waterlily': true,
     'PurpleGlowshroom|BlueGlowshroom+BlueOrchid+Glowflower': true,
@@ -28,8 +29,10 @@
     if (!hasOutPar(out, par)) MUTS.push({ out: out, par: par });
   }
 
+  // Natura + BoP gated in loader; present in 2.0.114 jar.
   add('BlueGlowshroom', ['BlueOrchid', 'Glowflower']);
   add('PurpleGlowshroom', ['Indigo', 'Glowflower']);
+  // Tinkers + Thaumcraft gated in loader.
   add('ThaumiumOreBerry', ['StoneLily', 'GoldOreBerry']);
   add('VoidOreBerry', ['ThaumiumOreBerry', 'GoldOreBerry']);
 })();

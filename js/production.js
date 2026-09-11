@@ -222,7 +222,7 @@ function calcHumidityBonus(biome){
   return Math.floor(h*14);
 }
 
-// ── CROP DATABASE (auto-extracted from cropsnh-2.0.85.jar) ─────────────────
+// ── CROP DATABASE (extracted from CropsNH jars; display/notes touched for 2.0.114) ─
 // drops: [{item, chance (0-10000), qty}] — chance weights from CropCard.addDrop
 // liked: BiomeDictionary tags from addLikedBiomes()
 // growth: getGrowthDuration() when not equal to default tier*600 (NHCropCard)
@@ -235,7 +235,7 @@ const CROPS=[
   {id:'Argentia',name:'Argentia',tier:7,liked:['MOUNTAIN','HOT'],drops:[{item:'Argentia Leaf',ch:10000,qty:1}],growth:1400,blockUnder:'silver'},
   {id:'Auronia',name:'Auronia',tier:8,liked:['MESA','SANDY'],drops:[{item:'Auronia Leaf',ch:10000,qty:1}],growth:3700,blockUnder:'gold'},
   {id:'AzureBluet',name:'Azure Bluet',tier:2,liked:['HILLS','FOREST','LUSH'],drops:[{item:'Light Gray Dye',ch:10000,qty:1}],growth:600},
-  {id:'Bamboo',name:'Bamboo',tier:2,liked:['DENSE','JUNGLE','LUSH','FOREST'],drops:[{item:'BoP bamboo',ch:10000,qty:2}],growth:250,note:'BoP req'},
+  {id:'Bamboo',name:'Bamboo Shoot',tier:2,liked:['DENSE','JUNGLE','LUSH','FOREST'],drops:[{item:'BoP bamboo',ch:10000,qty:2}],growth:250,note:'BoP req'},
   {id:'Barley',name:'Barley',tier:2,liked:['PLAINS','DRY'],drops:[{item:'Barley',ch:10000,qty:1}],growth:675,note:'Natura+BoP req'},
   {id:'BasaltLily',name:'Basalt Lily',tier:1,liked:['MOUNTAIN','HILLS'],drops:[{item:'Basalt Dust',ch:10000,qty:9}],blockUnder:'basalt'},
   {id:'Bauxia',name:'Bauxia',tier:6,liked:['COLD','DRY'],drops:[{item:'Bauxia Leaf',ch:10000,qty:1}],growth:1200,blockUnder:'aluminiumBauxite',machine:true},
@@ -292,7 +292,7 @@ const CROPS=[
   {id:'Fertilia',name:'Fertilia',tier:3,liked:['SWAMP','WET','HOT'],drops:[{item:'Calcite Dust',ch:6250,qty:1},{item:'Phosphate Dust',ch:1250,qty:1},{item:'Apatite Dust',ch:1250,qty:1},{item:'fertilizer',ch:1250,qty:1}]},
   {id:'Flax',name:'Flax',tier:2,liked:['WET','RIVER','BEACH','SANDY'],drops:[{item:'String',ch:10000,qty:1}]},
   {id:'FloweringVine',name:'Flowering Vine',tier:3,liked:['JUNGLE','DENSE'],drops:[{item:'BoP flowerVine',ch:10000,qty:2}],growth:675,note:'BoP req'},
-  {id:'GaiaWart',name:'Gaia Wart',tier:5,liked:['SNOWY','COLD'],drops:[{item:'Gaia Wart',ch:10000,qty:1}],growth:1000,blockUnder:'snow',note:'Obtained by growing Nether Wart to maturity on Soul Sand, then right-clicking with Snow Blocks until it converts. Not breedable.'},
+  {id:'GaiaWart',name:'Gaia Wart',tier:5,liked:['SNOWY','COLD'],drops:[{item:'Gaia Wart',ch:10000,qty:1}],growth:1000,blockUnder:'snow',note:'Obtained by growing Nether Wart to maturity on Soul Sand, then right-clicking with Snow Blocks until it converts. Not breedable. Eat-use item (not ItemFood). If IC2 is loaded, eating reduces radiation timer by 600.'},
   {id:'Galvania',name:'Galvania',tier:6,liked:['DRY','HOT'],drops:[{item:'Galvania Leaf',ch:10000,qty:1}],growth:1200,blockUnder:'zinc'},
   {id:'Garlic',name:'Garlic',tier:3,liked:['PLAINS','DRY'],drops:[{item:'Garlic',ch:10000,qty:1}],growth:450,note:'Witchery req'},
   {id:'Garnydinia',name:'Garnydinia',tier:7,liked:['SAVANNA','SANDY','MESA'],drops:[{item:'Garnet Red Dust',ch:2250,qty:1},{item:'Garnet Yellow Dust',ch:2250,qty:1},{item:'Garnet Red Gem',ch:2250,qty:1},{item:'Garnet Yellow Gem',ch:2250,qty:1},{item:'Garnet Red gemExquisite',ch:250,qty:1},{item:'Garnet Yellow gemExquisite',ch:250,qty:1},{item:'Garnet Red crushedPurified',ch:250,qty:1},{item:'Garnet Yellow crushedPurified',ch:250,qty:1}],growth:850,blockUnder:'garnetGem',machine:true,note:'Crop Synthesizer only. Requires garnet block y-2.'},
@@ -387,7 +387,7 @@ const CROPS=[
   {id:'ThauminiteOreBerry',name:'Thauminite Ore Berry',tier:7,liked:['MAGICAL','FOREST'],drops:[{item:'Thauminite Nugget',ch:10000,qty:1}],growth:4500,blockUnder:'thauminite',note:'TiC+TC+ThaumicBases req'},
   {id:'ThaumiumOreBerry',name:'Thaumium Ore Berry',tier:7,liked:['MAGICAL','SPOOKY'],drops:[{item:'Thaumium Nugget',ch:10000,qty:1}],growth:3000,blockUnder:'thaumium',note:'TiC+TC req'},
   {id:'Thiosulfine',name:'Thiosulfine',tier:6,liked:['NETHER','HOT'],drops:[{item:'Thiosulfine Flower',ch:10000,qty:1}],growth:1200,blockUnder:'sulfur'},
-  {id:'Thornvine',name:'Thornvine',tier:3,liked:['NETHER','DRY'],drops:[{item:'Natura Thornvines',ch:10000,qty:2}],growth:450,note:'Natura req'},
+  {id:'Thornvine',name:'Thornvine',tier:3,liked:['NETHER','DRY'],drops:[{item:'Natura Thornvines',ch:10000,qty:2}],growth:450,note:'Natura req. Damages colliding entities for 1.0 (getEntityDamage).'},
   {id:'TinOreBerry',name:'Tin Ore Berry',tier:4,liked:['MOUNTAIN','HILLS'],drops:[{item:'Tin Ore Berry',ch:10000,qty:6}],growth:6000,blockUnder:'tin',note:'TiC req'},
   {id:'Tine',name:'Tine',tier:5,liked:['MOUNTAIN','HILLS'],drops:[{item:'Tine Twig',ch:10000,qty:1}],growth:1000,blockUnder:'tin'},
   {id:'Titania',name:'Titania',tier:9,liked:['HOT','SAVANNA'],drops:[{item:'Titania Leaf',ch:10000,qty:1}],growth:1800,blockUnder:'titanium',machine:true,note:'Crop Synthesizer only. Requires titanium block y-2. EV+ machine tier.'},

@@ -4,6 +4,7 @@
 (function () {
   if (typeof CROPS === 'undefined') return;
 
+  // CropCard.getDropChance() overrides (default is Math.pow(0.95, tier)).
   const DROP_CHANCE = {
     Glowheat: 1.5,
     Netherwart: 2.0,
@@ -16,11 +17,15 @@
     if (DROP_CHANCE[c.id] != null) c.dropChance = DROP_CHANCE[c.id];
   });
 
+  // Drop item labels taken from the same ItemStack the crop registers.
+  // Netherwart: addDrop(Items.field_151075_bm) + unlocalized item.netherStalkSeeds.name
+  // Glowheat: glowstone sub-soil + dustGlowstone catalyst + Items.field_151114_aO (glowstone dust)
   var nw = CROPS.find(function (c) { return c.id === 'Netherwart'; });
   if (nw && nw.drops && nw.drops[0]) nw.drops[0].item = 'Nether Wart';
   var gh = CROPS.find(function (c) { return c.id === 'Glowheat'; });
   if (gh && gh.drops && gh.drops[0]) gh.drops[0].item = 'Glowstone Dust';
 
+  // Source: likedBiomeTagsCount = Math.min(2, count)
   calcNutrients = function (likedCount) {
     likedCount = Math.min(2, likedCount);
     const humBonus = selectedBiome ? calcHumidityBonus(selectedBiome) : 0;
@@ -33,6 +38,7 @@
     return n;
   };
 
+  // Source: TileEntityCropSticks.getGrowthRate — all integer arithmetic.
   calcGrowthRate = function (np, tier, growth) {
     var nutrientPoints = np * NPS;
     var need = tier * NPT;
@@ -44,6 +50,7 @@
     return Math.max(Math.floor(baseSpeed * (100 - (need - nutrientPoints) * 4) / 100), 0);
   };
 
+  // Source: getAvgDropRounds = getDropChance() * 1.03^gain
   calcAvgDropRounds = function (tier, gain) {
     var crop = typeof selectedCrop === 'string' ? CROPS.find(function (c) { return c.id === selectedCrop; }) : null;
     var dc = (crop && crop.dropChance != null) ? crop.dropChance : Math.pow(0.95, tier);
@@ -58,6 +65,7 @@
     if (!crop) return;
     var biomeTags = BIOMES[selectedBiome] || [];
     var rawMatches = crop.liked.filter(function (t) { return biomeTags.indexOf(t) >= 0; }).length;
+    var capped = Math.min(2, rawMatches);
     if (rawMatches > 2) {
       var note = document.createElement('div');
       note.style.cssText = 'margin-top:8px;font-size:11px;color:var(--amb)';
