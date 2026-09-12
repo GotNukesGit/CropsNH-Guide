@@ -77,9 +77,8 @@ function bestForTarget(targetId, ownedSet) {
   function consider(row) { if (!best || row.p > best.p) best = row; }
   recs.forEach(m => {
     const pars = (m.par || []).filter(p => p !== targetId);
-    if (!pars.length) return;
-    if (!pars.every(p => ownedSet.has(p))) return;
-    consider({ out: targetId, name: crop.name, soil: crop.soil, blockUnder: crop.blockUnder, parents: pars, kind: m.machine ? 'mach' : 'det', machine: !!m.machine, p: m.machine ? 1 : (1 / BCHANCE) * 0.5, note: m.machine ? 'Crop Synthesizer' : 'Deterministic' });
+    if (!pars.length || !pars.every(p => ownedSet.has(p))) return;
+    consider({ out: targetId, name: crop.name, soil: crop.soil, blockUnder: crop.blockUnder, parents: pars, kind: m.machine ? 'mach' : 'det', p: m.machine ? 1 : (1 / BCHANCE) * 0.5 });
   });
   const ownedArr = [...ownedSet];
   for (let i = 0; i < ownedArr.length; i++) {
@@ -89,44 +88,55 @@ function bestForTarget(targetId, ownedSet) {
       const mp = matchingPools([a, b]);
       const p = poolProb(targetId, mp);
       if (p <= 0) continue;
-      const poolsHit = mp.filter(x => x.members.indexOf(targetId) >= 0).map(x => x.pool);
-      consider({ out: targetId, name: crop.name, soil: crop.soil, blockUnder: crop.blockUnder, parents: a === b ? [a, a] : [a, b], kind: 'pool', machine: false, p, note: 'Pool ' + poolsHit.join(', ') });
+      consider({ out: targetId, name: crop.name, soil: crop.soil, blockUnder: crop.blockUnder, parents: a === b ? [a, a] : [a, b], kind: 'pool', p });
     }
   }
   return best;
 }
 function computeNext() {
-  const missing = uniqueCrops().filter(c => !owned.has(c.id));
   const rows = [];
-  missing.forEach(c => { const r = bestForTarget(c.id, owned); if (r) rows.push(r); });
+  uniqueCrops().filter(c => !owned.has(c.id)).forEach(c => { const r = bestForTarget(c.id, owned); if (r) rows.push(r); });
   rows.sort((a, b) => {
-    const rank = k => k === 'det' ? 0 : k === 'mach' ? 1 : k === 'pool' ? 2 : 3;
+    const rank = k => k === 'det' ? 0 : k === 'mach' ? 1 : 2;
     if (rank(a.kind) !== rank(b.kind)) return rank(a.kind) - rank(b.kind);
     return b.p - a.p;
   });
   return rows;
+}
+function esc(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function drawGlowChart(top) {
+  const parents = [], seen = {};
+  top.forEach(r => (r.parents || []).forEach(id => { if (!seen[id]) { seen[id] = 1; parents.push(id); } }));
+  const W = 900, leftX = 130, rightX = 700;
+  const H = Math.max(520, Math.max(parents.length, top.length) * 62 + 90);
+  function py(i, n) { return n <= 1 ? H / 2 : 50 + i * ((H - 90) / Math.max(1, n - 1)); }
+  const pPos = {};
+  parents.forEach((id, i) => { pPos[id] = { x: leftX, y: py(i, parents.length) }; });
+  let edges = '', pNodes = '', tNodes = '';
+  top.forEach((r, ti) => {
+    const ty = py(ti, top.length);
+    const col = r.kind === 'det' ? '#4ade80' : r.kind === 'mach' ? '#c4b5fd' : '#fbbf24';
+    (r.parents || []).forEach(id => {
+      const p = pPos[id]; if (!p) return;
+      const mid = (p.x + rightX) / 2;
+      edges += '<path d="M' + p.x + ',' + p.y + ' C' + mid + ',' + p.y + ' ' + mid + ',' + ty + ' ' + rightX + ',' + ty + '" fill="none" stroke="' + col + '" stroke-width="2" opacity=".6" filter="url(#glow)"/>';
+    });
+    const soil = soilName(r.soil);
+    const time = r.kind === 'mach' ? 'machine' : fmtTime(r.p);
+    tNodes += '<g style="cursor:pointer" onclick="claimSeed(\'' + r.out + '\')"><circle cx="' + rightX + '" cy="' + ty + '" r="22" fill="#2a1a06" stroke="' + col + '" stroke-width="2.5" filter="url(#glowA)"/><text x="' + rightX + '" y="' + (ty + 4) + '" text-anchor="middle" fill="#fff7d6" font-size="11" font-weight="700">' + (ti + 1) + '</text><text x="' + (rightX + 34) + '" y="' + (ty - 6) + '" fill="#fde68a" font-size="13" font-weight="700">' + esc(r.name) + '</text><text x="' + (rightX + 34) + '" y="' + (ty + 10) + '" fill="#7dd3c7" font-size="10">' + esc(soil) + ' · ' + time + ' · tap</text></g>';
+  });
+  parents.forEach(id => {
+    const c = cropById(id), p = pPos[id];
+    pNodes += '<g><circle cx="' + p.x + '" cy="' + p.y + '" r="18" fill="#0d2a1c" stroke="#4ade80" stroke-width="2" filter="url(#glowG)"/><text x="' + p.x + '" y="' + (p.y + 32) + '" text-anchor="middle" fill="#9aefc0" font-size="11">' + esc(c ? c.name : id) + '</text></g>';
+  });
+  return '<div class="stage"><svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" height="' + Math.min(H, 720) + '"><defs><filter id="glow"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="glowG"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="glowA"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><text x="130" y="22" text-anchor="middle" fill="#5a8a70" font-size="10" letter-spacing="2">OWNED</text><text x="700" y="22" text-anchor="middle" fill="#a78b3a" font-size="10" letter-spacing="2">NEXT 10</text>' + edges + pNodes + tNodes + '</svg></div><div class="legend"><span style="color:#4ade80">Direct</span><span style="color:#fbbf24">Pool</span><span style="color:#c4b5fd">Machine</span><span>Tap a numbered orb to mark owned</span></div>';
 }
 function renderResults() {
   const el = document.getElementById('results');
   const now = computeNext().filter(r => soilAvailable(r.soil) && (r.kind === 'det' || r.kind === 'mach' || (r.kind === 'pool' && r.p > 0)));
   if (!owned.size) { el.innerHTML = '<div class="hint">Tick at least one owned crop.</div>'; return; }
   if (!now.length) { el.innerHTML = '<div class="hint">Nothing new is reachable. Tick another soil or parent.</div>'; return; }
-  const body = now.slice(0, 10).map((r, i) => {
-    const kindLbl = r.kind === 'det' ? 'Direct' : r.kind === 'mach' ? 'Machine' : 'Pool';
-    const time = r.kind === 'mach' ? 'machine' : fmtTime(r.p);
-    const soil = soilName(r.soil) + (r.blockUnder ? ' / y-2 ' + r.blockUnder : '');
-    const c = cropById(r.out);
-    const parents = (r.parents || []).map(id => {
-      const p = cropById(id);
-      return '<div class="node have">' + (p ? p.name : id) + '</div>';
-    }).join('<span class="arrow">+</span>');
-    return '<div class="flow-step"><div class="flow-row"><span class="pill">' + (i + 1) + '</span>' + parents +
-      '<span class="arrow">-></span><div class="node soil">' + soil + '</div><span class="arrow">-></span>' +
-      '<div class="node next">' + r.name + (c ? ' T' + c.tier : '') + '</div></div>' +
-      '<div class="flow-meta"><span class="kind-' + r.kind + '">' + kindLbl + '</span><span>' + time + '</span><span>' + (r.note || '') +
-      '</span><button class="fbtn act" onclick="claimSeed(\'' + r.out + '\')">+ Have</button></div></div>';
-  }).join('');
-  el.innerHTML = '<div class="flow">' + body + '</div>';
+  el.innerHTML = drawGlowChart(now.slice(0, 10));
 }
 function renderOwnedList() {
   const q = (document.getElementById('ownedSearch').value || '').toLowerCase();
@@ -136,7 +146,7 @@ function renderOwnedList() {
   document.getElementById('ownedCount').textContent = '(' + owned.size + ')';
   el.innerHTML = items.map(c => {
     const on = owned.has(c.id);
-    return '<label class="ci' + (on ? ' on' : '') + '"><input type="checkbox" ' + (on ? 'checked' : '') + ' onchange="toggleOwned(\'' + c.id + '\', this.checked)"><span style="flex:1">' + c.name + '</span><span class="ct t' + Math.min(14, c.tier) + '">T' + c.tier + '</span></label>';
+    return '<label class="ci' + (on ? ' on' : '') + '"><input type="checkbox" ' + (on ? 'checked' : '') + ' onchange="toggleOwned(\'' + c.id + '\', this.checked)"><span style="flex:1">' + c.name + '</span></label>';
   }).join('');
 }
 function toggleOwned(id, on) { if (on) owned.add(id); else owned.delete(id); saveOwned(owned); renderOwnedList(); renderResults(); }
@@ -151,7 +161,6 @@ function toggleSoil(id) {
 }
 function claimSeed(id) {
   owned.add(id); saveOwned(owned); renderOwnedList(); renderResults();
-  const box = document.getElementById('ownedList'); if (box) box.scrollTop = 0;
 }
 function markPlantables() {
   PLANTABLES.forEach(id => { if (cropById(id)) owned.add(id); });
