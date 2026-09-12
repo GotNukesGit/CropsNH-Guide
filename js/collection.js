@@ -40,7 +40,7 @@ function soilName(id) {
 }
 
 function fmtTime(p) {
-  if (!p || p <= 0) return '—';
+  if (!p || p <= 0) return '\u2014';
   const exp = (1 / p) * TICK_S;
   if (exp < 120) return Math.round(exp) + 's avg';
   if (exp < 3600) return (exp / 60).toFixed(1) + ' min avg';
@@ -132,7 +132,7 @@ function bestForTarget(targetId, ownedSet) {
       kind: 'none',
       machine: !!crop.machine,
       p: 0,
-      note: crop.note || 'No field recipe — plant or machine'
+      note: crop.note || 'No field recipe \u2014 plant or machine'
     };
   }
   return best;
@@ -179,7 +179,7 @@ function renderResults() {
     const time = r.kind === 'mach' ? 'machine' : fmtTime(r.p);
     const soil = soilName(r.soil) + (r.blockUnder ? ' \u00b7 y\u22122 ' + r.blockUnder : '');
     const c = cropById(r.out);
-    return '<div class="row"><div class="nm">' + r.name + (c ? ' <span class="ct t' + Math.min(14, c.tier) + '">T' + c.tier + '</span>' : '') + '</div><div class="parents">' + parentNames(r.parents) + '<div style="font-size:10px;color:var(--tx3)">' + (r.note || '') + '</div></div><div class="' + kindCls + '">' + kindLbl + '</div><div class="time">' + time + '</div><div class="soil">' + soil + '</div></div>';
+    return '<div class="row"><div class="nm">' + r.name + (c ? ' <span class="ct t' + Math.min(14, c.tier) + '">T' + c.tier + '</span>' : '') + '</div><div class="parents">' + parentNames(r.parents) + '<div style="font-size:10px;color:var(--tx3)">' + (r.note || '') + '</div></div><div class="' + kindCls + '">' + kindLbl + '</div><div class="time">' + time + '</div><div class="soil">' + soil + '<button class="fbtn" style="margin-left:8px" onclick="claimSeed(\'' + r.out + '\')">+ Have</button></div></div>';
   }).join('');
   el.innerHTML = head + body;
 }
@@ -189,7 +189,7 @@ function renderOwnedList() {
   const el = document.getElementById('ownedList');
   const items = uniqueCrops().filter(c =>
     !q || c.name.toLowerCase().includes(q) || c.id.toLowerCase().includes(q)
-  );
+  ).sort((a, b) => (owned.has(b.id) - owned.has(a.id)) || a.tier - b.tier || a.name.localeCompare(b.name));
   document.getElementById('ownedCount').textContent = '(' + owned.size + ')';
   el.innerHTML = items.map(c => {
     const on = owned.has(c.id);
@@ -202,6 +202,14 @@ function toggleOwned(id, on) {
   saveOwned(owned);
   renderOwnedList();
   renderResults();
+}
+function claimSeed(id) {
+  owned.add(id);
+  saveOwned(owned);
+  renderOwnedList();
+  renderResults();
+  const box = document.getElementById('ownedList');
+  if (box) box.scrollTop = 0;
 }
 function markPlantables() {
   PLANTABLES.forEach(id => { if (cropById(id)) owned.add(id); });
