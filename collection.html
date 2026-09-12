@@ -6,28 +6,20 @@
 <title>CropsNH Seed Tracker</title>
 <link rel="stylesheet" href="css/shared.css">
 <style>
-.main{display:grid;grid-template-columns:320px 1fr;min-height:calc(100vh - 63px)}
+.main{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 63px)}
 .side{background:var(--bg2);border-right:1px solid var(--bdr);padding:16px;overflow:auto}
-.content{padding:20px 24px;overflow:auto}
+.content{padding:16px 18px;overflow:auto}
 .slabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--tx3);margin:14px 0 8px}
 .sw{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;padding:4px 8px}
 .sw input{flex:1;background:transparent;border:0;color:var(--tx);outline:none;font-size:13px}
 .clist{max-height:calc(100vh - 280px);overflow:auto;margin-top:8px}
 .ci{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:5px;cursor:pointer;font-size:13px}
-.ci:hover{background:var(--bg3)}
 .ci.on{background:var(--grn-d)}
-.ci input{accent-color:var(--grn)}
-.hint{color:var(--tx3);font-size:12px;line-height:1.5;max-width:720px}
+.hint{color:var(--tx3);font-size:12px;line-height:1.5}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px}
-.flow{display:flex;flex-direction:column;gap:12px}
-.flow-step{background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;padding:12px}
-.flow-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
-.node{background:var(--bg3);border:1px solid var(--bdr);border-radius:8px;padding:7px 10px;font-size:13px;min-width:90px}
-.node.have{border-color:var(--grn-b);color:var(--grn)}
-.node.next{border-color:var(--amb-b);background:var(--amb-d);color:var(--amb);font-weight:700}
-.node.soil{border-color:#1a4a4a;color:var(--tel);font-size:11px}
-.arrow{color:var(--tx3);font-size:16px}
-.flow-meta{font-size:11px;color:var(--tx3);margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.stage{background:radial-gradient(ellipse at 28% 40%,#10261a 0%,#070b12 55%,#05070c 100%);border:1px solid #1c3a2a;border-radius:16px;overflow:auto;min-height:480px;box-shadow:inset 0 0 80px #04140c,0 0 36px #0a2a18}
+.stage svg{display:block;min-width:640px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--tx3);margin-top:10px}
 @media(max-width:900px){.main{grid-template-columns:1fr}}
 </style>
 </head>
@@ -36,19 +28,18 @@
   <div class="hdr-icon">&#127793;</div>
   <div>
     <div class="hdr-title">Seed Tracker</div>
-    <div class="hdr-sub">Next 10 undiscovered breeds as a flowchart · v2.0.114</div>
+    <div class="hdr-sub">Glow map of the next 10 undiscovered breeds</div>
   </div>
   <div class="badge">local only</div>
   <div class="hdr-nav">
     <a href="index.html">Home</a>
     <a href="calculator.html">Mutations</a>
-    <a href="production.html">Production</a>
     <a href="guide.html">Guide</a>
   </div>
 </div>
 <div class="main">
   <div class="side">
-    <div class="slabel">Owned seeds <span id="ownedCount" style="font-weight:400"></span></div>
+    <div class="slabel">Owned seeds <span id="ownedCount"></span></div>
     <div class="sw"><input id="ownedSearch" placeholder="Filter crops…" oninput="renderOwnedList()"></div>
     <div class="toolbar">
       <button class="fbtn" onclick="markPlantables()">+ World plantables</button>
@@ -57,11 +48,11 @@
     <div class="clist" id="ownedList"></div>
   </div>
   <div class="content">
-    <p class="hint">Owned crops stay off the chart. Only the next 10 reachable new seeds are drawn. Tick soils to un-gate rows.</p>
+    <p class="hint">Green orbs are seeds you already have. Gold orbs are the next 10. Lines are the breed. Tap gold to mark owned.</p>
     <div class="slabel">Soils I have</div>
     <div id="soilPills" class="toolbar"></div>
-    <div class="slabel" style="margin-top:18px">Next 10 — flowchart</div>
-    <div id="results"><div class="hint">Tick at least one owned crop.</div></div>
+    <div class="slabel">Constellation</div>
+    <div id="results"></div>
   </div>
 </div>
 <script src="js/data.js"></script>
