@@ -44,7 +44,7 @@ function soilName(id) {
   return s ? s.name : id;
 }
 function fmtTime(p) {
-  if (!p || p <= 0) return '\u2014';
+  if (!p || p <= 0) return '-';
   const exp = (1 / p) * TICK_S;
   if (exp < 120) return Math.round(exp) + 's avg';
   if (exp < 3600) return (exp / 60).toFixed(1) + ' min avg';
@@ -79,8 +79,7 @@ function bestForTarget(targetId, ownedSet) {
     const pars = (m.par || []).filter(p => p !== targetId);
     if (!pars.length) return;
     if (!pars.every(p => ownedSet.has(p))) return;
-    const p = (1 / BCHANCE) * 0.5;
-    consider({ out: targetId, name: crop.name, soil: crop.soil, blockUnder: crop.blockUnder, parents: pars, kind: m.machine ? 'mach' : 'det', machine: !!m.machine, p: m.machine ? 1 : p, note: m.machine ? 'Crop Synthesizer / machine recipe' : 'Deterministic field recipe' });
+    consider({ out: targetId, name: crop.name, soil: crop.soil, blockUnder: crop.blockUnder, parents: pars, kind: m.machine ? 'mach' : 'det', machine: !!m.machine, p: m.machine ? 1 : (1 / BCHANCE) * 0.5, note: m.machine ? 'Crop Synthesizer' : 'Deterministic' });
   });
   const ownedArr = [...ownedSet];
   for (let i = 0; i < ownedArr.length; i++) {
@@ -93,9 +92,6 @@ function bestForTarget(targetId, ownedSet) {
       const poolsHit = mp.filter(x => x.members.indexOf(targetId) >= 0).map(x => x.pool);
       consider({ out: targetId, name: crop.name, soil: crop.soil, blockUnder: crop.blockUnder, parents: a === b ? [a, a] : [a, b], kind: 'pool', machine: false, p, note: 'Pool ' + poolsHit.join(', ') });
     }
-  }
-  if (!best && !recs.length && !((crop.pools || []).length)) {
-    return { out: targetId, name: crop.name, soil: crop.soil, blockUnder: crop.blockUnder, parents: [], kind: 'none', machine: !!crop.machine, p: 0, note: crop.note || 'No field recipe' };
   }
   return best;
 }
@@ -110,22 +106,27 @@ function computeNext() {
   });
   return rows;
 }
-function parentNames(ids) { return ids.map(id => { const c = cropById(id); return c ? c.name : id; }).join(' + '); }
 function renderResults() {
   const el = document.getElementById('results');
-  const rows = computeNext();
-  const now = rows.filter(r => soilAvailable(r.soil) && (r.kind === 'det' || r.kind === 'mach' || (r.kind === 'pool' && r.p > 0)));
+  const now = computeNext().filter(r => soilAvailable(r.soil) && (r.kind === 'det' || r.kind === 'mach' || (r.kind === 'pool' && r.p > 0)));
   if (!owned.size) { el.innerHTML = '<div class="hint">Tick at least one owned crop.</div>'; return; }
-  if (!now.length) { el.innerHTML = '<div class="hint">Nothing new is reachable with the seeds and soils you marked. Tick another soil or a parent crop.</div>'; return; }
-  const head = '<div class="row head"><div>New seed</div><div>Use these parents</div><div>Type</div><div>Time</div><div>Soil</div></div>';
-  const body = now.map(r => {
-    const kindLbl = r.kind === 'det' ? 'Direct' : r.kind === 'mach' ? 'Machine' : r.kind === 'pool' ? 'Pool' : 'Other';
+  if (!now.length) { el.innerHTML = '<div class="hint">Nothing new is reachable. Tick another soil or parent.</div>'; return; }
+  const body = now.slice(0, 10).map((r, i) => {
+    const kindLbl = r.kind === 'det' ? 'Direct' : r.kind === 'mach' ? 'Machine' : 'Pool';
     const time = r.kind === 'mach' ? 'machine' : fmtTime(r.p);
     const soil = soilName(r.soil) + (r.blockUnder ? ' / y-2 ' + r.blockUnder : '');
     const c = cropById(r.out);
-    return '<div class="row"><div class="nm">' + r.name + (c ? ' <span class="ct t' + Math.min(14, c.tier) + '">T' + c.tier + '</span>' : '') + '</div><div class="parents">' + parentNames(r.parents) + '<div style="font-size:10px;color:var(--tx3)">' + (r.note || '') + '</div></div><div class="kind-' + r.kind + '">' + kindLbl + '</div><div class="time">' + time + '</div><div class="soil">' + soil + '<button class="fbtn" style="margin-left:8px" onclick="claimSeed(\'' + r.out + '\')">+ Have</button></div></div>';
+    const parents = (r.parents || []).map(id => {
+      const p = cropById(id);
+      return '<div class="node have">' + (p ? p.name : id) + '</div>';
+    }).join('<span class="arrow">+</span>');
+    return '<div class="flow-step"><div class="flow-row"><span class="pill">' + (i + 1) + '</span>' + parents +
+      '<span class="arrow">-></span><div class="node soil">' + soil + '</div><span class="arrow">-></span>' +
+      '<div class="node next">' + r.name + (c ? ' T' + c.tier : '') + '</div></div>' +
+      '<div class="flow-meta"><span class="kind-' + r.kind + '">' + kindLbl + '</span><span>' + time + '</span><span>' + (r.note || '') +
+      '</span><button class="fbtn act" onclick="claimSeed(\'' + r.out + '\')">+ Have</button></div></div>';
   }).join('');
-  el.innerHTML = head + body;
+  el.innerHTML = '<div class="flow">' + body + '</div>';
 }
 function renderOwnedList() {
   const q = (document.getElementById('ownedSearch').value || '').toLowerCase();
@@ -142,10 +143,7 @@ function toggleOwned(id, on) { if (on) owned.add(id); else owned.delete(id); sav
 function renderSoils() {
   const el = document.getElementById('soilPills');
   if (!el || typeof SOILS === 'undefined') return;
-  el.innerHTML = SOILS.map(s => {
-    const on = ownedSoils.has(s.id);
-    return '<button class="fbtn' + (on ? ' act' : '') + '" title="' + (s.note || s.name) + '" onclick="toggleSoil(\'' + s.id + '\')">' + s.name + '</button>';
-  }).join('');
+  el.innerHTML = SOILS.map(s => '<button class="fbtn' + (ownedSoils.has(s.id) ? ' act' : '') + '" onclick="toggleSoil(\'' + s.id + '\')">' + s.name + '</button>').join('');
 }
 function toggleSoil(id) {
   if (ownedSoils.has(id)) ownedSoils.delete(id); else ownedSoils.add(id);
