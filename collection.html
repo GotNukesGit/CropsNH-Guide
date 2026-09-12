@@ -42,16 +42,16 @@
   </div>
   <div class="badge">local only</div>
   <div class="hdr-nav">
-    <a href="index.html">⌂ Home</a>
-    <a href="calculator.html">🧬 Mutations</a>
-    <a href="production.html">📊 Production</a>
-    <a href="guide.html">📖 Guide</a>
+    <a href="index.html">Home</a>
+    <a href="calculator.html">Mutations</a>
+    <a href="production.html">Production</a>
+    <a href="guide.html">Guide</a>
   </div>
 </div>
 <div class="main">
   <div class="side">
     <div class="slabel">Owned seeds <span id="ownedCount" style="font-weight:400"></span></div>
-    <div class="sw"><span>&#128269;</span><input id="ownedSearch" placeholder="Filter crops…" oninput="renderOwnedList()"></div>
+    <div class="sw"><input id="ownedSearch" placeholder="Filter crops…" oninput="renderOwnedList()"></div>
     <div class="toolbar">
       <button class="fbtn" onclick="markPlantables()">+ World plantables</button>
       <button class="fbtn" onclick="clearOwned()">Clear</button>
@@ -59,11 +59,11 @@
     <div class="clist" id="ownedList"></div>
   </div>
   <div class="content">
-    <p class="hint">Checklist is stored in this browser only. Default start is <strong style="color:var(--tx)">BoP Berry</strong> (the pack’s “berry seed”). Tick every seed you have. The list on the right is every <em>missing</em> crop you can reach from that set, cheapest first. Deterministic recipes beat pools. Soil is what the <em>result</em> needs under the middle stick.</p>
+    <p class="hint">Checklist is stored in this browser only. Tick soils you can place under a stick. Next-seed rows that need a soil you have not marked are hidden.</p>
+    <div class="slabel">Soils I have</div>
+    <div id="soilPills" class="toolbar"></div>
     <div class="slabel" style="margin-top:18px">Next best new seeds</div>
-    <div id="results">
-      <div class="hint">Tick at least one owned crop.</div>
-    </div>
+    <div id="results"><div class="hint">Tick at least one owned crop.</div></div>
   </div>
 </div>
 <script src="js/data.js"></script>
