@@ -35,12 +35,38 @@ let mode='parents', selectedParents=[], targetCrop=null, filterMd='match', soilS
 // ─── LOOKUP HELPERS ──────────────────────────────────────────────────────────
 const cropById = id => CROPS.find(c=>c.id===id);
 
-// Check if a crop's soil requirement matches the selected soil
-// Returns true if crop can land on the selected soil
+// Crop soil IDs that accept a given selected soil button.
+// Compound soils from CropsNHSoilTypes: dirt is legal under mushroom,
+// netherMushroom, slimyDirt, and sugarcane. Exact ID match is too strict
+// and hid Green Glowshroom etc. when "Dirt / Grass" was selected.
+const SOIL_COMPOUNDS = {
+  farmland:       ['farmland'],
+  dirtGrass:      ['dirtGrass', 'mushroom', 'netherMushroom', 'slimyDirt', 'sugarcane'],
+  stone:          ['stone', 'mushroom', 'netherMushroom'],
+  sand:           ['sand', 'sugarcane', 'oil'],
+  soulsand:       ['soulsand', 'oil'],
+  sugarcane:      ['sugarcane'],
+  netherrack:     ['netherrack', 'netherMushroom'],
+  graveyard:      ['graveyard'],
+  slimy:          ['slimy', 'slimyDirt'],
+  slimyDirt:      ['slimyDirt'],
+  end:            ['end'],
+  mycelium:       ['mycelium', 'mushroom', 'netherMushroom'],
+  thaumLogs:      ['thaumLogs'],
+  brick:          ['brick'],
+  gravel:         ['gravel', 'oil'],
+  oilSands:       ['oilSands', 'oil'],
+  oil:            ['oil'],
+  mushroom:       ['mushroom', 'netherMushroom'],
+  netherMushroom: ['netherMushroom']
+};
+
 function soilMatches(cropId) {
   const c = cropById(cropId);
-  if (!c) return true; // unknown = assume ok
-  return c.soil === soilSel;
+  if (!c) return true;
+  if (c.soil === soilSel) return true;
+  const accepted = SOIL_COMPOUNDS[soilSel];
+  return !!(accepted && accepted.indexOf(c.soil) !== -1);
 }
 
 // Given a list of all result crops (pool members or det results),
@@ -634,6 +660,10 @@ ${poolPathsHtml}
 }
 
 // ─── UI EVENT HANDLERS ────────────────────────────────────────────────────────
+function showPanel(id, on){
+  const el=document.getElementById(id);
+  if(el) el.style.display=on?'block':'none';
+}
 function setMode(m){
   mode=m;
   document.getElementById('modeParents').className='fbtn'+(m==='parents'?' act':'');
@@ -642,6 +672,14 @@ function setMode(m){
   document.getElementById('modeParentsUI').style.display=m==='parents'?'block':'none';
   document.getElementById('modeTargetUI').style.display=m==='target'?'block':'none';
   document.getElementById('modeBiomeUI').style.display=m==='biome'?'block':'none';
+  // Sidebar controls that belong on each mode:
+  // parents: crop picker + soil + env
+  // target:  target picker + soil (path soil-filter)
+  // biome:   biome picker only
+  showPanel('cropListPanel', m==='parents');
+  showPanel('soilPanel', m==='parents'||m==='target');
+  showPanel('statsNotePanel', m==='parents'||m==='target');
+  showPanel('envPanel', m==='parents');
   if(m==='biome'&&!document.getElementById('biomeList').children.length) initBiomeList();
   render();
 }
