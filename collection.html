@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CropsNH Seed Tracker</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230d2a1c'/><text x='16' y='24' font-size='20' text-anchor='middle'>&#127806;</text></svg>">
 <link rel="stylesheet" href="css/shared.css">
 <style>
 .main{display:grid;grid-template-columns:320px 1fr;min-height:calc(100vh - 63px)}
@@ -19,18 +18,17 @@
 .ci.on{background:var(--grn-d)}
 .ci input{accent-color:var(--grn)}
 .hint{color:var(--tx3);font-size:12px;line-height:1.5;max-width:720px}
-.row{display:grid;grid-template-columns:1.1fr .9fr 110px 90px 140px;gap:8px;align-items:center;padding:10px 12px;background:var(--bg2);border:1px solid var(--bdr);border-radius:8px;margin-bottom:8px}
-.row.head{background:transparent;border:0;color:var(--tx3);font-size:10px;text-transform:uppercase;letter-spacing:.06em;padding:0 12px 8px}
-.nm{font-weight:600}
-.parents{font-size:12px;color:var(--tx2)}
-.soil{font-size:11px;color:var(--tel)}
-.kind-det{color:var(--grn);font-size:11px;font-weight:700}
-.kind-pool{color:var(--amb);font-size:11px;font-weight:700}
-.kind-mach{color:var(--pur);font-size:11px;font-weight:700}
-.kind-none{color:var(--tx3);font-size:11px}
-.time{font-size:12px;color:var(--tx)}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px}
-@media(max-width:900px){.main{grid-template-columns:1fr}.row,.row.head{grid-template-columns:1fr}}
+.flow{display:flex;flex-direction:column;gap:12px}
+.flow-step{background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;padding:12px}
+.flow-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.node{background:var(--bg3);border:1px solid var(--bdr);border-radius:8px;padding:7px 10px;font-size:13px;min-width:90px}
+.node.have{border-color:var(--grn-b);color:var(--grn)}
+.node.next{border-color:var(--amb-b);background:var(--amb-d);color:var(--amb);font-weight:700}
+.node.soil{border-color:#1a4a4a;color:var(--tel);font-size:11px}
+.arrow{color:var(--tx3);font-size:16px}
+.flow-meta{font-size:11px;color:var(--tx3);margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+@media(max-width:900px){.main{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -38,7 +36,7 @@
   <div class="hdr-icon">&#127793;</div>
   <div>
     <div class="hdr-title">Seed Tracker</div>
-    <div class="hdr-sub">Mark what you own. Next breeds ranked by expected time · v2.0.114</div>
+    <div class="hdr-sub">Next 10 undiscovered breeds as a flowchart · v2.0.114</div>
   </div>
   <div class="badge">local only</div>
   <div class="hdr-nav">
@@ -59,10 +57,10 @@
     <div class="clist" id="ownedList"></div>
   </div>
   <div class="content">
-    <p class="hint">Checklist is stored in this browser only. Tick soils you can place under a stick. Next-seed rows that need a soil you have not marked are hidden.</p>
+    <p class="hint">Owned crops stay off the chart. Only the next 10 reachable new seeds are drawn. Tick soils to un-gate rows.</p>
     <div class="slabel">Soils I have</div>
     <div id="soilPills" class="toolbar"></div>
-    <div class="slabel" style="margin-top:18px">Next best new seeds</div>
+    <div class="slabel" style="margin-top:18px">Next 10 — flowchart</div>
     <div id="results"><div class="hint">Tick at least one owned crop.</div></div>
   </div>
 </div>
