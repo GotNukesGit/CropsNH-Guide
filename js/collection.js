@@ -35,8 +35,7 @@ let ownedSoils = loadSoils();
 function soilAvailable(cropSoil) {
   if (!cropSoil) return true;
   if (!ownedSoils.size) return false;
-  const need = SOIL_SATISFIED_BY[cropSoil] || [cropSoil];
-  return need.some(id => ownedSoils.has(id));
+  return (SOIL_SATISFIED_BY[cropSoil] || [cropSoil]).some(id => ownedSoils.has(id));
 }
 function cropById(id) { return CROPS.find(c => c.id === id); }
 function soilName(id) {
@@ -72,10 +71,9 @@ function recipesFor(out) { return MUTS.filter(m => m.out === out); }
 function bestForTarget(targetId, ownedSet) {
   const crop = cropById(targetId);
   if (!crop) return null;
-  const recs = recipesFor(targetId);
   let best = null;
   function consider(row) { if (!best || row.p > best.p) best = row; }
-  recs.forEach(m => {
+  recipesFor(targetId).forEach(m => {
     const pars = (m.par || []).filter(p => p !== targetId);
     if (!pars.length || !pars.every(p => ownedSet.has(p))) return;
     consider({ out: targetId, name: crop.name, soil: crop.soil, blockUnder: crop.blockUnder, parents: pars, kind: m.machine ? 'mach' : 'det', p: m.machine ? 1 : (1 / BCHANCE) * 0.5 });
@@ -85,8 +83,7 @@ function bestForTarget(targetId, ownedSet) {
     for (let j = i; j < ownedArr.length; j++) {
       const a = ownedArr[i], b = ownedArr[j];
       if (a === targetId || b === targetId) continue;
-      const mp = matchingPools([a, b]);
-      const p = poolProb(targetId, mp);
+      const p = poolProb(targetId, matchingPools([a, b]));
       if (p <= 0) continue;
       consider({ out: targetId, name: crop.name, soil: crop.soil, blockUnder: crop.blockUnder, parents: a === b ? [a, a] : [a, b], kind: 'pool', p });
     }
@@ -98,38 +95,34 @@ function computeNext() {
   uniqueCrops().filter(c => !owned.has(c.id)).forEach(c => { const r = bestForTarget(c.id, owned); if (r) rows.push(r); });
   rows.sort((a, b) => {
     const rank = k => k === 'det' ? 0 : k === 'mach' ? 1 : 2;
-    if (rank(a.kind) !== rank(b.kind)) return rank(a.kind) - rank(b.kind);
-    return b.p - a.p;
+    return rank(a.kind) - rank(b.kind) || b.p - a.p;
   });
   return rows;
 }
 function esc(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function drawGlowChart(top) {
-  const parents = [], seen = {};
-  top.forEach(r => (r.parents || []).forEach(id => { if (!seen[id]) { seen[id] = 1; parents.push(id); } }));
-  const W = 900, leftX = 130, rightX = 700;
-  const H = Math.max(520, Math.max(parents.length, top.length) * 62 + 90);
-  function py(i, n) { return n <= 1 ? H / 2 : 50 + i * ((H - 90) / Math.max(1, n - 1)); }
-  const pPos = {};
-  parents.forEach((id, i) => { pPos[id] = { x: leftX, y: py(i, parents.length) }; });
-  let edges = '', pNodes = '', tNodes = '';
-  top.forEach((r, ti) => {
-    const ty = py(ti, top.length);
+  const rowH = 86, W = 980, H = 48 + top.length * rowH;
+  const defs = '<defs><filter id="glow"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="glowG"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="glowA"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><text x="160" y="22" fill="#5a8a70" font-size="10" letter-spacing="1.5">BREED THESE</text><text x="780" y="22" fill="#a78b3a" font-size="10" letter-spacing="1.5">TO GET</text>';
+  function parentOrb(id, x, y) {
+    const c = cropById(id);
+    return '<g><circle cx="' + x + '" cy="' + y + '" r="16" fill="#0d2a1c" stroke="#4ade80" stroke-width="2" filter="url(#glowG)"/><text x="' + x + '" y="' + (y + 30) + '" text-anchor="middle" fill="#9aefc0" font-size="11">' + esc(c ? c.name : id) + '</text></g>';
+  }
+  let body = '';
+  top.forEach((r, i) => {
+    const y = 58 + i * rowH;
+    const pars = r.parents || [];
     const col = r.kind === 'det' ? '#4ade80' : r.kind === 'mach' ? '#c4b5fd' : '#fbbf24';
-    (r.parents || []).forEach(id => {
-      const p = pPos[id]; if (!p) return;
-      const mid = (p.x + rightX) / 2;
-      edges += '<path d="M' + p.x + ',' + p.y + ' C' + mid + ',' + p.y + ' ' + mid + ',' + ty + ' ' + rightX + ',' + ty + '" fill="none" stroke="' + col + '" stroke-width="2" opacity=".6" filter="url(#glow)"/>';
-    });
-    const soil = soilName(r.soil);
+    const kind = r.kind === 'det' ? 'Direct' : r.kind === 'mach' ? 'Machine' : 'Pool';
     const time = r.kind === 'mach' ? 'machine' : fmtTime(r.p);
-    tNodes += '<g style="cursor:pointer" onclick="claimSeed(\'' + r.out + '\')"><circle cx="' + rightX + '" cy="' + ty + '" r="22" fill="#2a1a06" stroke="' + col + '" stroke-width="2.5" filter="url(#glowA)"/><text x="' + rightX + '" y="' + (ty + 4) + '" text-anchor="middle" fill="#fff7d6" font-size="11" font-weight="700">' + (ti + 1) + '</text><text x="' + (rightX + 34) + '" y="' + (ty - 6) + '" fill="#fde68a" font-size="13" font-weight="700">' + esc(r.name) + '</text><text x="' + (rightX + 34) + '" y="' + (ty + 10) + '" fill="#7dd3c7" font-size="10">' + esc(soil) + ' · ' + time + ' · tap</text></g>';
+    const soil = soilName(r.soil) + (r.blockUnder ? ' / ' + r.blockUnder : '');
+    const xs = pars.length === 1 ? [160] : pars.length === 2 ? [88, 232] : [70, 160, 250];
+    pars.forEach((id, pi) => { body += parentOrb(id, xs[pi] || (70 + pi * 90), y); });
+    if (pars.length > 1) body += '<text x="160" y="' + (y + 5) + '" text-anchor="middle" fill="#6ee7b7" font-size="16" font-weight="700">+</text>';
+    body += '<path d="M280,' + y + ' C420,' + y + ' 500,' + y + ' 620,' + y + '" fill="none" stroke="' + col + '" stroke-width="2.2" opacity=".7" filter="url(#glow)"/>';
+    body += '<text x="450" y="' + (y - 10) + '" text-anchor="middle" fill="' + col + '" font-size="10">' + kind + ' \u00b7 ' + esc(soil) + '</text>';
+    body += '<g style="cursor:pointer" onclick="claimSeed(\'' + r.out + '\')"><circle cx="700" cy="' + y + '" r="20" fill="#2a1a06" stroke="' + col + '" stroke-width="2.5" filter="url(#glowA)"/><text x="700" y="' + (y + 4) + '" text-anchor="middle" fill="#fff7d6" font-size="11" font-weight="700">' + (i + 1) + '</text><text x="732" y="' + (y - 4) + '" fill="#fde68a" font-size="13" font-weight="700">' + esc(r.name) + '</text><text x="732" y="' + (y + 12) + '" fill="#7dd3c7" font-size="10">' + time + ' \u00b7 tap when you have it</text></g>';
   });
-  parents.forEach(id => {
-    const c = cropById(id), p = pPos[id];
-    pNodes += '<g><circle cx="' + p.x + '" cy="' + p.y + '" r="18" fill="#0d2a1c" stroke="#4ade80" stroke-width="2" filter="url(#glowG)"/><text x="' + p.x + '" y="' + (p.y + 32) + '" text-anchor="middle" fill="#9aefc0" font-size="11">' + esc(c ? c.name : id) + '</text></g>';
-  });
-  return '<div class="stage"><svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" height="' + Math.min(H, 720) + '"><defs><filter id="glow"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="glowG"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="glowA"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><text x="130" y="22" text-anchor="middle" fill="#5a8a70" font-size="10" letter-spacing="2">OWNED</text><text x="700" y="22" text-anchor="middle" fill="#a78b3a" font-size="10" letter-spacing="2">NEXT 10</text>' + edges + pNodes + tNodes + '</svg></div><div class="legend"><span style="color:#4ade80">Direct</span><span style="color:#fbbf24">Pool</span><span style="color:#c4b5fd">Machine</span><span>Tap a numbered orb to mark owned</span></div>';
+  return '<div class="stage"><svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" height="' + Math.min(H, 820) + '">' + defs + body + '</svg></div><div class="legend"><span style="color:#4ade80">Direct</span><span style="color:#fbbf24">Pool</span><span style="color:#c4b5fd">Machine</span><span>Green orbs are the pair to plant. Gold is the child.</span></div>';
 }
 function renderResults() {
   const el = document.getElementById('results');
@@ -144,10 +137,7 @@ function renderOwnedList() {
   const items = uniqueCrops().filter(c => !q || c.name.toLowerCase().includes(q) || c.id.toLowerCase().includes(q))
     .sort((a, b) => (owned.has(b.id) - owned.has(a.id)) || a.tier - b.tier || a.name.localeCompare(b.name));
   document.getElementById('ownedCount').textContent = '(' + owned.size + ')';
-  el.innerHTML = items.map(c => {
-    const on = owned.has(c.id);
-    return '<label class="ci' + (on ? ' on' : '') + '"><input type="checkbox" ' + (on ? 'checked' : '') + ' onchange="toggleOwned(\'' + c.id + '\', this.checked)"><span style="flex:1">' + c.name + '</span></label>';
-  }).join('');
+  el.innerHTML = items.map(c => '<label class="ci' + (owned.has(c.id) ? ' on' : '') + '"><input type="checkbox" ' + (owned.has(c.id) ? 'checked' : '') + ' onchange="toggleOwned(\'' + c.id + '\', this.checked)"><span style="flex:1">' + c.name + '</span></label>').join('');
 }
 function toggleOwned(id, on) { if (on) owned.add(id); else owned.delete(id); saveOwned(owned); renderOwnedList(); renderResults(); }
 function renderSoils() {
@@ -159,9 +149,7 @@ function toggleSoil(id) {
   if (ownedSoils.has(id)) ownedSoils.delete(id); else ownedSoils.add(id);
   saveSoils(); renderSoils(); renderResults();
 }
-function claimSeed(id) {
-  owned.add(id); saveOwned(owned); renderOwnedList(); renderResults();
-}
+function claimSeed(id) { owned.add(id); saveOwned(owned); renderOwnedList(); renderResults(); }
 function markPlantables() {
   PLANTABLES.forEach(id => { if (cropById(id)) owned.add(id); });
   saveOwned(owned); renderOwnedList(); renderResults();
