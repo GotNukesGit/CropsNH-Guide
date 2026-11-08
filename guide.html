@@ -339,7 +339,7 @@
       <div class="step step-blu"><div class="step-line"><div class="step-dot">2</div><div class="step-conn"></div></div><div class="step-body"><div class="step-title">Find eligible neighbours</div><div class="step-desc">All 4 cardinal neighbours checked. Must have a crop, no weed, and growth ≥ 80%. Below 80% = invisible to this crop tick.</div></div></div>
       <div class="step step-amb"><div class="step-line"><div class="step-dot">3</div><div class="step-conn"></div></div><div class="step-body"><div class="step-title">50/50 — Spread or Breed</div><div class="step-desc">nextBoolean(). If spreading wins but no canCross() neighbour exists, it falls through to breed. If breed path wins, deterministic recipes are checked first, then pool mutations as fallback.</div></div></div>
       <div class="step step-pur"><div class="step-line"><div class="step-dot">4</div><div class="step-conn"></div></div><div class="step-body"><div class="step-title">Soil validation</div><div class="step-desc">After a result is chosen, the game checks if the result crop's soil matches the cross-crop's soil block. If it doesn't match — <strong>the entire crop tick is wasted. No retry.</strong></div></div></div>
-      <div class="step step-tel"><div class="step-line"><div class="step-dot">5</div></div><div class="step-body"><div class="step-title">Plant result</div><div class="step-desc">Stats averaged from parents ± random variation (-2 to +4 per stat). Fertilizer in all parents locks variation to 0 to +4.</div></div></div>
+      <div class="step step-tel"><div class="step-line"><div class="step-dot">5</div></div><div class="step-body"><div class="step-title">Plant result</div><div class="step-desc">Stats are the parent average plus a pick from the fertilizer table. A spread at 50–100 does not change. A breed at 50–100 can move.</div></div></div>
     </div>
     <div class="tip tip-blu"><div class="tip-label">Since parents stay at 100% while breeding</div>
     Once parent crops are fully mature and you're not harvesting them, they stay there indefinitely. The 80% threshold is only relevant during the initial ramp-up. At 31 Growth, most crops reach 80% in a few minutes.</div>
@@ -612,7 +612,7 @@
 <div class="spoiler-wrap">
   <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Stat-up math and strategy</span><span class="s-hint">Advanced / Master</span></button>
   <div class="spoiler-content">
-    <p>Stats on a new crop = <code>average(parentStats) + random(-2, +4)</code> per trait. If <strong>every contributing parent</strong> has fertilizer storage &gt; 0, the roll becomes <code>average + random(0, +4)</code> instead — can only improve, never drop. "Contributing parents" means whichever crops actually produced this result: on a 2-parent breed, that's both of them; on the cross/clone path with one matching neighbour, it's just that one.</p>
+    <p>The roll is a pick from a table, not a range. Spread with a normal fertilizer fill (50–100) is a 0. Two parents on the breed path at the same fill can roll −2 to +2. The only-up table needs 101, which a hand-filled stick never reaches.</p>
 
     <p>Spreading still clones the parent. It just does not improve it under the fertilizer a stick can hold. Use two parents if you want the numbers to move. WeedEx and sickness do not change the roll.</p>
 
