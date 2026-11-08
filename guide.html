@@ -614,15 +614,15 @@
   <div class="spoiler-content">
     <p>Stats on a new crop = <code>average(parentStats) + random(-2, +4)</code> per trait. If <strong>every contributing parent</strong> has fertilizer storage &gt; 0, the roll becomes <code>average + random(0, +4)</code> instead — can only improve, never drop. "Contributing parents" means whichever crops actually produced this result: on a 2-parent breed, that's both of them; on the cross/clone path with one matching neighbour, it's just that one.</p>
 
-    <p>The spreading path picks one parent species, filters all neighbours to just that species, then uses only those as stat contributors. <strong>A single parent is sufficient for stat-up via spreading</strong> — one high-stat parent next to an empty cross-crop stick, fertilizer in that parent, and the clone's stats can only improve. For a normal 2-parent breed producing a mutation, the variation table is picked from the lowest fertilizer on the parents. WeedEx and sickness do not change the roll.</p>
+    <p>Spreading still clones the parent. It just does not improve it under the fertilizer a stick can hold. Use two parents if you want the numbers to move. WeedEx and sickness do not change the roll.</p>
 
-    <p><strong>Efficient strategy:</strong></p>
+    <p><strong>What works on a crop stick:</strong></p>
     <ol>
-      <li>Get one copy of your target crop with any stats</li>
-      <li>Place it as the sole parent next to a cross-crop stick, fertilizer in the parent</li>
-      <li>Collect clones, keep any that improved, discard the rest</li>
-      <li>Replace the parent with your current best and repeat</li>
-      <li>Each generation can only improve with fertilizer in the parent</li>
+      <li>Put two copies of the crop next to a cross-crop stick</li>
+      <li>Fill both to 50–100 fertilizer. Not more, because the stick will not take more</li>
+      <li>Keep the breed results that went up. Discard the drops</li>
+      <li>Replace the parents with the best pair and repeat</li>
+      <li>A Crop Manager that can push storage past 100 unlocks the only-up table on both paths</li>
     </ol>
     <div class="tip tip-grn"><div class="tip-label">Spread rate</div>With two identical parents at 100% growth: spreading fires on ~16.7% of crop ticks (~78%/min). You get frequent stat rolls. At 4.69 crop ticks/min this means roughly 3–4 stat rolls per minute at ideal conditions.</div>
   </div>
