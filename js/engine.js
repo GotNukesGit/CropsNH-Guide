@@ -440,7 +440,7 @@ ${spreadCrop ? `
     <div style="background:var(--bg3);border:1px solid var(--grn-b);border-radius:7px;padding:10px 12px">
       <div style="font-size:11px;font-weight:600;color:var(--grn);margin-bottom:4px">⟳ Spreading — 50% of breed ticks</div>
       <div style="font-size:11px;color:var(--tx2)">Picks one neighbour at random to determine the species, then keeps <em>every</em> neighbour of that same species as a stat contributor for the clone.</div>
-      <div style="font-size:11px;color:var(--tx3);margin-top:4px">With 2 identical parents → always clones ${spreadCrop.name}, averaging both parents' stats.</div>
+      <div style="font-size:11px;color:var(--tx3);margin-top:4px">With 2 identical parents → always clones ${spreadCrop.name}. At 50–100 fertilizer the clone's stats do not change. Under 50 they can drop.</div>
       <div style="font-size:12px;font-weight:600;color:var(--grn);margin-top:6px">${fmtTime((1/BCHANCE)*0.5).pPerMin} spread · ~${fmtTime((1/BCHANCE)*0.5).str}</div>
     </div>
     <div style="background:var(--bg3);border:1px solid var(--amb-b);border-radius:7px;padding:10px 12px">
