@@ -1,5 +1,18 @@
 # CropsNH Site — Source Verification Audit
 
+## November 8, 2026 — Resync to `cropsnh-2.0.140.jar`
+
+Decompiled every first-party class that differs from 2.0.129. Shadow MCLib skipped.
+
+- **Stat rolls rewritten.** The old `-2..+4`, clamped to `0..+4` with any fertilizer, is gone. Spread (one parent): under 50 is −1/0/0, 50–100 is frozen, 101+ is 0/0/0/1/2/3/4. Breed (two parents): under 50 is −1/−1/0/1/1, 50–100 is −2/−1/0/1/2, 101+ is 0/0/0/1/2/3/4. Equal chance on each listed number. A normal right-click caps a stick at 100, so the high table is not reachable there. Crop Manager can push storage to 200.
+- **Seed amount.** Planting copies the stack at size 1. The 2.0.129 zero-count miss is gone.
+- **Tiers.** Oil Berry 4 → 8. Rubyne 4 → 8, growth 800 → 1200.
+- **Drops.** Diareed drops its own item, not diamond and dust. Growth 7200 → 10800. Vanilla flowers drop dye at 75% and the flower block at 25%.
+- **Subsoil.** Twilight Forest Knightmetal block counts for Knightly Berry. Natural ores already counted.
+- **Guide.** Stat chapter, tier table, and version chips updated. Old "stats only go up with fertilizer" wording removed.
+
+---
+
 ## September 6, 2026 — Guide must-fix + likely-wrong pass (`cropsnh-2.0.114.jar`)
 
 Read-only claims were re-checked against CFR output of first-party 2.0.114 classes (`TileEntityCropSticks`, `CropCard`, `MutationRegistry`, `MutationPool`, `CropRubyne`, `ConfigurationHandler`, `MTEIndustrialFarm`). No IC2 tables.

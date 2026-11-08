@@ -4,43 +4,57 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CropsNH Seed Tracker</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230d2a1c'/><text x='16' y='24' font-size='20' text-anchor='middle'>🌾</text></svg>">
 <link rel="stylesheet" href="css/shared.css">
 <style>
-.main{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 63px)}
+.main{display:grid;grid-template-columns:320px 1fr;min-height:calc(100vh - 63px)}
 .side{background:var(--bg2);border-right:1px solid var(--bdr);padding:16px;overflow:auto}
-.content{padding:16px 18px;overflow:auto}
+.content{padding:20px 24px;overflow:auto}
 .slabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--tx3);margin:14px 0 8px}
 .sw{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;padding:4px 8px}
 .sw input{flex:1;background:transparent;border:0;color:var(--tx);outline:none;font-size:13px}
 .clist{max-height:calc(100vh - 280px);overflow:auto;margin-top:8px}
 .ci{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:5px;cursor:pointer;font-size:13px}
+.ci:hover{background:var(--bg3)}
 .ci.on{background:var(--grn-d)}
-.hint{color:var(--tx3);font-size:12px;line-height:1.5}
+.ci input{accent-color:var(--grn)}
+.hint{color:var(--tx3);font-size:12px;line-height:1.5;max-width:720px}
+.row{display:grid;grid-template-columns:1.1fr .9fr 110px 90px 140px;gap:8px;align-items:center;padding:10px 12px;background:var(--bg2);border:1px solid var(--bdr);border-radius:8px;margin-bottom:8px}
+.row.head{background:transparent;border:0;color:var(--tx3);font-size:10px;text-transform:uppercase;letter-spacing:.06em;padding:0 12px 8px}
+.nm{font-weight:600}
+.parents{font-size:12px;color:var(--tx2)}
+.soil{font-size:11px;color:var(--tel)}
+.kind-det{color:var(--grn);font-size:11px;font-weight:700}
+.kind-pool{color:var(--amb);font-size:11px;font-weight:700}
+.kind-mach{color:var(--pur);font-size:11px;font-weight:700}
+.kind-none{color:var(--tx3);font-size:11px}
+.time{font-size:12px;color:var(--tx)}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px}
-.stage{background:radial-gradient(ellipse at 28% 40%,#10261a 0%,#070b12 55%,#05070c 100%);border:1px solid #1c3a2a;border-radius:16px;overflow:auto;min-height:480px;box-shadow:inset 0 0 80px #04140c,0 0 36px #0a2a18}
+.stage{position:relative;background:radial-gradient(ellipse at 30% 40%,#10261a 0%,#070b12 55%,#05070c 100%);border:1px solid #1c3a2a;border-radius:16px;overflow:auto;min-height:520px;box-shadow:inset 0 0 80px #04140c,0 0 40px #0a2a18}
 .stage svg{display:block;min-width:640px}
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--tx3);margin-top:10px}
-@media(max-width:900px){.main{grid-template-columns:1fr}}
+@media(max-width:900px){.main{grid-template-columns:1fr}.row,.row.head{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="hdr">
-  <div class="hdr-icon">&#127793;</div>
+  <div class="hdr-icon">🌱</div>
   <div>
     <div class="hdr-title">Seed Tracker</div>
-    <div class="hdr-sub">Glow map of the next 10 undiscovered breeds</div>
+    <div class="hdr-sub">Mark what you own. Next breeds ranked by expected time · v2.0.140</div>
   </div>
   <div class="badge">local only</div>
   <div class="hdr-nav">
-    <a href="index.html">Home</a>
-    <a href="calculator.html">Mutations</a>
-    <a href="guide.html">Guide</a>
+    <a href="index.html">⌂ Home</a>
+    <a href="calculator.html">🧬 Mutations</a>
+    <a href="production.html">📊 Production</a>
+    <a href="guide.html">📖 Guide</a>
   </div>
 </div>
 <div class="main">
   <div class="side">
-    <div class="slabel">Owned seeds <span id="ownedCount"></span></div>
-    <div class="sw"><input id="ownedSearch" placeholder="Filter crops…" oninput="renderOwnedList()"></div>
+    <div class="slabel">Owned seeds <span id="ownedCount" style="font-weight:400"></span></div>
+    <div class="sw"><span>🔍</span><input id="ownedSearch" placeholder="Filter crops…" oninput="renderOwnedList()"></div>
     <div class="toolbar">
       <button class="fbtn" onclick="markPlantables()">+ World plantables</button>
       <button class="fbtn" onclick="clearOwned()">Clear</button>
@@ -48,11 +62,13 @@
     <div class="clist" id="ownedList"></div>
   </div>
   <div class="content">
-    <p class="hint">Green orbs are seeds you already have. Gold orbs are the next 10. Lines are the breed. Tap gold to mark owned.</p>
+    <p class="hint">Checklist is stored in this browser only. Tick soils you can place under a stick. Next-seed rows that need a soil you have not marked are hidden.</p>
     <div class="slabel">Soils I have</div>
     <div id="soilPills" class="toolbar"></div>
-    <div class="slabel">Constellation</div>
-    <div id="results"></div>
+    <div class="slabel" style="margin-top:18px">Next 10 — flowchart</div>
+    <div id="results">
+      <div class="hint">Tick at least one owned crop.</div>
+    </div>
   </div>
 </div>
 <script src="js/data.js"></script>

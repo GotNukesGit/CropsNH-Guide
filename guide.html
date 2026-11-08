@@ -13,7 +13,7 @@
 <nav>
   <div class="nav-logo">
     <div class="nav-logo-title">🌾 CropsNH Guide</div>
-    <div class="nav-logo-sub">GTNH 2.9 · v2.0.114</div>
+    <div class="nav-logo-sub">GTNH 2.9 · v2.0.140</div>
   </div>
   <div class="nav-links">
     <a href="index.html" class="nav-link-btn">⌂ Home</a>
@@ -59,7 +59,7 @@
   <h1>CropsNH Complete Guide</h1>
   <p class="hero-desc">Everything you need to know about CropsNH — from placing your first crop stick to farming Diareed at tier 12. Mechanics researched from the mod's source code. Corrections and feedback welcome.</p>
   <div class="hero-chips">
-    <span class="chip chip-grn">v2.0.114</span>
+    <span class="chip chip-grn">v2.0.140</span>
     <span class="chip chip-blu">GTNH 2.9</span>
     <span class="chip chip-pur">Replaces IC2 Crops</span>
   </div>
@@ -78,7 +78,7 @@
     <br><br>
     <ul>
       <li>🌍 <strong>Wrong soil = nothing grows.</strong> Most food crops want <em>farmland</em> (hoe the dirt). Ore and metal crops need <em>stone</em>. Zomplant and Corpseplant need <em>TiC Graveyard Soil</em>. You can't just plop a Ferrofern on farmland and wonder why it won't sprout.</li>
-      <li>⛏ <strong>Some crops also care about what's TWO blocks down (the sub-soil).</strong> Ore berries won't grow without their matching block sitting under the soil — iron under Ferrofern, tin under Tine, a diamond block under Diareed. Stone on top alone isn't enough. In 2.0.114 the API name is <code>SubSoilRequirement</code> (was <code>BlockUnderRequirement</code>). Check the <a href="calculator.html">Mutation Calculator</a> for each crop's sub-soil requirement.</li>
+      <li>⛏ <strong>Some crops also care about what's TWO blocks down (the sub-soil).</strong> Ore berries won't grow without their matching block sitting under the soil — iron under Ferrofern, tin under Tine, a diamond block under Diareed, the Knightmetal block under Knightly Berry. Stone on top alone isn't enough. Natural ore blocks count as sub-soil too. The check is a <code>SubSoilRequirement</code>. Check the <a href="calculator.html">Mutation Calculator</a> for each crop's sub-soil requirement.</li>
       <li>🗺 <strong>Your biome matters more than you'd think.</strong> Crops grow faster in biomes they like. Put a tier 6 ore crop in a biome it hates and it'll get sick before it ever matures. Open the <a href="production.html">Production Calculator</a>, type your biome name, pick the crop — if it shows SICK, move the farm or pick something else for that location.</li>
       <li>💧 <strong>Get a Crop Manager set up before you walk away.</strong> It fills each crop stick's internal water and fertilizer storage. Note: this is separate from farmland hydration — for farmland crops you still need a water block within 4 blocks of the farmland to keep it tilled. Without WeedEx in the machine, weeds will spawn in empty crop sticks and spread sickness to your parents.</li>
     </ul>
@@ -193,7 +193,7 @@
 
     <h4>Stat-up layout</h4>
     <p>There's no special layout required by the code — the cross-crop stick simply checks its four cardinal neighbours (N/S/E/W) for crops that can cross or breed. What matters practically is that your target crop has a cross-crop stick adjacent, and that cross-crop stick has two copies of the same crop as neighbours. The traditional "checkerboard" pattern (crops on corners, cross-crop sticks in between) is a community convention that achieves this efficiently, but it's not anything the source enforces. Any layout where a crop has a double-cropstick adjacent and that stick can see two copies of the same crop works identically.</p>
-    <p>With identical-species neighbours, the spreading path picks one at random, returns that same species, and averages stats only from neighbours of the matching species. Fertilizer in all contributing neighbours triggers the no-drop guarantee. Two identical parents means both need fertilizer storage &gt; 0.</p>
+    <p>With identical-species neighbours, the spreading path picks one at random, returns that same species, and averages stats only from neighbours of the matching species. Fertilizer no longer stops a stat from dropping. Two identical parents means both need fertilizer storage &gt; 0.</p>
     <div class="farm-grid" style="grid-template-columns:repeat(3,1fr)">
       <div class="fc fc-crop">⭐</div><div class="fc fc-cross">✚</div><div class="fc fc-crop">⭐</div>
       <div class="fc fc-cross">✚</div><div class="fc fc-crop">⭐</div><div class="fc fc-cross">✚</div>
@@ -225,10 +225,10 @@
     <div class="stack">
       <div class="stack-layer layer-stick"><span class="stack-y">y+0</span><span class="stack-name">Crop Stick</span><span class="stack-note">Tile entity here</span></div>
       <div class="stack-layer layer-soil"><span class="stack-y">y−1</span><span class="stack-name">Soil block</span><span class="stack-note">checked by getSoilTypes()</span></div>
-      <div class="stack-layer layer-under"><span class="stack-y">y−2</span><span class="stack-name">Sub-soil</span><span class="stack-note">checked by SubSoilRequirement (renamed from BlockUnderRequirement in 2.0.114)</span></div>
+      <div class="stack-layer layer-under"><span class="stack-y">y−2</span><span class="stack-name">Sub-soil</span><span class="stack-note">checked by SubSoilRequirement</span></div>
     </div>
     <p>The soil check applies to the <strong>cross-crop stick</strong> (the output stick), not the parent sticks. A mutation result is discarded if the cross-crop's soil doesn't match — the entire breeding tick is wasted. No retry within that tick.</p>
-    <div class="tip tip-pur"><div class="tip-label">Exploiting soil filtering</div>As of 2.0.114 Corium is in 3 pools (<code>BROWN</code>, <code>COW</code>, <code>MUSHROOM</code>) — it left Silk and Tendrilly. The union of those pools is 26 crops. Two of them use graveyard soil: <strong>Corpseplant</strong> and <strong>Zomplant</strong> (Zomplant is now reachable from Corium because both sit in <code>BROWN</code>). Place graveyard soil under the cross-crop stick and breed two Coriums: every non-graveyard pool result is soil-rejected, leaving those two as the only crops that can land. This is no longer a single-result filter.</div>
+    <div class="tip tip-pur"><div class="tip-label">Exploiting soil filtering</div>Corium is in 3 pools (<code>BROWN</code>, <code>COW</code>, <code>MUSHROOM</code>) — it left Silk and Tendrilly. The union of those pools is 26 crops. Two of them use graveyard soil: <strong>Corpseplant</strong> and <strong>Zomplant</strong> (Zomplant is now reachable from Corium because both sit in <code>BROWN</code>). Place graveyard soil under the cross-crop stick and breed two Coriums: every non-graveyard pool result is soil-rejected, leaving those two as the only crops that can land. This is no longer a single-result filter.</div>
   </div>
 </div>
 
@@ -258,7 +258,7 @@
       <tr><td class="tb">Thaumcraft Logs</td><td>Greatwood Log, Silverwood Log</td><td>Mana Bean — only this one</td></tr>
       <tr><td class="tb">Brick</td><td>Brick Block</td><td>Trollplant (+ special catalysts)</td></tr>
     </table>
-    <p style="font-size:11px;color:var(--tx3);margin-top:8px">Soil counts above are from the 2.0.114 crop cards used by the calculators (63 farmland, 28 dirt/grass, 61 stone after correcting Rubyne to stone). If a specific crop disagrees with this summary, trust that crop’s <code>getSoilTypes()</code> / the Mutation Calculator.</p>
+    <p style="font-size:11px;color:var(--tx3);margin-top:8px">Soil counts are from the crop cards in the calculators. If a crop disagrees with this summary, trust that crop’s soil list in the Mutation Calculator.</p>
     <div class="tip tip-grn"><div class="tip-label">Trample-proof Farmland variants</div>Three specific blocks are fully immune to crop trampling regardless of the crop's own Resistance stat: <strong>Ztones Garden Soil</strong>, <strong>Enchanted Earth</strong>, and <strong>Fertilized Dirt</strong>. All three register on the Farmland soil type, so any farmland crop can use them as a drop-in replacement for ordinary Farmland with zero trample risk from animals or sprinting players — useful for a starter farm before your seeds reach Resistance 31 on their own.</div>
   </div>
 </div>
@@ -275,14 +275,20 @@
       <li><strong>Gain</strong> — how much it drops per harvest. Higher = more items</li>
       <li><strong>Resistance</strong> — protects against weeds and sickness. All stats are beneficial — Resistance does not hurt growth. At exactly 31, a crop stick is immune to being broken by <strong>running</strong> entities. Falling trample ignores Resistance entirely — even at R31 a big enough fall will break the crop. Use trample-immune soil (Garden Soil, Enchanted Earth, Fertilized Dirt) if you need full protection.</li>
     </ul>
-    <strong>Target 31/31/31.</strong> Stats can only go up when fertilizer is in the contributing parent(s) — a single parent is sufficient for stat-up.
+    <strong>Target 31/31/31.</strong> Fertilizer no longer means stats only go up. A half-full tank freezes a spread. The old 0-to-+4 clamp is gone.
   </div>
 </div>
 <div class="spoiler-wrap">
   <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Stat math, variation, and fertilizer mechanic</span><span class="s-hint">Advanced / Master</span></button>
   <div class="spoiler-content">
     <p>Stats range 1–31 (from <code>Constants.java</code>). When a new crop is bred, each stat is calculated as:</p>
-    <div class="formula">newStat = clamp( average(parentStats) + random(-2, +4), 1, 31 )<br><span class="cm">// if ALL contributing parents have fertilizer storage > 0:</span><br>newStat = clamp( average(parentStats) + random(0, +4), 1, 31 )<span class="cm">  // can only improve</span></div>
+    <div class="formula">newStat = clamp( average(parentStats) + pick(table), 1, 31 )<br><span class="cm">// table depends on lowest fertilizer on the parents, and on spread vs breed</span><br><span class="cm">// spread = one parent (the copy path). breed = two parents.</span></div>
+    <table>
+      <tr><th></th><th>Under 50</th><th>50–100</th><th>101+</th></tr>
+      <tr><td class="tb">Spread</td><td>−1, 0, 0</td><td>0 only</td><td>0, 0, 0, 1, 2, 3, 4</td></tr>
+      <tr><td class="tb">Breed</td><td>−1, −1, 0, 1, 1</td><td>−2, −1, 0, 1, 2</td><td>0, 0, 0, 1, 2, 3, 4</td></tr>
+    </table>
+    <p>Each number in the list is equally likely. Medium fertilizer on a spread does not raise the stat. The high table needs storage at 101. A normal right-click caps a crop stick at 100, so that table is not reachable on a stick with the default config. Crop Manager can push a stick to 200.</p>
     <p><strong>Gain</strong> formula for drop rounds: <code>dropChance × 1.03^Gain</code>. Gain 31 gives 2.5× more drop rounds than Gain 1. This is the most important stat for production farms.</p>
     <p><strong>Resistance</strong> has three separate effects, none of which touch the growth-speed formula itself — <code>getGrowthRate()</code> only takes nutrientPoints, tier, and Growth as inputs. First, every crop tick a crop fails to gain growth (insufficient nutrients for its tier), the game rolls Resistance against a random 0–30 — succeed and the crop just sits idle; fail and it goes sick. At exactly 31 that roll can never fail, so a permanently-undernourished crop stays dormant forever instead of turning sick. Second, that same roll governs seed return when breaking a crop — low Resistance means breaking often yields no seed. Third, Resistance 31 makes a crop stick immune to breakage from <strong>running</strong> entities — but falling trample ignores Resistance entirely at any value, including 31. To protect against falls, use a trample-immune soil (Garden Soil, Enchanted Earth, Fertilized Dirt). Target 31/31/31 for all three Resistance benefits at once.</p>
     <div class="tip tip-red"><div class="tip-label">⚠ Weed spreading</div>A <em>mature</em> crop calls <code>spreadsWeeds()</code> only when Growth &gt; 24 and Resistance &lt; Growth. If Resistance ≥ Growth, that method returns false and the crop never starts an outward spread — WeedEx is not required for that gate. Incoming disease is a separate check in <code>transferDisease()</code> (Resistance roll, then WeedEx drain 2). Stats cannot drop from WeedEx — that mechanic is IC2-only and does not exist in CropsNH.</div>
@@ -396,7 +402,7 @@
 <div class="tldr">
   <div class="tldr-label">⚡ TL;DR</div>
   <div class="tldr-body">
-    The soil under your cross-crop stick acts as a <strong>filter</strong>. If a mutation result needs different soil than what's there, <strong>the crop tick is wasted and nothing happens</strong>. This only filters results that are already reachable from your specific parents — it doesn't open up new crops just because they share that soil type. Example as of 2.0.114: breeding Corium + Corium on graveyard soil can land <strong>Corpseplant or Zomplant</strong> — both are now in Corium's pool union (<code>BROWN</code> / <code>COW</code> / <code>MUSHROOM</code>) and both require graveyard soil. Other union members need farmland, dirt/grass, mushroom, nether-mushroom, stone, netherrack, or thaum logs, so they are rejected on graveyard.
+    The soil under your cross-crop stick acts as a <strong>filter</strong>. If a mutation result needs different soil than what's there, <strong>the crop tick is wasted and nothing happens</strong>. This only filters results that are already reachable from your specific parents — it doesn't open up new crops just because they share that soil type. Example: breeding Corium + Corium on graveyard soil can land <strong>Corpseplant or Zomplant</strong> — both are now in Corium's pool union (<code>BROWN</code> / <code>COW</code> / <code>MUSHROOM</code>) and both require graveyard soil. Other union members need farmland, dirt/grass, mushroom, nether-mushroom, stone, netherrack, or thaum logs, so they are rejected on graveyard.
   </div>
 </div>
 <div class="spoiler-wrap">
@@ -404,12 +410,12 @@
   <div class="spoiler-content">
     <p>The soil check happens AFTER <code>getBreedingResult()</code> picks a result. If the soil doesn't match, <code>attemptBreeding()</code> returns false — the crop tick is wasted, no retry, no fallback path.</p>
     <p>This means your effective mutation probability is: P(result chosen) × P(result's soil matches cross-crop soil). Placing a soil that only one or two pool members require can dramatically focus your output.</p>
-    <div class="tip tip-grn"><div class="tip-label">Graveyard soil trick (Corium + Corium) — updated 2.0.114</div>
+    <div class="tip tip-grn"><div class="tip-label">Graveyard soil trick (Corium + Corium)</div>
       On graveyard soil:<br>
       • Spreading path always gives Corium → Corium wants farmland → rejected, crop tick wasted<br>
       • Pool results that want farmland / dirt-grass / mushroom / nether-mushroom / stone / netherrack / thaum logs → rejected<br>
-      • Corpseplant and Zomplant both want graveyard and both sit in Corium's 2.0.114 pool union → both can land<br>
-      • Do not use the old single-result odds (~28 min / ~46 min writeups). Re-run the Mutation Calculator on v2.0.114 pool data for current probabilities.
+      • Corpseplant and Zomplant both want graveyard and both sit in Corium's pool union → both can land<br>
+      • Do not use the old single-result odds (~28 min / ~46 min writeups). Re-run the Mutation Calculator for current probabilities.
     </div>
   </div>
 </div>
@@ -443,13 +449,13 @@
 <div class="tldr">
   <div class="tldr-label">⚡ TL;DR</div>
   <div class="tldr-body">
-    Put <strong>TiC Graveyard Soil</strong> under your cross-crop stick, then breed <strong>Corium + Corium</strong>. As of 2.0.114 Corium is in three pools (<code>BROWN</code>, <code>COW</code>, <code>MUSHROOM</code>). Two members of that union need graveyard soil: <strong>Corpseplant</strong> and <strong>Zomplant</strong>. Every other pool result is soil-rejected. Use the Mutation Calculator for current odds — the old “Corpseplant-only / 46 minutes” writeup is stale.
+    Put <strong>TiC Graveyard Soil</strong> under your cross-crop stick, then breed <strong>Corium + Corium</strong>. Corium is in three pools (<code>BROWN</code>, <code>COW</code>, <code>MUSHROOM</code>). Two members of that union need graveyard soil: <strong>Corpseplant</strong> and <strong>Zomplant</strong>. Every other pool result is soil-rejected. Use the Mutation Calculator for current odds — the old “Corpseplant-only / 46 minutes” writeup is stale.
   </div>
 </div>
 <div class="spoiler-wrap">
   <button class="spoiler-toggle" onclick="toggleSpoiler(this)"><span class="s-icon">▶</span><span class="s-label">Show Details — Full probability breakdown</span><span class="s-hint">Master</span></button>
   <div class="spoiler-content">
-    <p>In 2.0.114 Corium registers to <code>brown</code>, <code>cow</code>, and <code>mushroom</code> only — not Silk or Tendrilly. Same-species Corium+Corium still matches those three pools (pool lookup does not dedupe). After the soil check on graveyard:</p>
+    <p>Corium registers to <code>brown</code>, <code>cow</code>, and <code>mushroom</code> only — not Silk or Tendrilly. Same-species Corium+Corium still matches those three pools (pool lookup does not dedupe). After the soil check on graveyard:</p>
     <ul>
       <li>Spreading always returns Corium, which wants farmland → tick wasted</li>
       <li>Pool members that want farmland / dirt-grass / mushroom / nether-mushroom / stone / netherrack / thaum logs → wasted</li>
@@ -607,7 +613,7 @@
   <div class="spoiler-content">
     <p>Stats on a new crop = <code>average(parentStats) + random(-2, +4)</code> per trait. If <strong>every contributing parent</strong> has fertilizer storage &gt; 0, the roll becomes <code>average + random(0, +4)</code> instead — can only improve, never drop. "Contributing parents" means whichever crops actually produced this result: on a 2-parent breed, that's both of them; on the cross/clone path with one matching neighbour, it's just that one.</p>
 
-    <p>The spreading path picks one parent species, filters all neighbours to just that species, then uses only those as stat contributors. <strong>A single parent is sufficient for stat-up via spreading</strong> — one high-stat parent next to an empty cross-crop stick, fertilizer in that parent, and the clone's stats can only improve. For a normal 2-parent breed producing a mutation, fertilizer must be in <strong>both</strong> parents for the no-drop guarantee to apply. Stat drops only happen on a breed-path result without full fertilizer coverage — not from WeedEx, not from being sick.</p>
+    <p>The spreading path picks one parent species, filters all neighbours to just that species, then uses only those as stat contributors. <strong>A single parent is sufficient for stat-up via spreading</strong> — one high-stat parent next to an empty cross-crop stick, fertilizer in that parent, and the clone's stats can only improve. For a normal 2-parent breed producing a mutation, the variation table is picked from the lowest fertilizer on the parents. WeedEx and sickness do not change the roll.</p>
 
     <p><strong>Efficient strategy:</strong></p>
     <ol>
@@ -667,13 +673,13 @@
     <table>
       <tr><th>Machine / Tool</th><th>Tier</th><th>Function</th><th>Notes</th></tr>
       <tr><td class="tb">Crop Manager</td><td>LV–UV (GT)</td><td>Waters, fertilizes, applies WeedEx, harvests</td><td>Tops off each crop's water / fertilizer / WeedEx storage from its own tanks. Does NOT auto-replant or remove seeds — that is always manual. Range and harvest chance scale with tier.</td></tr>
-      <tr><td class="tb">Industrial Farm</td><td>MV+ (GT multiblock)</td><td>Simulates crop growth internally, mass output</td><td>No physical crop sticks needed. One crop type at a time. Sky access and weather irrelevant — hydration and sky bonuses are maxed automatically. Upgrade units (biome, harvesting, fertilization, OC) slot into the top layer. Screwdriver on the controller cycles <code>machineMode</code> (input / farm / output) and prints <code>cropsnh_chat.industrialFarm.mode.set</code>. Sub-soil slot is labeled as such in 2.0.114. Seed Bed base EU/t is <code>GTValues.VP[tier]</code>.</td></tr>
+      <tr><td class="tb">Industrial Farm</td><td>MV+ (GT multiblock)</td><td>Simulates crop growth internally, mass output</td><td>No physical crop sticks needed. One crop type at a time. Sky access and weather irrelevant — hydration and sky bonuses are maxed automatically. Upgrade units (biome, harvesting, fertilization, OC) slot into the top layer. Screwdriver on the controller cycles <code>machineMode</code> (input / farm / output) and prints <code>cropsnh_chat.industrialFarm.mode.set</code>. Seed Bed base EU/t is <code>GTValues.VP[tier]</code>.</td></tr>
       <tr><td class="tb">World Accelerator</td><td>Any (GT)</td><td>Accelerates crop tick rate</td><td>Use Tile Entity mode, place on cross-crop stick. Multiplies breeding attempts per real second.</td></tr>
       <tr><td class="tb">Spade</td><td>CropsNH item</td><td>Right-click harvest mature crop: gives produce + seed at res/31 odds, destroys crop. Breaking any crop at any maturity: returns seed at same odds, destroys crop (net zero).</td><td>Not a GT tool. Also removes weeds manually.</td></tr>
       <tr><td class="tb">Reinforced Spade</td><td>CropsNH item</td><td>Same as Spade but seed return on mature right-click harvest is guaranteed: <code>floor(Resistance/10)</code> seeds plus a chance at one more from the remainder. Up to 4 at Resistance 31.</td><td>Strictly better than Spade for seed farming once Resistance climbs past ~10. Also removes weeds.</td></tr>
       <tr><td class="tb">Crop Lens</td><td>CropsNH item</td><td>Analyzes a growing crop in-world (no seed bag needed)</td><td>Use this to check crop type and stats without harvesting. Useful during breeding to identify mutations early.</td></tr>
       <tr><td class="tb">Plant Cure</td><td>CropsNH item</td><td>Cures a sick (green) crop</td><td>Right-click a sick crop to restore it. Essential if you have valuable high-stat parents that went sick.</td></tr>
-      <tr><td class="tb">Boots (2.0.114)</td><td>Registered armor</td><td>Reduces or blocks crop collision damage</td><td>New <code>BootProtectionRegistry</code>. Leather / Imp / Pam hardened-leather boots: Damage handler (1 dmg / 100 uses; leather multiplier 0.75 if IC2 loaded). Rubber boots (IC2 / GT++ / EnderIO end-steel): same damage handler at 1.0. Full immunity: IC2 nano+quantum, DE wyvern+draconic, Avaritia Infinity shoes, Blood Magic bound boots, EMT traveller nano/quantum, EnderIO stellar, GalaxySpace space/gravity, Tainted Magic voidwalker, listed ThaumicBoots / TT ichorcloth gem / WG primordial. Only items registered in <code>BootProtectionLoader</code> apply. Thornvine now returns <code>getEntityDamage() = 1.0f</code>.</td></tr>
+      <tr><td class="tb">Boots</td><td>Registered armor</td><td>Reduces or blocks crop collision damage</td><td>New <code>BootProtectionRegistry</code>. Leather / Imp / Pam hardened-leather boots: Damage handler (1 dmg / 100 uses; leather multiplier 0.75 if IC2 loaded). Rubber boots (IC2 / GT++ / EnderIO end-steel): same damage handler at 1.0. Full immunity: IC2 nano+quantum, DE wyvern+draconic, Avaritia Infinity shoes, Blood Magic bound boots, EMT traveller nano/quantum, EnderIO stellar, GalaxySpace space/gravity, Tainted Magic voidwalker, listed ThaumicBoots / TT ichorcloth gem / WG primordial. Only items registered in <code>BootProtectionLoader</code> apply. Thornvine now returns <code>getEntityDamage() = 1.0f</code>.</td></tr>
     </table>
   </div>
 </div>
@@ -695,11 +701,11 @@
       <tr><td><span class="tier t1">T1</span></td><td>10</td><td>600 pts default (Wheat overrides to 1000; Bonsai family flat 1200)</td><td>Wheat, Potato, all 7 Bonsai variants*, BrownMushroom</td></tr>
       <tr><td><span class="tier t1">T2</span></td><td>20</td><td>1200 pts</td><td>Carrot, Melon, Pumpkin, SugarCane, Vine, Dandelion, Poppy</td></tr>
       <tr><td><span class="tier t3">T3</span></td><td>30</td><td>1800 pts</td><td>Cocoa, Cactus, Zomplant, Cotton, FloweringVine</td></tr>
-      <tr><td><span class="tier t3">T4</span></td><td>40</td><td>2400 pts</td><td>StickyCane, Canola, Rubyne, Sapphirum, Glowheat, Spidernip</td></tr>
+      <tr><td><span class="tier t3">T4</span></td><td>40</td><td>2400 pts</td><td>StickyCane, Canola, Sapphirum, Glowheat, Spidernip</td></tr>
       <tr><td><span class="tier t5">T5</span></td><td>50</td><td>3000 pts</td><td>Nether Wart, Hemp, Tine, Nickelback, Corpseplant, IronOreBerry</td></tr>
       <tr><td><span class="tier t5">T6</span></td><td>60</td><td>3600 pts</td><td>Ferrofern, Coppon, Galvania, Corium, Slimeplant, EggPlant</td></tr>
       <tr><td><span class="tier t7">T7</span></td><td>70</td><td>4200 pts</td><td>Argentia, Lazulia, Creeperweed, Meatrose, ThaumiumOreBerry</td></tr>
-      <tr><td><span class="tier t7">T8</span></td><td>80</td><td>4800 pts</td><td>Withereed, Auronia, Tearstalks, Liveroot</td></tr>
+      <tr><td><span class="tier t7">T8</span></td><td>80</td><td>4800 pts</td><td>Withereed, Auronia, Tearstalks, Liveroot, Oil Berry, Rubyne</td></tr>
       <tr><td><span class="tier t7">T9</span></td><td>90</td><td>5400 pts</td><td>Micadia, Titania, GodOfThunder</td></tr>
       <tr><td><span class="tier t10">T10</span></td><td>100</td><td>6000 pts default (Enderbloom overrides to 3000)</td><td>Enderbloom, Steeleafranks</td></tr>
       <tr><td><span class="tier t10">T11</span></td><td>110</td><td>6600 pts</td><td>Platina</td></tr>
@@ -741,8 +747,8 @@
   <div class="spoiler-content">
 
     <h3>Potato isn't actually the fastest option — and "starter" means more than the five base crops</h3>
-    <p>Wheat, Carrot, Potato, Dandelion, and Poppy are directly plantable because each one registers a real-world item as an <em>alternate seed</em> — Wheat Seeds, a Carrot, a Potato, and so on. That same mechanic exists on <strong>78 other crops</strong> in the 2.0.114 roster (83 alt-seed crops total), most of them gated behind a specific mod (Natura, Biomes O' Plenty, Twilight Forest) rather than vanilla Minecraft. Several of them grow far faster than any of the original five, and some bridge pools more usefully too. Treat the five base crops as a baseline, not the full set of starting options. Water Artichoke (Witchery) is one of those 83 — if you have Witchery artichokes growing nearby, you can plant them directly.</p>
-    <p>Among every alternate-seed crop, <strong>Torchberry</strong> (Twilight Forest) has the shortest growth duration in the entire database at 150 points — about 14.6 seconds to 80% maturity under a solid nutrient setup, versus Potato's ~75 seconds. It is light-capped (max light 10). It is <em>not</em> a one-pool crop: 2.0.114 registers it to <code>BERRY</code>, <code>EMISSIVE</code>, <code>TWILIGHT_FOREST</code>, and <code>YELLOW</code>. It still does not sit in <code>EDIBLE</code> or <code>FLOWER</code>, but the <code>YELLOW</code> membership is the same bridge Potato uses toward Dandelion.</p>
+    <p>Wheat, Carrot, Potato, Dandelion, and Poppy are directly plantable because each one registers a real-world item as an <em>alternate seed</em> — Wheat Seeds, a Carrot, a Potato, and so on. That same mechanic exists on <strong>78 other crops</strong> in the current roster (83 alt-seed crops total), most of them gated behind a specific mod (Natura, Biomes O' Plenty, Twilight Forest) rather than vanilla Minecraft. Several of them grow far faster than any of the original five, and some bridge pools more usefully too. Treat the five base crops as a baseline, not the full set of starting options. Water Artichoke (Witchery) is one of those 83 — if you have Witchery artichokes growing nearby, you can plant them directly.</p>
+    <p>Among every alternate-seed crop, <strong>Torchberry</strong> (Twilight Forest) has the shortest growth duration in the entire database at 150 points — about 14.6 seconds to 80% maturity under a solid nutrient setup, versus Potato's ~75 seconds. It is light-capped (max light 10). It is <em>not</em> a one-pool crop: It is registered to <code>BERRY</code>, <code>EMISSIVE</code>, <code>TWILIGHT_FOREST</code>, and <code>YELLOW</code>. It still does not sit in <code>EDIBLE</code> or <code>FLOWER</code>, but the <code>YELLOW</code> membership is the same bridge Potato uses toward Dandelion.</p>
     <p>A cluster of tier-2, 200-growth-duration berries — Strawberry, Blueberry, Blackberry, Raspberry, Huckleberry, Maloberry, and BoP Berry — are all roughly four times faster than Potato (about 19.4 seconds to 80%) and all sit in <code>EDIBLE</code>, so any of them can fish the same 50-member pool Potato does. <strong>Maloberry</strong> (Natura) is the standout among that berry cluster: it is also in <code>YELLOW</code> (14 members), so it covers the same two pools Potato uses, at roughly a quarter of the wait. BoP Berry (Biomes O' Plenty) takes a different bridge instead, sitting in <code>RED</code> alongside Poppy directly, reaching the flower cluster from the other end.</p>
     <p>All of these — Torchberry, Maloberry, BoP Berry, and the rest of the berry cluster — also have a real deterministic breeding recipe (e.g. Maloberry from OrangeTulip + Blueberry), which doesn't matter here since the alternate-seed path skips breeding entirely: any of these can be planted straight from the real in-world item with no breeding step at all. BoP Berry's source item is confirmed directly in source as a Biomes O' Plenty food drop, and generic Natura/Twilight Forest documentation describes their berry bushes as common, naturally-generating Overworld features — but GTNH heavily customizes world generation (Realistic World Gen, restricted biome lists), so whether any specific bush spawns at the rate or frequency you'd expect isn't something this guide can confirm from the decompiled crop code alone. If you can find one of these growing wild, planting it directly is faster than growing a Potato from scratch — if not, breeding the deterministic recipe or starting from Potato both still work.</p>
 
@@ -775,7 +781,7 @@
   </div>
 </div>
 
-<footer>Mechanics last resynced against <code>cropsnh-2.0.114.jar</code> (CFR 0.152, first-party classes only). Pool tags, several deterministic recipes, drop-chance overrides, and growth-duration overrides differ from earlier guide drafts — trust the 2.0.114 calculators over leftover numbers in old writeups. Corrections welcome.</footer>
+<footer>Mechanics last resynced against <code>cropsnh-2.0.140.jar</code> (CFR 0.152, first-party classes only). Stat rolls, a few tiers, and some drop tables changed since 2.0.114. Trust the calculators on this site over older writeups. Corrections welcome.</footer>
 </main>
 
 

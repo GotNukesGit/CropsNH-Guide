@@ -1,7 +1,7 @@
 
 function formatPool(p){return p.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());}
 // ─── CONSTANTS ───────────────────────────────────────────────────────────────
-const BC=6,BN=5,MWBA=100,MFBA=100,SKY=2,LBB=14,HHB=14,NPS=5,NPT=10,BCHANCE=3,BLOW=-2,BHIGH=4;
+const BC=6,BN=5,MWBA=100,MFBA=100,SKY=2,LBB=14,HHB=14,NPS=5,NPT=10,BCHANCE=3;
 const TICK_RATE=256; // game ticks per crop tick (from source)
 const GAME_TPS=20;   // Minecraft ticks/second
 const CROP_TICK_SECONDS=TICK_RATE/GAME_TPS; // 12.8 seconds per crop tick
@@ -380,7 +380,7 @@ function render(){
       <div style="font-size:10px;color:var(--tx3);margin-bottom:4px">Breed attempt: <strong style="color:var(--tx)">1 in ${BCHANCE}/tick</strong></div>
       <div style="font-size:10px;color:var(--tx3);margin-bottom:2px">50% cross / 50% breed split</div>
       <div style="font-size:10px;color:var(--amb);margin-bottom:2px">Parents must be ≥80% grown to breed</div>
-      <div style="font-size:10px;color:var(--tx3)">Stat var: ${BLOW} to +${BHIGH}</div>
+      <div style="font-size:10px;color:var(--tx3)">Stat roll depends on fertilizer. See the guide.</div>
     </div>
   </div>
   <div class="nbar-wrap">
@@ -450,8 +450,7 @@ ${spreadCrop ? `
     </div>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:11px">
-    <span class="pill${ENV.fert?' ok':''}">🧪 With 2 identical parents, BOTH need fertilizer storage for stats to only-improve</span>
-    <span class="pill">📊 Stat variation: ${BLOW} to +${BHIGH} per trait</span>
+    <span class="pill">🧪 Spread under 50 fert: −1/0/0. At 50–100: frozen. Breed under 50: −1/−1/0/1/1. High table needs 101.</span>
     <span class="pill warn">⚠ Parents must be ≥80% grown to participate</span>
   </div>
 </div>` : ''}
@@ -532,7 +531,7 @@ function renderTargetMode(content){
   const directlyPlantableNote = (!muts.length && isDirectlyPlantable) ? `
 <div class="path-section" style="border-color:var(--grn-b)">
   <h2 style="color:var(--grn)">🌱 ${tc.name} is directly plantable — and also breedable</h2>
-  <p style="font-size:12px;color:var(--tx3)">No deterministic recipe exists for ${tc.name}, but it's a member of ${targetPoolsCheck.length} mutation pool${targetPoolsCheck.length===1?'':'s'}, so a pool-mutation breed can still produce it from other parents. This matters if you want to <strong style="color:var(--tx2)">stat-up a directly-planted crop</strong> — breed two pool-sharing parents and any result that lands on ${tc.name} keeps the averaged parent stats (plus fertilizer-gated variation), which is usually faster than waiting on the cross/clone path alone.</p>
+  <p style="font-size:12px;color:var(--tx3)">No deterministic recipe exists for ${tc.name}, but it's a member of ${targetPoolsCheck.length} mutation pool${targetPoolsCheck.length===1?'':'s'}, so a pool-mutation breed can still produce it from other parents. This matters if you want to <strong style="color:var(--tx2)">stat-up a directly-planted crop</strong> — breed two pool-sharing parents and any result that lands on ${tc.name} keeps the averaged parent stats (plus the fertilizer table from the guide), which is usually faster than waiting on the cross/clone path alone.</p>
 </div>` : '';
 
   const paths=findPaths(targetCrop,12);
